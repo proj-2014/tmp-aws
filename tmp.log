@@ -1,0 +1,71 @@
+test ?
+?
+%quickref
+magic
+%magic
+ls
+pwd
+lsmaginc
+lsmagic
+%time
+time
+javascript ?
+%javascript ?
+%%javascript ?
+%javascript
+lsmagic
+alias
+abc ='hello'
+echo abc
+echo $abc
+!echo $abc
+echo 
+echo $HOME
+!echo $HOME
+sc  s= ls -l
+s
+d = ls -l
+d = %sx ls -l
+d
+hist
+pwd
+hist 
+dhist
+hist ?
+hist
+save -r  tmp.py 5-8 11
+ls
+cat tmp.py
+hist -n
+hist -n
+hist
+ed tmp.py
+cat tmp.py
+ed a
+pycat tmp.py
+ed tmp.py
+run -i tmp.py
+ed tmp.py
+ls
+run -i tmp.py
+ed tmp.py
+ls
+run -i tmp.py
+run -i -t tmp.py
+run -i -t -N10 tmp.py
+lsmagic
+logstart -r -t tmp.log append
+# Thu, 02 Apr 2015 00:50:10
+ls
+# Thu, 02 Apr 2015 00:50:14
+cat tmp.log
+# Thu, 02 Apr 2015 00:50:45
+ls
+# Thu, 02 Apr 2015 00:50:53
+tail tmp.log
+# Thu, 02 Apr 2015 00:51:00
+!tail *.log
+# Thu, 02 Apr 2015 00:51:09
+logstate
+# Thu, 02 Apr 2015 00:51:24
+logoff
