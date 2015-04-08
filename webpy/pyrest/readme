@@ -1,0 +1,17 @@
+
+
+1. version-0.1   base url            20150407
+      
+2. version-0.2   support restful     20150407
+      ref:  https://github.com/w0rm/todo.git     https://gist.github.com/w0rm/3907294
+3. version-0.3   support jinja2      20150408
+      ref:  http://www.cnblogs.com/flyingzl/articles/1873098.html
+4. version-0.4   support bootstrap   20150408
+      ref:  http://my.oschina.net/zhengnazhi/blog/121610
+5. version-0.5   support numjucks    20150408
+      ref:  before proj that base on Flask with Shared Templates.  https://github.com/proj-2014/flask-eve-bootstrap.git
+      bug: how to share template between numjucks and jinja2 , jinja cannot load muti templates folder , how to solve
+           in this version just copy _row.html in both /static/templates and /templates folder . future need fit for this bug
+
+
+
