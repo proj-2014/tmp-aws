@@ -48,13 +48,17 @@ class Test:
         #return render.test(input="abc")
         return render_template("test.html",input="def")
 
+class bootst:
+    def GET(self):
+        return render.bootst()
 #--------------------------------------------------------------
 #urls.py
 
 urls = (
 '/api/todos(?:/(?P<todo_id>[0-9]+))?', 'controllers.todos.Todos',
 '/', 'controllers.index.Index',
-'/test', 'Test'
+'/test', 'Test',
+'/bs', 'bootst'
 )
 
 
