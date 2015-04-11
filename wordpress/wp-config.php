@@ -34,7 +34,7 @@ define('WPLANG', 'en_US');
 }
 else if($_SERVER["HTTP_HOST"]=="wp01.tmp0230.ml")
 {
-define('DB_NAME', 'db-wp');
+define('DB_NAME', 'db_wp');
 define('DB_USER', 'root');
 define('DB_PASSWORD', 'root');
 define('DB_HOST', 'localhost');
@@ -44,17 +44,17 @@ define('DB_COLLATE', '');
 $table_prefix  = 'web_wp01_';
 define('WPLANG', "zh_CN");
 }
-else if($_SERVER["HTTP_HOST"]=="stock2000.com")
+else if($_SERVER["HTTP_HOST"]=="wp02.tmp0230.ml")
 {
-define('DB_NAME', 'www2');
+define('DB_NAME', 'db_wp2');
 define('DB_USER', 'root');
-define('DB_PASSWORD', '');
+define('DB_PASSWORD', 'root');
 define('DB_HOST', 'localhost');
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 
-$table_prefix  = 'stock_';
-define('WPLANG', "zh_CN");
+$table_prefix  = 'web_wp02_';
+define('WPLANG', "en_US");
 }
 else if($_SERVER["HTTP_HOST"]=="web8.com")
 {
