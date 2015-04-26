@@ -1,0 +1,9 @@
+
+
+nginx150426:
+
+1.tar from /usr/nginx
+2.nginx support subs_filter module
+3.conf  have add include /temp/devlop/nginx/siteconf/*.conf;
+4.package and backup date 20150426
+
