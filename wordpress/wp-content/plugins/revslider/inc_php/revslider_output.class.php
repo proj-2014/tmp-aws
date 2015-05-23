@@ -12,6 +12,7 @@
 		private $previewMode = false;	//admin preview mode
 		private $slidesNumIndex;
 		private $sliderLang = null;
+		private $hasOnlyOneSlide = false;
 		
 		/**
 		 * 
@@ -184,7 +185,7 @@
 			$mute = ($videoData['mute']) ? ' data-volume="mute"' : '';
 			
 			if($videoData["type"] == "youtube"):	//youtube
-				?>	<div class="tp-caption fade fullscreenvideo" data-nextslideatend="<?php echo $nextslide?>" data-autoplay="<?php echo $autoplay?>"<?php echo $autoplayonlyfirsttime; ?> <?php echo $htmlParams?><?php echo $mute; ?>><iframe src="<?php echo $setBase; ?>www.youtube.com/embed/<?php echo $videoID?>?hd=1&amp;wmode=opaque&amp;controls=1&amp;showinfo=0;rel=0;" width="100%" height="100%"></iframe></div><?php 
+				?>	<div class="tp-caption fade fullscreenvideo" data-nextslideatend="<?php echo $nextslide?>" data-autoplay="<?php echo $autoplay?>"<?php echo $autoplayonlyfirsttime; ?> <?php echo $htmlParams?><?php echo $mute; ?>><iframe src="<?php echo $setBase; ?>www.youtube.com/embed/<?php echo $videoID?>?html5=1&amp;hd=1&amp;wmode=opaque&amp;controls=1&amp;showinfo=0;" width="100%" height="100%"></iframe></div><?php 
 			else:									//vimeo
 				?>	<div class="tp-caption fade fullscreenvideo" data-nextslideatend="<?php echo $nextslide?>" data-autoplay="<?php echo $autoplay?>"<?php echo $autoplayonlyfirsttime; ?> <?php echo $htmlParams?><?php echo $mute; ?>><iframe src="<?php echo $setBase; ?>player.vimeo.com/video/<?php echo $videoID?>?title=0&amp;byline=0&amp;portrait=0;api=1" width="100%" height="100%"></iframe></div><?php
 			endif;
@@ -304,6 +305,11 @@
 					
 			}
 			
+			if(count($slides) == 1 && $this->oneSlideMode == false){
+				$slides[] = $slides[0];
+				$this->hasOnlyOneSlide = true;
+			}
+			
 			foreach($slides as $index => $slide){
 				$params = $slide->getParams();
 				
@@ -349,6 +355,8 @@
 					$alt = '';
 				}
 				
+				$bgType = $slide->getParam("background_type","image");
+				
 				//get thumb url
 				$htmlThumb = "";
 				if($isThumbsActive == true){
@@ -362,17 +370,18 @@
 						$urlThumb = $slide->getParam("slide_thumb","");
 					}
 					
-
-			
-					if(empty($urlThumb)){	//try to get resized thumb
-						$pathThumb = $slide->getImageFilepath();
-						if(!empty($pathThumb))
-							$urlThumb = UniteBaseClassRev::getImageUrl($pathThumb,$thumbWidth,$thumbHeight,true);
+					if($bgType == 'image'){
+						
+						if(empty($urlThumb)){	//try to get resized thumb
+							$pathThumb = $slide->getImageFilepath();
+							if(!empty($pathThumb))
+								$urlThumb = UniteBaseClassRev::getImageUrl($pathThumb,$thumbWidth,$thumbHeight,true);
+						}
+						
+						//if not - put regular image:
+						if(empty($urlThumb))						
+							$urlThumb = $slide->getImageUrl();
 					}
-					
-					//if not - put regular image:
-					if(empty($urlThumb))						
-						$urlThumb = $slide->getImageUrl();
 					
 					$htmlThumb = 'data-thumb="'.$urlThumb.'" ';
 				}
@@ -460,7 +469,6 @@
 				
 				$htmlParams = $htmlDuration.$htmlLink.$htmlThumb.$htmlDelay.$htmlRotation.$htmlFirstTrans;
 				
-				$bgType = $slide->getParam("background_type","image");
 				
 				$styleImage = "";
 				$urlImageTransparent = UniteBaseClassRev::$url_plugin."images/transparent.png";
@@ -650,7 +658,9 @@
 			$customEndAnimations = RevOperations::getCustomAnimations('customout'); //get all custom animations
 			$startAnimations = RevOperations::getArrAnimations(false); //only get the standard animations
 			$endAnimations = RevOperations::getArrEndAnimations(false); //only get the standard animations			
-						
+			
+			$lazyLoad = $this->slider->getParam("lazy_load","off");
+			
 			if(empty($layers))
 				return(false);
 				
@@ -702,6 +712,14 @@
 					$randomRotate = UniteFunctionsRev::getVal($layer, "random_rotation","false");
 					$randomRotate = UniteFunctionsRev::boolToStr($randomRotate);
 					
+					$splitin = UniteFunctionsRev::getVal($layer, "split","none");
+					$splitout = UniteFunctionsRev::getVal($layer, "endsplit","none");
+					$elementdelay = intval(UniteFunctionsRev::getVal($layer, "splitdelay",0));
+					$endelementdelay = intval(UniteFunctionsRev::getVal($layer, "endsplitdelay",0));
+					
+					if($elementdelay > 0) $elementdelay /= 100;
+					if($endelementdelay > 0) $endelementdelay /= 100;
+					
 					$text = UniteFunctionsRev::getVal($layer, "text");
 					
 					$htmlVideoAutoplay = "";
@@ -724,6 +742,12 @@
 					$title = ($title != '') ? ' title="'.$title.'"' : '';
 					$rel = ($rel != '') ? ' rel="'.$rel.'"' : '';
 					
+					$max_width = UniteFunctionsRev::getVal($layer, "max_width",'auto');
+					$max_height = UniteFunctionsRev::getVal($layer, "max_height",'auto');
+					$white_space = UniteFunctionsRev::getVal($layer, "whitespace",'nowrap');
+						
+					$inline_styles = '';
+					
 					//set html:
 					$html = "";
 					switch($type){
@@ -731,6 +755,7 @@
 						case "text":						
 							$html = $text;
 							$html = do_shortcode($html);
+							$inline_styles .= ' max-width: '.$max_width.'; max-height: '.$max_height.'; white-space: '.$white_space.';';
 						break;
 						case "image":
 							$alt = UniteFunctionsRev::getVal($layer, "alt");
@@ -745,7 +770,14 @@
 								$urlImage = str_replace("http://", "https://", $urlImage);
 							}
 							
-							$html = '<img src="'.$urlImage.'" alt="'.$alt.'"'.$additional.'>';
+							
+							$imageAddParams = "";
+							if($lazyLoad == "on"){
+								$imageAddParams .= " data-lazyload=\"$urlImage\"";
+								$urlImage = UniteBaseClassRev::$url_plugin."images/dummy.png";
+							}
+							
+							$html = '<img src="'.$urlImage.'" alt="'.$alt.'"'.$additional.$imageAddParams.'>';
 							$imageLink = UniteFunctionsRev::getVal($layer, "link","");
 							if(!empty($imageLink)){
 								$openIn = UniteFunctionsRev::getVal($layer, "link_open_in","same");
@@ -802,8 +834,10 @@
 									if(empty($videoArgs))
 										$videoArgs = GlobalsRevSlider::DEFAULT_YOUTUBE_ARGUMENTS;
 									
+									$videoArgs = str_replace('rel=0', '', $videoArgs);
+									$ytBase = 'https://';
 									$videoArgs.=';origin='.$setBase.$_SERVER['SERVER_NAME'].';';
-									$html = "<iframe src='".$setBase."www.youtube.com/embed/".$videoID."?".$videoArgs."' width='".$videoWidth."' height='".$videoHeight."' style='width:".$videoWidth."px;height:".$videoHeight."px;'></iframe>";
+									$html = "<iframe src='".$ytBase."www.youtube.com/embed/".$videoID."?enablejsapi=1&amp;html5=1&amp;".$videoArgs."' width='".$videoWidth."' height='".$videoHeight."' style='width:".$videoWidth."px;height:".$videoHeight."px;'></iframe>";
 								break;
 								case "vimeo":
 									if(empty($videoArgs))
@@ -1020,8 +1054,13 @@
 				echo "			data-speed=\"".$speed."\"\n"; 
 				echo "			data-start=\"".$time."\"\n";
 				echo "			data-easing=\"".$easing."\"\n";
+				echo "			data-splitin=\"".$splitin."\"\n";
+				echo "			data-splitout=\"".$splitout."\"\n";
+				echo "			data-elementdelay=\"".$elementdelay."\"\n";
+				echo "			data-endelementdelay=\"".$endelementdelay."\"\n";
+				
 				if($htmlParams != "") echo "			".$htmlParams;
-				echo "			style=\"z-index: ".$zIndex. "\"";
+				echo "			style=\"z-index: ".$zIndex.";".$inline_styles. "\"";
 				echo ">";
 				echo $html."\n";
 				if($htmlCorners != ""){
@@ -1048,6 +1087,9 @@
 				$optFullScreen = "on";
 			}
 			
+			$use_spinner = $this->slider->getParam("use_spinner","0");
+			$spinner_color = $this->slider->getParam("spinner_color","#FFFFFF");
+			
 			$noConflict = $this->slider->getParam("jquery_noconflict","on");
 			
 			//set thumb amount
@@ -1058,14 +1100,20 @@
 				
 			
 			//get stop slider options
-			 $stopSlider = $this->slider->getParam("stop_slider","off");
-			 $stopAfterLoops = $this->slider->getParam("stop_after_loops","0");
-			 $stopAtSlide = $this->slider->getParam("stop_at_slide","2");
-			 
-			 if($stopSlider == "off"){
-				 $stopAfterLoops = "-1";
-				 $stopAtSlide = "-1";
-			 }
+			$stopSlider = $this->slider->getParam("stop_slider","off");
+			$stopAfterLoops = $this->slider->getParam("stop_after_loops","0");
+			$stopAtSlide = $this->slider->getParam("stop_at_slide","2");
+
+			if($stopSlider == "off"){
+				$stopAfterLoops = "-1";
+				$stopAtSlide = "-1";
+			}
+			
+			$oneSlideLoop = $this->slider->getParam("loop_slide","loop");
+			if($oneSlideLoop == 'noloop' && $this->hasOnlyOneSlide == true){
+				$stopAfterLoops = '0';
+				$stopAtSlide = '1';
+			}
 			
 			// set hide navigation after
 			$hideThumbs = $this->slider->getParam("hide_thumbs","200");
@@ -1174,6 +1222,8 @@
 						fullWidth:"<?php echo $optFullWidth?>",
 						fullScreen:"<?php echo $optFullScreen?>",
 
+						spinner:"spinner<?php echo $use_spinner?>",
+						
 						stopLoop:"<?php echo $stopSlider?>",
 						stopAfterLoops:<?php echo $stopAfterLoops?>,
 						stopAtSlide:<?php echo $stopAtSlide?>,
@@ -1206,7 +1256,27 @@
 				
 			</script>
 			
-			<?php			
+			<?php
+			switch($use_spinner){
+				case '1':
+				case '2':
+					echo '<style type="text/css">'."\n";
+					echo '	#'.$this->sliderHtmlID_wrapper.' .tp-loader.spinner'.$use_spinner.'{ background-color: '.$spinner_color.' !important; }'."\n";
+					echo '</style>'."\n";
+				break;
+				case '3':
+				case '4':
+					echo '<style type="text/css">'."\n";
+					echo '	#'.$this->sliderHtmlID_wrapper.' .tp-loader.spinner'.$use_spinner.' div { background-color: '.$spinner_color.' !important; }'."\n";
+					echo '</style>'."\n";
+				break;
+				case '0':
+				case '5':
+				default:
+				break;
+				
+			}
+			
 		}
 		
 		

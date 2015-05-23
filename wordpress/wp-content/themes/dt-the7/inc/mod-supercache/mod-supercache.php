@@ -21,12 +21,12 @@ function presscore_sc_cachedata_filter( &$cachedata) {
 	$stylesheet = get_template_directory_uri();
 
 	$dynamic_scripts = array(
-		'desktop-tablet' => '<script type=\'text/javascript\' src=\'' . $stylesheet . '/js/new-js/desktop-tablet.js\'></script>',
-		'phone' => '<script type=\'text/javascript\' src=\'' . $stylesheet . '/js/new-js/phone.js\'></script>',
-		'desktop' => '<script type=\'text/javascript\' src=\'' . $stylesheet . '/js/new-js/desktop.js\'></script>',
+		'desktop-tablet' => '<script type=\'text/javascript\' src=\'' . $stylesheet . '/js/desktop-tablet.js\'></script>',
+		'phone' => '<script type=\'text/javascript\' src=\'' . $stylesheet . '/js/phone.js\'></script>',
+		'desktop' => '<script type=\'text/javascript\' src=\'' . $stylesheet . '/js/desktop.js\'></script>',
 	);
 
-	$main = '<script type=\'text/javascript\' src=\'' . $stylesheet . '/js/new-js/main.js\'></script>';
+	$main = '<script type=\'text/javascript\' src=\'' . $stylesheet . '/js/main.js\'></script>';
 
 	$output = '';
 

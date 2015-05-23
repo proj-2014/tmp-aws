@@ -75,7 +75,7 @@ class DT_Shortcode_SmallPhotos extends DT_Shortcode {
 		}
 
 		$attachments_ids = array();
-		
+
 		// get albums
 		$dt_query = $this->get_posts_by_terms( array_merge( $attributes, array( 'number' => -1 ) ) );
 		if ( $dt_query->have_posts() ) {
@@ -88,15 +88,16 @@ class DT_Shortcode_SmallPhotos extends DT_Shortcode {
 			}
 		}
 
+		if ( 'rand' == $attributes['orderby'] ) {
+			shuffle($attachments_ids);
+		}
+
 		// new query to take attachments
 		$attachments_data = presscore_get_attachment_post_data( $attachments_ids, 'post__in', 'DESC', $attributes['number'] );
 
 		$config = Presscore_Config::get_instance();
 		
 		$slider_class = array( 'shortcode-instagram' );
-		if ( 'disabled' == $config->get('sidebar_position') ) {
-			$slider_class[] = 'full';
-		}
 
 		$slider_style = array();
 		if ( $attributes['margin_bottom'] ) {
@@ -136,6 +137,18 @@ class DT_Shortcode_SmallPhotos extends DT_Shortcode {
 		}
 
 		$output = presscore_get_fullwidth_slider_two( $attachments_data, $slider_args );
+
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+
+			$terms_list = presscore_get_terms_list_by_slug( array( 'slugs' => $attributes['category'], 'taxonomy' => 'dt_gallery_category' ) );
+	
+			$output = '
+				<div class="dt_vc-shortcode_dummy dt_vc-photos_scroller" style="height: ' . $slider_args['height'] . 'px;">
+					<h5>Photos scroller</h5>
+					<p class="text-small"><strong>Display categories:</strong> ' . $terms_list . '</p>
+				</div>
+			';
+		}
 
 		return $output; 
 	}

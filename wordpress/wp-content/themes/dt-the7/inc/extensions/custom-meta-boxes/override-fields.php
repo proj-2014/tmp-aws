@@ -24,11 +24,17 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) ) {
 		static function html( $html, $meta, $field ) {
 			$html = '';
 			$tpl = '<label %s>%s<input type="radio" class="rwmb-radio" name="%s" value="%s" %s /> %s</label>';
-			$theme_uri = get_template_directory_uri();
-			$admin_images_uri = $theme_uri . '/inc/admin/assets/images/';
+
+			if ( empty( $field['images_base_dir'] ) ) {
+				$theme_uri = get_template_directory_uri();
+				$admin_images_uri = $theme_uri . '/inc/admin/assets/images/';
+
+			} else {
+				$admin_images_uri = $field['images_base_dir'];
+
+			}
 
 			$hide_fields = !empty($field['hide_fields']) ? (array) $field['hide_fields'] : array();
-//			$hide_meta_boxes = !empty($field['hide_meta_boxes']) ? (array) $field['hide_meta_boxes'] : array();
 
 			foreach ( $field['options'] as $value => $label ) {
 				$class = '';
@@ -42,17 +48,13 @@ if ( ! class_exists( 'RWMB_Radio_Field' ) ) {
 				if ( !empty($hide_fields[ $value ]) ) {
 					$checked .= ' data-hide-fields="' . implode( ',', (array) $hide_fields[ $value ] ) . '"';
 				}
-/*
-				if ( !empty($hide_meta_boxes[ $value ]) ) {
-					$checked .= ' data-hide-meta-boxes="' . implode( ',', (array) $hide_meta_boxes[ $value ] ) . '"';
-				}
-*/
+
 				// radio image
 				if ( is_array($label) ) {
 
-					if( isset($label[1]) && is_array($label[1]) ) {
+					if( !empty($label[1]) && is_array($label[1]) ) {
 						$image_meta = $label[1];
-						
+
 						$image = sprintf(
 							'<img src="%s" class="hide-if-no-js"  style="%s" width="%d" height="%d" /><br />',
 							esc_url($admin_images_uri . 'blank.gif'),

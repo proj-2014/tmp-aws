@@ -28,8 +28,8 @@ $options[] = array(	"name" => _x('Show top bar', 'theme-options', LANGUAGE_ZONE)
 
 	// checkbox
 	$options[] = array(
-		"name"  => '',
-		"desc"  => _x( 'Show top bar', 'theme-options', LANGUAGE_ZONE ),
+		"desc"  => '',
+		"name"  => _x( 'Show top bar', 'theme-options', LANGUAGE_ZONE ),
 		"id"    => 'top_bar-show',
 		"type"  => 'checkbox',
 		'std'   => 1
@@ -38,14 +38,33 @@ $options[] = array(	"name" => _x('Show top bar', 'theme-options', LANGUAGE_ZONE)
 $options[] = array(	"type" => "block_end");
 
 /**
+ * Content alignment.
+ */
+$options[] = array( "name" => _x("Content alignment", "theme-options", LANGUAGE_ZONE), "type" => "block_begin" );
+
+	// radio
+	$options["top_bar-content_alignment"] = array(
+		"name"		=> _x("Content alignment", "theme-options", LANGUAGE_ZONE),
+		"id"		=> "top_bar-content_alignment",
+		"std"		=> "sides",
+		"type"		=> "radio",
+		"options"	=> array(
+			"center" => _x("centre", "theme-options", LANGUAGE_ZONE),
+			"sides" => _x("sides", "theme-options", LANGUAGE_ZONE)
+		)
+	);
+
+$options[] = array( "type" => "block_end" );
+
+/**
  * Top bar background.
  */
 $options[] = array(	"name" => _x('Top bar background', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
 
 	// colorpicker
 	$options[] = array(
-		"name"  => '',
-		"desc"  => _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"  => '',
+		"name"  => _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
 		"id"    => "top_bar-bg_color",
 		"std"   => "#ffffff",
 		"type"  => "color"
@@ -53,8 +72,8 @@ $options[] = array(	"name" => _x('Top bar background', 'theme-options', LANGUAGE
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"      => '',
+		"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "top_bar-bg_opacity",
 		"std"       => 100, 
 		"type"      => "slider",
@@ -66,8 +85,8 @@ $options[] = array(	"name" => _x('Top bar background', 'theme-options', LANGUAGE
 
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'old Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"  => '',
+			"name"  => _x( 'old Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "top_bar-bg_ie_color",
 			"std"   => "#ffffff",
 			"type"  => "color"
@@ -77,7 +96,7 @@ $options[] = array(	"name" => _x('Top bar background', 'theme-options', LANGUAGE
 
 	// background_img
 	$options[] = array(
-		'desc'			=> _x( 'Image uploader', 'theme-options', LANGUAGE_ZONE ),
+		'name'			=> _x( 'Image uploader', 'theme-options', LANGUAGE_ZONE ),
 		'id' 			=> 'top_bar-bg_image',
 		'preset_images' => $backgrounds_top_bar_bg_image,
 		'std' 			=> array(
@@ -98,8 +117,8 @@ $options[] = array(	"name" => _x('Text color', 'theme-options', LANGUAGE_ZONE), 
 
 	// colorpicker
 	$options[] = array(
-		"name"  => '',
-		"desc"  => _x( 'Text Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"  => '',
+		"name"  => _x( 'Text Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"    => "top_bar-text_color",
 		"std"   => "#686868",
 		"type"  => "color"
@@ -108,14 +127,14 @@ $options[] = array(	"name" => _x('Text color', 'theme-options', LANGUAGE_ZONE), 
 $options[] = array(	"type" => "block_end");
 
 /**
- * Lines &amp; dividers.
+ * Line under top bar (only for iOS 7 style).
  */
-$options[] = array(	"name" => _x('Lines &amp; dividers', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
+$options[] = array(	"name" => _x('Line under top bar (only for iOS 7 style)', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "top_bar-dividers_color",
 		"std"	=> "#828282",
 		"type"	=> "color"
@@ -123,8 +142,8 @@ $options[] = array(	"name" => _x('Lines &amp; dividers', 'theme-options', LANGUA
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"      => '',
+		"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "top_bar-dividers_opacity",
 		"std"       => 100, 
 		"type"      => "slider",
@@ -136,8 +155,8 @@ $options[] = array(	"name" => _x('Lines &amp; dividers', 'theme-options', LANGUA
 
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"  => '',
+			"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "top_bar-dividers_ie_color",
 			"std"   => "#828282",
 			"type"  => "color"
@@ -154,8 +173,8 @@ $options[] = array(	"name" => _x('Contact information', 'theme-options', LANGUAG
 
 	// checkbox
 	$options[] = array(
-		"name"  => '',
-		"desc" 	=> _x( 'Show contact information', 'theme-options', LANGUAGE_ZONE ),
+		"desc"  => '',
+		"name" 	=> _x( 'Show contact information', 'theme-options', LANGUAGE_ZONE ),
 		"id"    => 'top_bar-contact_show',
 		"type"  => 'checkbox',
 		'std'   => 1
@@ -165,8 +184,8 @@ $options[] = array(	"name" => _x('Contact information', 'theme-options', LANGUAG
 	foreach( $contact_fields as $field ) {
 
 		$options[] = array(
-			"name"      => '',
-			"desc"      => $field['desc'],
+			"desc"      => '',
+			"name"      => $field['desc'],
 			"id"        => 'top_bar-contact_' . $field['prefix'],
 			"std"       => '',
 			"type"      => 'text',
@@ -184,7 +203,7 @@ $options[] = array(	"name" => _x('Text', 'theme-options', 'presscore'), "type" =
 
 	// textarea
 	$options[] = array(
-		"desc"		=> _x('Text', 'theme-options', 'presscore'),
+		"name"		=> _x('Text', 'theme-options', 'presscore'),
 		"id"		=> "top_bar-text",
 		"std"		=> false,
 		"type"		=> 'textarea'
@@ -199,8 +218,8 @@ $options[] = array(	"name" => _x('Social icons', 'theme-options', 'presscore'), 
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "top_bar-soc_icon_color",
 		"std"	=> "#828282",
 		"type"	=> "color"
@@ -208,7 +227,7 @@ $options[] = array(	"name" => _x('Social icons', 'theme-options', 'presscore'), 
 
 	// radio
 	$options[] = array(
-		"desc"		=> _x('Hover', 'theme-options', LANGUAGE_ZONE),
+		"name"		=> _x('Hover', 'theme-options', LANGUAGE_ZONE),
 		"id"		=> 'top_bar-soc_icon_hover',
 		"std"		=> 'default',
 		"type"		=> 'radio',
@@ -226,7 +245,7 @@ $options[] = array(	"name" => _x('Social icons', 'theme-options', 'presscore'), 
 
 		// colorpicker
 		$options[] = array(
-			"desc" => _x('Hover color', 'theme-options', LANGUAGE_ZONE),
+			"name" => _x('Hover color', 'theme-options', LANGUAGE_ZONE),
 			"id" => "top_bar-soc_icon_hover_color",
 			"std" => "#2a83ed",
 			"type" => "color"
@@ -234,18 +253,43 @@ $options[] = array(	"name" => _x('Social icons', 'theme-options', 'presscore'), 
 
 	$options[] = array( 'type' => 'js_hide_end' );
 
-	foreach ( presscore_get_social_icons_data() as $value=>$title ) {
+	// checkbox
+	$options[] = array(
+		"name"	=> _x( "Show round outlines", "theme-options", LANGUAGE_ZONE ),
+		"id"	=> "top_bar-soc_icon_show_round_outlines",
+		"type"	=> "checkbox",
+		"std"	=> 1
+	);
 
-		// input
-		$options[] = array(
-			"desc"		=> $title,
-			"id"		=> "top_bar-soc_ico_{$value}",
-			"std"		=> '',
-			"type"		=> 'text',
-			"sanitize"	=> 'url'
-		);
+	// divider
+	$options[] = array( "type" => "divider" );
 
-	}
+	// fields_generator
+	$options[] = array(
+		'id'        => 'header-soc_icons',
+		'type'      => 'fields_generator',
+		'std'       => array(
+			array('icon' => 'skype', 'url' => '#')
+		),
+		'options'   => array(
+			'fields' => array(
+				'icon'   => array(
+					'type'          => 'select',
+					'class'         => 'of_fields_gen_title',
+					'description'   => _x( 'Icon', 'theme-options', LANGUAGE_ZONE ),
+					'wrap'          => '<label>%2$s%1$s</label>',
+					'desc_wrap'     => '%2$s',
+					'options'		=> presscore_get_social_icons_data()
+				),
+				'url'   => array(
+					'type'          => 'text',
+					'description'   => _x( 'Url', 'theme-options', LANGUAGE_ZONE ),
+					'wrap'          => '<label>%2$s%1$s</label>',
+					'desc_wrap'     => '%2$s'
+				)
+			)
+		)
+	);
 
 $options[] = array(	"type" => "block_end");
 
@@ -258,7 +302,7 @@ if ( class_exists( 'Woocommerce' ) ) {
 
 		// radio
 		$options[] = array(
-			"desc"		=> _x('Show mini cart in top bar', 'theme-options', LANGUAGE_ZONE),
+			"name"		=> _x('Show mini cart in top bar', 'theme-options', LANGUAGE_ZONE),
 			"id"		=> 'general-woocommerce_show_mini_cart_in_top_bar',
 			"std"		=> '1',
 			"type"  	=> 'checkbox'

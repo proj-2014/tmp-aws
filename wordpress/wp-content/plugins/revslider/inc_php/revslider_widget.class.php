@@ -14,10 +14,11 @@ class RevSlider_Widget extends WP_Widget {
      * the form
      */
     public function form($instance) {
-	
-		$slider = new RevSlider();
-    	$arrSliders = $slider->getArrSlidersShort();
-    	    	
+		try {
+            $slider = new RevSlider();
+            $arrSliders = $slider->getArrSlidersShort();
+        }catch(Exception $e){}            
+          
 		if(empty($arrSliders))
 			echo __("No sliders found, Please create a slider",REVSLIDER_TEXTDOMAIN);
 		else{

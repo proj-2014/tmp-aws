@@ -124,6 +124,9 @@ class DT_Shortcode_Benefits extends DT_Shortcode {
 				$image = $default_image;
 			}
 
+			// ssl support
+			$image = dt_make_image_src_ssl_friendly( $image );
+
 			$image = sprintf( '<img src="%s" alt="" />', $image );
 			$image_classes = array( 'benefits-grid-ico' );
 

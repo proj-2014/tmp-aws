@@ -28,12 +28,16 @@ foreach ( presscore_themeoptions_get_stripes_list() as $suffix=>$stripe ) {
 	 */
 	$options[] = array(	"name" => $stripe['title'], "type" => "block_begin" );
 
+		//*************************************************************************************************
 		// Background
+		//*************************************************************************************************
+
+		// title
+		$options[] = array( "type" => 'title', "name" => _x('Background', 'theme-options', LANGUAGE_ZONE) );
 
 		// colorpicker
 		$options[] = array(
-			"name"	=> _x('Background', 'theme-options', LANGUAGE_ZONE),
-			"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+			"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 			"id"	=> "stripes-stripe_{$suffix}_color",
 			"std"	=> $stripe['bg_color'],
 			"type"	=> "color"
@@ -41,7 +45,7 @@ foreach ( presscore_themeoptions_get_stripes_list() as $suffix=>$stripe ) {
 
 		// slider
 		$options[] = array(
-			"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+			"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 			"id"        => "stripes-stripe_{$suffix}_opacity",
 			"std"       => $stripe['bg_opacity'], 
 			"type"      => "slider",
@@ -53,7 +57,7 @@ foreach ( presscore_themeoptions_get_stripes_list() as $suffix=>$stripe ) {
 
 			// colorpicker
 			$options[] = array(
-				"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+				"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 				"id"    => "stripes-stripe_{$suffix}_ie_color",
 				"std"   => $stripe['bg_color_ie'],
 				"type"  => "color"
@@ -67,12 +71,11 @@ foreach ( presscore_themeoptions_get_stripes_list() as $suffix=>$stripe ) {
 
 			// background_img
 			$options[] = array(
-				'desc' 			=> _x( 'Choose/upload background image', 'theme-options', LANGUAGE_ZONE ),
+				'name' 			=> _x( 'Choose/upload background image', 'theme-options', LANGUAGE_ZONE ),
 				'id' 			=> "stripes-stripe_{$suffix}_bg_image",
 				'std' 			=> $stripe['bg_img'],
 				'type' 			=> 'background_img',
 				'preset_images' => $$bg_array_name,
-				// 'fields'		=> array('repeat', 'position_y'),
 				'fields'		=> array(),
 			);
 
@@ -81,18 +84,25 @@ foreach ( presscore_themeoptions_get_stripes_list() as $suffix=>$stripe ) {
 			// info
 			$options[] = array(
 				"desc"      => 'Array ' . $bg_array_name . ' does not exist. See /inc/admin/options.php.',
-			    "type"  	=> 'info',
+				"type"  	=> 'info',
 			);
 
 		}
 
+		//*************************************************************************************************
 		// Text
+		//*************************************************************************************************
+
+		// divider
+		$options[] = array( "type" => 'divider' );
+
+		// title
+		$options[] = array( "type" => 'title', "name" => _x( 'Text', 'theme-options', LANGUAGE_ZONE ) );
 
 		// colorpicker
 		$options[] = array(
-			"before"	=> '<div class="divider"></div>',
-			"name"	=> _x( 'Text', 'theme-options', LANGUAGE_ZONE ),
-			"desc"	=> _x( 'Headers color', 'theme-options', LANGUAGE_ZONE ),
+			"desc" => '',
+			"name"	=> _x( 'Headers color', 'theme-options', LANGUAGE_ZONE ),
 			"id"	=> "stripes-stripe_{$suffix}_headers_color",
 			"std"	=> $stripe['text_header_color'],
 			"type"	=> "color"
@@ -100,20 +110,27 @@ foreach ( presscore_themeoptions_get_stripes_list() as $suffix=>$stripe ) {
 
 		// colorpicker
 		$options[] = array(
-			"name"	=> '',
-			"desc"	=> _x( 'Text color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"	=> '',
+			"name"	=> _x( 'Text color', 'theme-options', LANGUAGE_ZONE ),
 			"id"	=> "stripes-stripe_{$suffix}_text_color",
 			"std"	=> $stripe['text_color'],
 			"type"	=> "color"
 		);
 
+		//*************************************************************************************************
 		// Divider
+		//*************************************************************************************************
+
+		// divider
+		$options[] = array( "type" => 'divider' );
+
+		// title
+		$options[] = array( "type" => 'title', "name" => _x( 'Dividers &amp; lines', 'theme-options', LANGUAGE_ZONE ) );
 
 		// colorpicker
 		$options[] = array(
-			"before"	=> '<div class="divider"></div>',
-			"name"	=> _x( 'Dividers &amp; lines', 'theme-options', LANGUAGE_ZONE ),
-			"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"	=> '',
+			"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 			"id"	=> "stripes-stripe_{$suffix}_div_color",
 			"std"	=> $stripe['div_color'],
 			"type"	=> "color"
@@ -121,8 +138,8 @@ foreach ( presscore_themeoptions_get_stripes_list() as $suffix=>$stripe ) {
 
 		// slider
 		$options[] = array(
-			"name"      => '',
-			"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+			"desc"      => '',
+			"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 			"id"        => "stripes-stripe_{$suffix}_div_opacity",
 			"std"       => $stripe['div_opacity'], 
 			"type"      => "slider",
@@ -134,8 +151,8 @@ foreach ( presscore_themeoptions_get_stripes_list() as $suffix=>$stripe ) {
 
 			// colorpicker
 			$options[] = array(
-				"name"  => '',
-				"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+				"desc"  => '',
+				"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 				"id"    => "stripes-stripe_{$suffix}_div_ie_color",
 				"std"   => $stripe['div_color_ie'],
 				"type"  => "color"

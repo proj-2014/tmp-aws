@@ -73,7 +73,11 @@ class Presscore_Inc_Widgets_ProgressBars extends WP_Widget {
 				$percent_field = sprintf( $percent_text, $field['percent'] );
 
 				if ( !empty($field['title']) || !empty($field['show_percent']) ) {
-					echo '<div class="skill-name">' . $field['title'] . '<span>' . $percent_field . '</span></div>';
+					printf(
+						'<div class="skill-name">%s%s</div>',
+						$field['title'],
+						empty($field['show_percent']) ? '' : '<span>' . $percent_field . '</span>'
+					);
 				}
 
 				$field['percent'] = absint($field['percent']);
@@ -87,8 +91,7 @@ class Presscore_Inc_Widgets_ProgressBars extends WP_Widget {
 				printf(
 					'<div class="skill"><div class="skill-value" data-width="%d"%s></div></div>',
 					$field['percent'],
-					$style,
-					empty($field['show_percent']) ? '' : '<span>' . $percent_field . '</span>'
+					$style
 				);
 
 			}

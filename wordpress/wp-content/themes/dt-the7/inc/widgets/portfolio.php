@@ -56,7 +56,7 @@ class Presscore_Inc_Widgets_Portfolio extends WP_Widget {
 			'order'             => $instance['order'],
 			'tax_query'         => array( array(
 				'taxonomy'      => 'dt_portfolio_category',
-				'field'         => 'id',
+				'field'         => 'term_id',
 				'terms'         => $instance['cats']
 			) ),
 		);

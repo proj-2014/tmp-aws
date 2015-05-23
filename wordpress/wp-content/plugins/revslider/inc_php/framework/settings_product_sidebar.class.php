@@ -694,11 +694,12 @@
 				}
 					
 				$text = $sap["text"];
+				$icon = $sap["icon"];
 				$text = __($text,REVSLIDER_TEXTDOMAIN);
 				
 				?>
 					<div class="<?php echo $class?>">
-						<h3 <?php echo $h3Class?>>
+						<h3 <?php echo $h3Class?>><i style="float:left;margin-top:4px;font-size:14px;" class="<?php echo $icon?>"></i>
 						
 						<?php if($this->isAccordion == true):?>
 							<div class="postbox-arrow"></div>

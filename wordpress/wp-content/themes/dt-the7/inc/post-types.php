@@ -32,12 +32,10 @@ class Presscore_Inc_Portfolio_Post_Type {
 			'view_item'             => _x('View Item',              'backend portfolio', LANGUAGE_ZONE),
 			'search_items'          => _x('Search Items',           'backend portfolio', LANGUAGE_ZONE),
 			'not_found'             => _x('No items found',         'backend portfolio', LANGUAGE_ZONE),
-			'not_found_in_trash'    => _x('No items found in Trash','backend portfolio', LANGUAGE_ZONE), 
+			'not_found_in_trash'    => _x('No items found in Trash','backend portfolio', LANGUAGE_ZONE),
 			'parent_item_colon'     => '',
 			'menu_name'             => _x('Portfolio', 'backend portfolio', LANGUAGE_ZONE)
 		);
-
-		$img = PRESSCORE_URI . '/admin/assets/images/admin_ico_portfolio.png';
 
 		// options
 		$args = array(
@@ -47,14 +45,17 @@ class Presscore_Inc_Portfolio_Post_Type {
 			'show_ui'               => true,
 			'show_in_menu'          => true, 
 			'query_var'             => true,
+			// @see functions.php : 'presscore_change_dt_potfolio_post_type_args' filter
 			'rewrite'               => array( 'slug' => 'project' ),
 			'capability_type'       => 'post',
 			'has_archive'           => true, 
 			'hierarchical'          => false,
 			'menu_position'         => self::$menu_position,
-			'menu_icon'             => $img,
 			'supports'              => array( 'title', 'editor', 'thumbnail', 'comments', 'excerpt', 'revisions', 'custom-fields' )
 		);
+
+		$args = apply_filters( 'presscore_post_type_' . self::$post_type . '_args', $args );
+
 		register_post_type( self::$post_type, $args );
 		/* post type end */
 
@@ -73,20 +74,20 @@ class Presscore_Inc_Portfolio_Post_Type {
 			'add_new_item'      => _x( 'Add New Category',  'backend portfolio', LANGUAGE_ZONE ),
 			'new_item_name'     => _x( 'New Category Name', 'backend portfolio', LANGUAGE_ZONE ),
 			'menu_name'         => _x( 'Categories',        'backend portfolio', LANGUAGE_ZONE )
-		); 	
-
-		register_taxonomy(
-			self::$taxonomy,
-			array( self::$post_type ),
-			array(
-				'hierarchical'          => true,
-				'public'                => true,
-				'labels'                => $labels,
-				'show_ui'               => true,
-				'rewrite'               => array('slug' => 'project-category'),
-				'show_admin_column'		=> true,
-			)
 		);
+
+		$taxonomy_args = array(
+			'hierarchical'          => true,
+			'public'                => true,
+			'labels'                => $labels,
+			'show_ui'               => true,
+			'rewrite'               => array('slug' => 'project-category'),
+			'show_admin_column'		=> true,
+		);
+
+		$taxonomy_args = apply_filters( 'presscore_taxonomy_' . self::$taxonomy . '_args', $taxonomy_args );
+
+		register_taxonomy( self::$taxonomy, array( self::$post_type ), $taxonomy_args );
 		/* taxonomy end */
 
 		add_action( 'wp_ajax_nopriv_portfolio_masonry_ajax', array( __CLASS__, 'get_masonry_content' ) );
@@ -206,7 +207,7 @@ class Presscore_Inc_Portfolio_Post_Type {
 
 					$page_args['tax_query'] = array( array(
 						'taxonomy'	=> 'dt_portfolio_category',
-						'field'		=> 'id',
+						'field'		=> 'term_id',
 						'terms'		=> array_values($display['terms_ids']),
 						'operator'	=> 'IN',
 					) );
@@ -238,7 +239,7 @@ class Presscore_Inc_Portfolio_Post_Type {
 
 					$page_args['tax_query'] = array( array(
 						'taxonomy'	=> 'dt_portfolio_category',
-						'field'		=> 'id',
+						'field'		=> 'term_id',
 						'terms'		=> array_values($request_display['terms_ids']),
 						'operator'	=> 'IN',
 					) );
@@ -282,7 +283,7 @@ class Presscore_Inc_Portfolio_Post_Type {
 			$load_style = $config->get('load_style');
 
 			// pagination style
-			if ( 'ajax_more' == $load_style ) {
+			if ( presscore_is_load_more_pagination() ) {
 				$pagination = dt_get_next_page_button( $page_query->max_num_pages, 'paginator paginator-more-button with-ajax' );
 
 				if ( $pagination ) {
@@ -308,7 +309,7 @@ class Presscore_Inc_Portfolio_Post_Type {
 			}
 
 			$responce['itemsToDelete'] = array_values($loaded_items);
-			$responce['query'] = $page_query->query;
+			// $responce['query'] = $page_query->query;
 			$responce['order'] = $page_query->query['order'];
 			$responce['orderby'] = $page_query->query['orderby'];
 
@@ -353,8 +354,6 @@ class Presscore_Inc_Testimonials_Post_Type {
 			'menu_name'             => _x('Testimonials', 'backend testimonials', LANGUAGE_ZONE)
 		);
 
-		$img = PRESSCORE_URI . '/admin/assets/images/admin_ico_testimonials.png';
-
 		// options
 		$args = array(
 			'labels'                => $labels,
@@ -368,9 +367,11 @@ class Presscore_Inc_Testimonials_Post_Type {
 			'has_archive'           => false, 
 			'hierarchical'          => false,
 			'menu_position'         => self::$menu_position,
-			'menu_icon'             => $img,
 			'supports'              => array( 'title', 'editor', 'thumbnail' )
 		);
+
+		$args = apply_filters( 'presscore_post_type_' . self::$post_type . '_args', $args );
+
 		register_post_type( self::$post_type, $args );
 		/* post type end */
 
@@ -389,20 +390,20 @@ class Presscore_Inc_Testimonials_Post_Type {
 			'add_new_item'      => _x( 'Add New Category',  'backend testimonials', LANGUAGE_ZONE ),
 			'new_item_name'     => _x( 'New Category Name', 'backend testimonials', LANGUAGE_ZONE ),
 			'menu_name'         => _x( 'Categories',        'backend testimonials', LANGUAGE_ZONE )
-		); 	
-
-		register_taxonomy(
-			self::$taxonomy,
-			array( self::$post_type ),
-			array(
-				'hierarchical'          => true,
-				'public'                => true,
-				'labels'                => $labels,
-				'show_ui'               => true,
-				'rewrite'               => true,
-				'show_admin_column'		=> true,
-			)
 		);
+
+		$taxonomy_args = array(
+			'hierarchical'          => true,
+			'public'                => true,
+			'labels'                => $labels,
+			'show_ui'               => true,
+			'rewrite'               => true,
+			'show_admin_column'		=> true,
+		);
+
+		$taxonomy_args = apply_filters( 'presscore_taxonomy_' . self::$taxonomy . '_args', $taxonomy_args );
+
+		register_taxonomy( self::$taxonomy, array( self::$post_type ), $taxonomy_args );
 		/* taxonomy end */
 	}
 
@@ -461,7 +462,7 @@ class Presscore_Inc_Testimonials_Post_Type {
 		}
 
 		// get title
-		$title = get_the_title( $post_id );
+		$title = get_the_title();
 		if ( $title ) {
 
 			if ( $link ) {
@@ -509,7 +510,7 @@ class Presscore_Inc_Testimonials_Post_Type {
 
 			$query_args['tax_query'] = array( array(
 				'taxonomy'	=> self::$taxonomy,
-				'field'		=> 'id',
+				'field'		=> 'term_id',
 				'terms'		=> array_values($display['terms_ids']),
 			) );
 
@@ -559,8 +560,6 @@ class Presscore_Inc_Team_Post_Type {
 			'menu_name'             => _x('Team', 'backend team', LANGUAGE_ZONE)
 		);
 
-		$img = PRESSCORE_URI . '/admin/assets/images/admin_ico_team.png';
-
 		// options
 		$args = array(
 			'labels'                => $labels,
@@ -574,9 +573,11 @@ class Presscore_Inc_Team_Post_Type {
 			'has_archive'           => true, 
 			'hierarchical'          => false,
 			'menu_position'         => self::$menu_position,
-			'menu_icon'             => $img,
 			'supports'              => array( 'title', 'editor', 'thumbnail' )
 		);
+
+		$args = apply_filters( 'presscore_post_type_' . self::$post_type . '_args', $args );
+
 		register_post_type( self::$post_type, $args );
 		/* post type end */
 
@@ -595,20 +596,20 @@ class Presscore_Inc_Team_Post_Type {
 			'add_new_item'      => _x( 'Add New Category',  'backend team', LANGUAGE_ZONE ),
 			'new_item_name'     => _x( 'New Category Name', 'backend team', LANGUAGE_ZONE ),
 			'menu_name'         => _x( 'Categories',        'backend team', LANGUAGE_ZONE )
-		); 	
-
-		register_taxonomy(
-			self::$taxonomy,
-			array( self::$post_type ),
-			array(
-				'hierarchical'          => true,
-				'public'                => true,
-				'labels'                => $labels,
-				'show_ui'               => true,
-				'rewrite'               => true,
-				'show_admin_column'		=> true,
-			)
 		);
+
+		$taxonomy_args = array(
+			'hierarchical'          => true,
+			'public'                => true,
+			'labels'                => $labels,
+			'show_ui'               => true,
+			'rewrite'               => true,
+			'show_admin_column'		=> true,
+		);
+
+		$taxonomy_args = apply_filters( 'presscore_taxonomy_' . self::$taxonomy . '_args', $taxonomy_args );
+
+		register_taxonomy( self::$taxonomy, array( self::$post_type ), $taxonomy_args );
 		/* taxonomy end */
 	}
 
@@ -723,7 +724,7 @@ class Presscore_Inc_Team_Post_Type {
 
 			$query_args['tax_query'] = array( array(
 				'taxonomy'	=> self::$taxonomy,
-				'field'		=> 'id',
+				'field'		=> 'term_id',
 				'terms'		=> array_values( $display['terms_ids'] ),
 			) );
 
@@ -773,8 +774,6 @@ class Presscore_Inc_Logos_Post_Type {
 			'menu_name'             => _x('Partners, Clients, etc.', 	'backend logos', LANGUAGE_ZONE)
 		);
 
-		$img = PRESSCORE_URI . '/admin/assets/images/admin_ico_clients.png';
-
 		// options
 		$args = array(
 			'labels'                => $labels,
@@ -788,9 +787,11 @@ class Presscore_Inc_Logos_Post_Type {
 			'has_archive'           => true, 
 			'hierarchical'          => false,
 			'menu_position'         => self::$menu_position,
-			'menu_icon'             => $img,
 			'supports'              => array( 'title', 'thumbnail' )
 		);
+
+		$args = apply_filters( 'presscore_post_type_' . self::$post_type . '_args', $args );
+
 		register_post_type( self::$post_type, $args );
 		/* post type end */
 
@@ -811,18 +812,18 @@ class Presscore_Inc_Logos_Post_Type {
 			'menu_name'         => _x( 'Categories',        'backend partners', LANGUAGE_ZONE )
 		);
 
-		register_taxonomy(
-			self::$taxonomy,
-			array( self::$post_type ),
-			array(
-				'hierarchical'          => true,
-				'public'                => true,
-				'labels'                => $labels,
-				'show_ui'               => true,
-				'rewrite'               => true,
-				'show_admin_column'		=> true,
-			)
+		$taxonomy_args = array(
+			'hierarchical'          => true,
+			'public'                => true,
+			'labels'                => $labels,
+			'show_ui'               => true,
+			'rewrite'               => true,
+			'show_admin_column'		=> true,
 		);
+
+		$taxonomy_args = apply_filters( 'presscore_taxonomy_' . self::$taxonomy . '_args', $taxonomy_args );
+
+		register_taxonomy( self::$taxonomy, array( self::$post_type ), $taxonomy_args );
 		/* taxonomy end */
 	}
 }
@@ -858,8 +859,6 @@ if ( !class_exists('Presscore_Inc_Benefits_Post_Type') ):
 				'menu_name'             => _x('Benefits',					'backend benefits', LANGUAGE_ZONE)
 			);
 
-			$img = PRESSCORE_URI . '/admin/assets/images/admin_ico_benefits.png';
-
 			// options
 			$args = array(
 				'labels'                => $labels,
@@ -873,10 +872,12 @@ if ( !class_exists('Presscore_Inc_Benefits_Post_Type') ):
 				'has_archive'           => true,
 				'hierarchical'          => false,
 				'menu_position'         => self::$menu_position,
-				'menu_icon'             => $img,
 				'exclude_from_search'	=> true,
 				'supports'              => array( 'title', 'thumbnail', 'editor' )
 			);
+
+			$args = apply_filters( 'presscore_post_type_' . self::$post_type . '_args', $args );
+
 			register_post_type( self::$post_type, $args );
 			/* post type end */
 
@@ -897,18 +898,18 @@ if ( !class_exists('Presscore_Inc_Benefits_Post_Type') ):
 				'menu_name'         => _x( 'Categories',        'backend partners', LANGUAGE_ZONE )
 			);
 
-			register_taxonomy(
-				self::$taxonomy,
-				array( self::$post_type ),
-				array(
-					'hierarchical'          => true,
-					'public'                => true,
-					'labels'                => $labels,
-					'show_ui'               => true,
-					'rewrite'               => true,
-					'show_admin_column'		=> true,
-				)
+			$taxonomy_args = array(
+				'hierarchical'          => true,
+				'public'                => true,
+				'labels'                => $labels,
+				'show_ui'               => true,
+				'rewrite'               => true,
+				'show_admin_column'		=> true,
 			);
+
+			$taxonomy_args = apply_filters( 'presscore_taxonomy_' . self::$taxonomy . '_args', $taxonomy_args );
+
+			register_taxonomy( self::$taxonomy, array( self::$post_type ), $taxonomy_args );
 			/* taxonomy end */
 		}
 	}
@@ -944,8 +945,6 @@ class Presscore_Inc_Albums_Post_Type {
 			'menu_name'             => _x('Photo Albums', 'backend albums', LANGUAGE_ZONE)
 		);
 
-		$img = PRESSCORE_URI . '/admin/assets/images/admin_ico_gallery.png';
-
 		// options
 		$args = array(
 			'labels'                => $labels,
@@ -959,10 +958,12 @@ class Presscore_Inc_Albums_Post_Type {
 			'has_archive'           => true, 
 			'hierarchical'          => false,
 			'menu_position'         => self::$menu_position,
-			'menu_icon'             => $img,
 			// 'exclude_from_search'	=> true,
 			'supports'              => array( 'title', 'thumbnail', 'excerpt' )
 		);
+
+		$args = apply_filters( 'presscore_post_type_' . self::$post_type . '_args', $args );
+
 		register_post_type( self::$post_type, $args );
 		/* post type end */
 
@@ -983,18 +984,18 @@ class Presscore_Inc_Albums_Post_Type {
 			'menu_name'         => _x( 'Categories',            'backend albums', LANGUAGE_ZONE )
 		);
 
-		register_taxonomy(
-			self::$taxonomy,
-			array( self::$post_type ),
-			array(
-				'hierarchical'          => true,
-				'public'                => true,
-				'labels'                => $labels,
-				'show_ui'               => true,
-				'rewrite'               => true,
-				'show_admin_column'		=> true,
-			)
+		$taxonomy_args = array(
+			'hierarchical'          => true,
+			'public'                => true,
+			'labels'                => $labels,
+			'show_ui'               => true,
+			'rewrite'               => true,
+			'show_admin_column'		=> true,
 		);
+
+		$taxonomy_args = apply_filters( 'presscore_taxonomy_' . self::$taxonomy . '_args', $taxonomy_args );
+
+		register_taxonomy( self::$taxonomy, array( self::$post_type ), $taxonomy_args );
 		/* taxonomy end */
 
 	}
@@ -1039,7 +1040,7 @@ class Presscore_Inc_Albums_Post_Type {
 
 				$query_args['tax_query'] = array( array(
 					'taxonomy'	=> self::$taxonomy,
-					'field'	 => 'id',
+					'field'	 => 'term_id',
 					'terms'	 => array_values($display['terms_ids']),
 					'operator'	=> 'IN',
 				) );
@@ -1083,7 +1084,7 @@ class Presscore_Inc_Albums_Post_Type {
 
 			$query_args['tax_query'] = array( array(
 				'taxonomy'	=> self::$taxonomy,
-				'field'		=> 'id',
+				'field'		=> 'term_id',
 				'terms'		=> array_values($request_display['terms_ids']),
 				'operator'	=> 'IN',
 			) );
@@ -1134,7 +1135,7 @@ class Presscore_Inc_Albums_Post_Type {
 
 				$page_args['tax_query'] = array( array(
 					'taxonomy'	=> self::$taxonomy,
-					'field'	 => 'id',
+					'field'	 => 'term_id',
 					'terms'	 => array_values($display['terms_ids']),
 					'operator'	=> 'IN',
 				) );
@@ -1314,7 +1315,7 @@ class Presscore_Inc_Albums_Post_Type {
 			$load_style = $config->get('load_style');
 
 			// pagination style
-			if ( 'ajax_more' == $load_style ) {
+			if ( presscore_is_load_more_pagination() ) {
 				$pagination = dt_get_next_page_button( $page_query->max_num_pages, 'paginator paginator-more-button with-ajax' );
 
 				if ( $pagination ) {
@@ -1340,7 +1341,7 @@ class Presscore_Inc_Albums_Post_Type {
 			}
 
 			$responce['itemsToDelete'] = array_values($loaded_items);
-			$responce['query'] = $page_query->query;
+			// $responce['query'] = $page_query->query;
 			$responce['order'] = $page_query->query['order'];
 			$responce['orderby'] = $page_query->query['orderby'];
 
@@ -1460,7 +1461,7 @@ class Presscore_Inc_Albums_Post_Type {
 			$load_style = $config->get('load_style');
 
 			// pagination style
-			if ( 'ajax_more' == $load_style ) {
+			if ( presscore_is_load_more_pagination() ) {
 				$pagination = dt_get_next_page_button( $page_query->max_num_pages, 'paginator paginator-more-button with-ajax' );
 
 				if ( $pagination ) {
@@ -1486,7 +1487,7 @@ class Presscore_Inc_Albums_Post_Type {
 			}
 
 			$responce['itemsToDelete'] = array_values($loaded_items);
-			$responce['query'] = $page_query->query;
+			// $responce['query'] = $page_query->query;
 			$responce['order'] = $config->get('order');
 			$responce['orderby'] = $config->get('orderby');
 
@@ -1538,8 +1539,6 @@ class Presscore_Inc_Slideshow_Post_Type {
 			'menu_name'             => _x('Slideshows', 'backend albums', LANGUAGE_ZONE)
 		);
 
-		$img = PRESSCORE_URI . '/admin/assets/images/admin_ico_slides.png';
-
 		// options
 		$args = array(
 			'labels'                => $labels,
@@ -1553,9 +1552,11 @@ class Presscore_Inc_Slideshow_Post_Type {
 			'has_archive'           => true, 
 			'hierarchical'          => false,
 			'menu_position'         => self::$menu_position,
-			'menu_icon'             => $img,
 			'supports'              => array( 'title', 'thumbnail' )
 		);
+
+		$args = apply_filters( 'presscore_post_type_' . self::$post_type . '_args', $args );
+
 		register_post_type( self::$post_type, $args );
 		/* post type end */
 	}
@@ -1612,11 +1613,25 @@ class Presscore_Inc_Slideshow_Post_Type {
 
 endif;
 
-// init post types
-add_action( 'init', array('Presscore_Inc_Portfolio_Post_Type', 'register'), 15 );
-add_action( 'init', array('Presscore_Inc_Testimonials_Post_Type', 'register'), 15 );
-add_action( 'init', array('Presscore_Inc_Team_Post_Type', 'register'), 15 );
-add_action( 'init', array('Presscore_Inc_Logos_Post_Type', 'register'), 15 );
-add_action( 'init', array('Presscore_Inc_Benefits_Post_Type', 'register'), 15 );
-add_action( 'init', array('Presscore_Inc_Albums_Post_Type', 'register'), 15 );
-add_action( 'init', array('Presscore_Inc_Slideshow_Post_Type', 'register'), 15 );
+
+/////////////////////////
+// Register post types //
+/////////////////////////
+
+if ( ! function_exists( 'presscore_register_post_types' ) ) :
+
+	function presscore_register_post_types() {
+
+		Presscore_Inc_Portfolio_Post_Type::register();
+		Presscore_Inc_Testimonials_Post_Type::register();
+		Presscore_Inc_Team_Post_Type::register();
+		Presscore_Inc_Logos_Post_Type::register();
+		Presscore_Inc_Benefits_Post_Type::register();
+		Presscore_Inc_Albums_Post_Type::register();
+		Presscore_Inc_Slideshow_Post_Type::register();
+
+	}
+
+endif;
+
+add_action( 'init', 'presscore_register_post_types', 10 );

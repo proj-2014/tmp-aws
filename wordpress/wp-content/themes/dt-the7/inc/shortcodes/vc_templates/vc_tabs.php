@@ -34,7 +34,7 @@ foreach ( $tab_titles as $tab ) {
 }
 $tabs_nav .= '</ul>'."\n";
 
-$css_class =  apply_filters(VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, trim($element.' wpb_content_element '.$el_class), $this->settings['base']);
+$css_class =  apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, trim($element.' wpb_content_element '.$el_class), $this->settings['base'], $atts );
 
 $output .= "\n\t".'<div class="'.$css_class.' '.$style.'" data-interval="'.$interval.'">';
 $output .= "\n\t\t".'<div class="wpb_wrapper wpb_tour_tabs_wrapper ui-tabs clearfix">';

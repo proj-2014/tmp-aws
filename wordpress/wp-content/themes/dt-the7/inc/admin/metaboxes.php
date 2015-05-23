@@ -6,6 +6,26 @@
 // File Security Check
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+/**
+ * Get advanced settings open block.
+ *
+ * @return string.
+ */
+function presscore_meta_boxes_advanced_settings_tpl( $id = 'dt-advanced' ) {
+	return sprintf(
+		'<div class="hide-if-no-js"><div class="dt_hr"></div><p><a href="#advanced-options" class="dt_advanced">
+				<input type="hidden" name="%1$s" data-name="%1$s" value="hide" />
+				<span class="dt_advanced-show">%2$s</span>
+				<span class="dt_advanced-hide">%3$s</span> 
+				%4$s
+			</a></p></div><div class="%1$s dt_container hide-if-js"><div class="dt_hr"></div>',
+		esc_attr(''.$id),
+		_x('+ Show', 'backend metabox', LANGUAGE_ZONE),
+		_x('- Hide', 'backend metabox', LANGUAGE_ZONE),
+		_x('advanced settings', 'backend metabox', LANGUAGE_ZONE)
+	);
+}
+
 // define global metaboxes array
 global $DT_META_BOXES;
 $DT_META_BOXES = array();
@@ -61,9 +81,10 @@ $position_y_options = array(
 );
 
 $load_style_options = array(
-	'ajax_pagination'	=> _x('Pagination & filter with AJAX', 'backend metabox', LANGUAGE_ZONE),
-	'ajax_more'			=> _x('"Load more" button & filter with AJAX', 'backend metabox', LANGUAGE_ZONE),
-	'default'			=> _x('Standard (no AJAX)', 'backend metabox', LANGUAGE_ZONE)
+	'ajax_pagination'	=> _x( 'AJAX Pagination', 'backend metabox', LANGUAGE_ZONE ),
+	'ajax_more'			=> _x( '"Load more" button', 'backend metabox', LANGUAGE_ZONE ),
+	'lazy_loading'		=> _x( 'Lazy loading', 'backend metabox', LANGUAGE_ZONE ),
+	'default'			=> _x( 'Standard (no AJAX)', 'backend metabox', LANGUAGE_ZONE )
 );
 
 $proportions = presscore_meta_boxes_get_images_proportions();
@@ -657,106 +678,4 @@ $metaboxes = array(
 
 foreach ( $metaboxes as $metabox ) {
 	require_once( PRESSCORE_ADMIN_DIR . '/' . $metabox );
-}
-
-/**
- * Register meta boxes
- *
- * @return void
- */
-function presscore_register_meta_boxes() {
-	// Make sure there's no errors when the plugin is deactivated or during upgrade
-	if ( !class_exists( 'RW_Meta_Box' ) ) {
-		return;
-	}
-
-	global $DT_META_BOXES;
-	foreach ( $DT_META_BOXES as $meta_box ) {
-		new RW_Meta_Box( $meta_box );
-	}
-}
-add_action( 'admin_init', 'presscore_register_meta_boxes' );
-
-/**
- * Localize meta boxes
- *
- * @return void
- */
-function presscore_localize_meta_boxes() {
-	global $DT_META_BOXES;
-
-	$localized_meta_boxes = array();
-
-	foreach ( $DT_META_BOXES as $meta_box ) {
-		$localized_meta_boxes[ $meta_box['id'] ] = isset($meta_box['only_on'], $meta_box['only_on']['template']) ? (array) $meta_box['only_on']['template'] : array(); 
-	}
-	wp_localize_script( 'dt-mb-switcher', 'dtMetaboxes', $localized_meta_boxes );
-}
-add_action( 'admin_enqueue_scripts', 'presscore_localize_meta_boxes', 15 );
-
-/**
- * Define default meta boxes for templates.
- *
- * @return array.
- */
-function presscore_hidden_meta_boxes( $hidden, $screen, $use_defaults ) {
-	static $extra_hidden = null;
-
-	// return saved result
-	if ( null !== $extra_hidden ) return $extra_hidden;
-
-	global $DT_META_BOXES;
-	$template = dt_get_template_name();
-	$meta_boxes = array();
-
-	foreach ( $DT_META_BOXES as $meta_box ) {
-
-		// if field 'only_on' is empty - show metabox everywhere
-		// if current template in templates list - show metabox
-		if ( 
-			empty($meta_box['only_on']) ||
-			empty($meta_box['only_on']['template']) ||
-			in_array($template, (array) $meta_box['only_on']['template'] )
-		) {
-
-			// find metabox id in hidden list
-			$bad_key = array_search( $meta_box['id'], $hidden );
-
-			// show current metabox
-			if ( false !== $bad_key ) { unset($hidden[ $bad_key ]); }
-
-			continue;
-		}
-
-		$meta_boxes[] = $meta_box['id'];
-	}
-
-	// save result
-	$extra_hidden = $hidden;
-	if( !empty($meta_boxes) ) {
-		$extra_hidden = array_unique( array_merge($hidden, $meta_boxes) );
-	}
-
-	return $extra_hidden;
-}
-add_filter('hidden_meta_boxes', 'presscore_hidden_meta_boxes', 99, 3);
-
-/**
- * Get advanced settings open block.
- *
- * @return string.
- */
-function presscore_meta_boxes_advanced_settings_tpl( $id = 'dt-advanced' ) {
-	return sprintf(
-		'<div class="hide-if-no-js"><div class="dt_hr"></div><p><a href="#advanced-options" class="dt_advanced">
-				<input type="hidden" name="%1$s" data-name="%1$s" value="hide" />
-				<span class="dt_advanced-show">%2$s</span>
-				<span class="dt_advanced-hide">%3$s</span> 
-				%4$s
-			</a></p></div><div class="%1$s dt_container hide-if-js"><div class="dt_hr"></div>',
-		esc_attr(''.$id),
-		_x('+ Show', 'backend metabox', LANGUAGE_ZONE),
-		_x('- Hide', 'backend metabox', LANGUAGE_ZONE),
-		_x('advanced settings', 'backend metabox', LANGUAGE_ZONE)
-	);
 }

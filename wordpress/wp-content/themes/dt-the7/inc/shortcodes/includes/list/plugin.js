@@ -28,7 +28,7 @@
 						m.add({
 							title : 'list',
 							onclick : function() {
-								
+
 								/**********************************/
 								// Edit shortcode here!
 								/**********************************/
@@ -38,6 +38,7 @@
 									attr_str = attr.join(' '),
 									main_attr = [
 										'style="1"',
+										'bullet_position="middle"',
 										'dividers="true"'
 									],
 									main_attr_str = main_attr.join(' '),

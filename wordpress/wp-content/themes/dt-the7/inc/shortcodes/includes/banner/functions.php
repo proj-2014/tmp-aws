@@ -53,7 +53,7 @@ class DT_Shortcode_Banner extends DT_Shortcode {
         
         $attributes['animation'] = in_array( $attributes['animation'], array('none', 'scale', 'fade', 'left', 'right', 'bottom', 'top') ) ?  $attributes['animation'] : $default_atts['animation'];
 
-        $attributes['bg_image'] = esc_url($attributes['bg_image']);
+        $attributes['bg_image'] = dt_make_image_src_ssl_friendly( esc_url( $attributes['bg_image'] ) );
         $attributes['bg_color'] = apply_filters( 'of_sanitize_color', $attributes['bg_color'] );
         
         $attributes['bg_opacity'] = absint($attributes['bg_opacity']);

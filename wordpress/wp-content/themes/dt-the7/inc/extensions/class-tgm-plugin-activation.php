@@ -167,7 +167,8 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 				'oops'                            => __( 'Something went wrong.', $this->domain ),
 				'notice_can_install_required'     => _n_noop( 'This theme requires the following plugin: %1$s.', 'This theme requires the following plugins: %1$s.' ),
 				'notice_can_install_recommended'  => _n_noop( 'This theme recommends the following plugin: %1$s.', 'This theme recommends the following plugins: %1$s.' ),
-				'notice_cannot_install'           => _n_noop( 'Sorry, but you do not have the correct permissions to install the %s plugin. Contact the administrator of this site for help on getting the plugin installed.', 'Sorry, but you do not have the correct permissions to install the %s plugins. Contact the administrator of this site for help on getting the plugins installed.' ),
+				// 'notice_cannot_install'           => _n_noop( 'Sorry, but you do not have the correct permissions to install the %s plugin. Contact the administrator of this site for help on getting the plugin installed.', 'Sorry, but you do not have the correct permissions to install the %s plugins. Contact the administrator of this site for help on getting the plugins installed.' ),
+				'notice_cannot_install'           => '1',
 				'notice_can_activate_required'    => _n_noop( 'The following required plugin is currently inactive: %1$s.', 'The following required plugins are currently inactive: %1$s.' ),
 				'notice_can_activate_recommended' => _n_noop( 'The following recommended plugin is currently inactive: %1$s.', 'The following recommended plugins are currently inactive: %1$s.' ),
 				'notice_cannot_activate'          => _n_noop( 'Sorry, but you do not have the correct permissions to activate the %s plugin. Contact the administrator of this site for help on getting the plugin activated.', 'Sorry, but you do not have the correct permissions to activate the %s plugins. Contact the administrator of this site for help on getting the plugins activated.' ),
@@ -617,10 +618,6 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 						else
 							$message['notice_can_install_recommended'][] = $plugin['name'];
 					}
-					/** Need higher privileges to install the plugin */
-					else {
-						$message['notice_cannot_install'][] = $plugin['name'];
-					}
 				}
 				/** Installed but not active */
 				elseif ( is_plugin_inactive( $plugin['file_path'] ) ) {
@@ -633,10 +630,6 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 						else {
 							$message['notice_can_activate_recommended'][] = $plugin['name'];
 						}
-					}
-					/** Need higher privileges to activate the plugin */
-					else {
-						$message['notice_cannot_activate'][] = $plugin['name'];
 					}
 				}
 			}
@@ -1355,8 +1348,6 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 					$plugins = array();
 
 				$a = 0; // Incremental variable
-
-				// var_dump( $plugins );
 
 				/** Grab information from $_POST if available */
 				if ( isset( $_POST[sanitize_key( 'plugin' )] ) ) {

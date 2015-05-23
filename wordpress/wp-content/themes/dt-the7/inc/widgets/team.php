@@ -57,7 +57,7 @@ class Presscore_Inc_Widgets_Team extends WP_Widget {
 			'order'             => $instance['order'],
 			'tax_query'         => array( array(
 				'taxonomy'      => 'dt_team_category',
-				'field'         => 'id',
+				'field'         => 'term_id',
 				'terms'         => $instance['cats']
 			) ),
 		);

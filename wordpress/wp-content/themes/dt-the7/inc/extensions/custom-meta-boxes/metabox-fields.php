@@ -195,7 +195,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_MK2_Field' ) )
 
 			update_post_meta( $post_id, $field_id, $items );
 
-			RW_Meta_Box::ajax_response( __( 'Order saved', 'rwmb' ), 'success' );
+			RW_Meta_Box::ajax_response( __( 'Order saved', LANGUAGE_ZONE ), 'success' );
 			exit;
 		}
 
@@ -232,7 +232,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_MK2_Field' ) )
 			if ( $ok )
 				RW_Meta_Box::ajax_response( '', 'success' );
 			else
-				RW_Meta_Box::ajax_response( __( 'Error: Cannot delete file', 'rwmb' ), 'error' );
+				RW_Meta_Box::ajax_response( __( 'Error: Cannot delete file', LANGUAGE_ZONE ), 'error' );
 			exit;
 		}
 
@@ -247,7 +247,7 @@ if ( ! class_exists( 'RWMB_Image_Advanced_MK2_Field' ) )
 		 */
 		static function html( $html, $meta, $field )
 		{
-			$i18n_title = apply_filters( 'rwmb_image_advanced_select_string', _x( 'Select or Upload Images', 'image upload', 'rwmb' ), $field );
+			$i18n_title = apply_filters( 'rwmb_image_advanced_select_string', _x( 'Select or Upload Images', 'image upload', LANGUAGE_ZONE ), $field );
 			$attach_nonce = wp_create_nonce( "rwmb-attach-media_{$field['id']}" );
 
 			// Uploaded images
@@ -381,8 +381,8 @@ if ( ! class_exists( 'RWMB_Image_Advanced_MK2_Field' ) )
 		 */
 		static function img_html( $image )
 		{
-			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', 'rwmb' ) );
-			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', 'rwmb' ) );
+			$i18n_delete = apply_filters( 'rwmb_image_delete_string', _x( 'Delete', 'image upload', LANGUAGE_ZONE ) );
+			$i18n_edit   = apply_filters( 'rwmb_image_edit_string', _x( 'Edit', 'image upload', LANGUAGE_ZONE ) );
 			$li = '
 				<li id="item_%s">
 					<img src="%s" />
@@ -1108,7 +1108,12 @@ function presscore_meta_box_classes( $begin, $field, $meta ) {
 	}
 
 	if ( !empty($field['top_divider']) ) {
-		$begin = '<div class="dt_hr"></div>' . $begin;
+		$begin = '<div class="dt_hr dt_hr-top"></div>' . $begin;
+	}
+
+	// divider
+	if ( !empty( $field['divider'] ) && in_array( $field['divider'], array( 'top', 'top_and_bottom' ) ) ) {
+		$begin = '<div class="dt_hr dt_hr-top"></div>' . $begin;
 	}
 
 	return str_replace('class="rwmb-input', 'class="rwmb-input ' . implode(' ', $classes), $begin);
@@ -1120,10 +1125,54 @@ add_filter('rwmb_begin_html', 'presscore_meta_box_classes', 10, 3);
  */
 function presscore_meta_box_classes_end_html( $end, $field, $meta ) {
 	
+	// divider
+	if ( !empty( $field['divider'] ) && in_array( $field['divider'], array( 'bottom', 'top_and_bottom' ) ) ) {
+		$end .= '<div class="dt_hr dt_hr-bottom"></div>';
+	}
+
 	if ( !empty($field['bottom_divider']) ) {
-		$end .= '<div class="dt_hr"></div>';
+		$end .= '<div class="dt_hr dt_hr-bottom"></div>';
 	}
 
 	return $end;
 }
 add_filter('rwmb_end_html', 'presscore_meta_box_classes_end_html', 10, 3);
+
+
+function presscore_meta_box_before_html( $before_html, $field ) {
+	static $saved_show_on_template = array();
+
+	$open_template = '<div class="rwmb-hidden-field hide-if-js" data-show-on="%s">';
+	$close_template = '</div>';
+
+	$field_show_on_template = isset( $field['show_on_template'] ) ? $field['show_on_template'] : array();
+	if ( !is_array( $field_show_on_template ) ) {
+		$field_show_on_template = explode( ',', $field_show_on_template );
+	}
+	$field_show_on_template = array_map( 'trim', $field_show_on_template );
+	sort( $field_show_on_template );
+
+	$result_html = $before_html;
+	if ( empty( $saved_show_on_template ) && !empty( $field_show_on_template ) ) {
+		$saved_show_on_template = $field_show_on_template;
+		$result_html .= sprintf( $open_template, implode( ',', $saved_show_on_template ) );
+
+	} else if ( !empty( $saved_show_on_template ) && empty( $field_show_on_template ) ) {
+		$saved_show_on_template = array();
+		$result_html = $close_template . $result_html;
+
+	} else if ( !empty( $saved_show_on_template ) && !empty( $field_show_on_template ) ) {
+
+		$saved_string = implode( ',', $saved_show_on_template );
+		$field_string = implode( ',', $field_show_on_template );
+
+		if ( $saved_string != $field_string ) {
+			$saved_show_on_template = $field_show_on_template;
+			$result_html = $close_template . $before_html . sprintf( $open_template, implode( ',', $saved_show_on_template ) );
+		}
+
+	}
+
+	return $result_html;
+}
+add_filter( 'rwmb_field_before_html', 'presscore_meta_box_before_html', 10, 2 );

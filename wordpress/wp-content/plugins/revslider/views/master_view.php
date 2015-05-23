@@ -26,10 +26,8 @@
 <div class='unite_success_message' id="success_message" style="display:none;"></div>
 
 <div id="viewWrapper" class="view_wrapper<?php echo $wrapperClass?>">
-
 <?php
 	self::requireView($view);
-	
 ?>
 
 </div>
@@ -40,8 +38,9 @@
 <?php self::requireView("system/update_dialog")?>
 <?php self::requireView("system/general_settings_dialog")?>
 
-<div class="tp-plugin-version">&copy; All rights reserved, <a href="http://themepunch.com" target="_blank">Themepunch</a>  ver. <?php echo $revSliderVersion?>
-	<a id="button_upload_plugin" class="button-primary revpurple update_plugin" href="javascript:void(0)"><?php _e("Update Plugin",REVSLIDER_TEXTDOMAIN)?></a>
+<div class="tp-plugin-version">
+	<span style="margin-right:15px">&copy; All rights reserved, <a href="http://themepunch.com" target="_blank">Themepunch</a>  ver. <?php echo $revSliderVersion?></span>
+	<a id="button_upload_plugin" class="button-primary revpurple update_plugin" href="javascript:void(0)"><?php _e("Manual Plugin Update",REVSLIDER_TEXTDOMAIN)?></a>
 </div>
 
 <?php if(GlobalsRevSlider::SHOW_DEBUG == true): ?>

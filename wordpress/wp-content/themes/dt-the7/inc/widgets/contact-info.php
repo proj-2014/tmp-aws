@@ -36,35 +36,9 @@ class Presscore_Inc_Widgets_ContactInfo extends WP_Widget {
 			$widget_ops
 		);
 
-		self::$social_icons = array(
-			'facebook'		=> _x('Facebook', 'widget', LANGUAGE_ZONE),
-			'twitter'		=> _x('Twitter', 'widget', LANGUAGE_ZONE),
-			'google'		=> _x('Google+', 'widget', LANGUAGE_ZONE),
-			'dribbble'		=> _x('Dribbble', 'widget', LANGUAGE_ZONE),
-			'you-tube'		=> _x('YouTube', 'widget', LANGUAGE_ZONE),
-			'rss'			=> _x('Rss', 'widget', LANGUAGE_ZONE),
-			'delicious'		=> _x('Delicious', 'widget', LANGUAGE_ZONE),
-			'flickr'		=> _x('Flickr', 'widget', LANGUAGE_ZONE),
-			'forrst'		=> _x('Forrst', 'widget', LANGUAGE_ZONE),
-			'lastfm'		=> _x('Lastfm', 'widget', LANGUAGE_ZONE),
-			'linkedin'		=> _x('Linkedin', 'widget', LANGUAGE_ZONE),
-			'vimeo'			=> _x('Vimeo', 'widget', LANGUAGE_ZONE),
-			'tumbler'		=> _x('Tumblr', 'widget', LANGUAGE_ZONE),
-			'pinterest'		=> _x('Pinterest', 'widget', LANGUAGE_ZONE),
-			'devian'		=> _x('Deviantart', 'widget', LANGUAGE_ZONE),
-			'skype'			=> _x('Skype', 'widget', LANGUAGE_ZONE),
-			'github'		=> _x('Github', 'widget', LANGUAGE_ZONE),
-			'instagram'		=> _x('Instagram', 'widget', LANGUAGE_ZONE),
-			'stumbleupon'	=> _x('Stumbleupon', 'widget', LANGUAGE_ZONE),
-			'behance'		=> _x('Behance', 'widget', LANGUAGE_ZONE),
-			'mail'			=> _x('Mail', 'widget', LANGUAGE_ZONE),
-			'website'		=> _x('Website', 'widget', LANGUAGE_ZONE),
-			'px-500'		=> _x('500px', LANGUAGE_ZONE),
-			'foursquare'	=> _x('Foursquare', 'widget', LANGUAGE_ZONE),
-			'tripedvisor'	=> _x('TripAdvisor', 'widget', LANGUAGE_ZONE),
-			'vk'			=> _x('VK', LANGUAGE_ZONE),
-			'xing'			=> _x('XING', LANGUAGE_ZONE),
-		);
+		if ( function_exists('presscore_get_social_icons_data') ) {
+			self::$social_icons = presscore_get_social_icons_data();
+		}
 	}
 
 	/* Display the widget  */

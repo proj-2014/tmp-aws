@@ -11,6 +11,7 @@
 	$buttonEditStyles = UniteFunctionsRev::getHtmlLink("javascript:void(0)", "<i class=\"revicon-magic\"></i>Edit Style","button_edit_css","button-primary revblue");
 	$buttonEditStylesGlobal = UniteFunctionsRev::getHtmlLink("javascript:void(0)", "<i class=\"revicon-palette\"></i>Edit Global Style","button_edit_css_global","button-primary revblue");
 	
+	$arrSplit = $operations->getArrSplit();
 	$arrEasing = $operations->getArrEasing();
 	$arrEndEasing = $operations->getArrEndEasing();
 	
@@ -20,7 +21,7 @@
 	$layerSettings = new UniteSettingsAdvancedRev();
 	$layerSettings->addSection(__("Layer Params",REVSLIDER_TEXTDOMAIN),__("layer_params",REVSLIDER_TEXTDOMAIN));
 	$layerSettings->addSap(__("Layer Params",REVSLIDER_TEXTDOMAIN),__("layer_params", REVSLIDER_TEXTDOMAIN));
-	$layerSettings->addTextBox(__("layer_caption", REVSLIDER_TEXTDOMAIN), __("caption_green",REVSLIDER_TEXTDOMAIN), __("Style",REVSLIDER_TEXTDOMAIN),array(UniteSettingsRev::PARAM_ADDTEXT=>$captionsAddonHtml,"class"=>"textbox-caption"));
+	$layerSettings->addTextBox("layer_caption", __("caption_green",REVSLIDER_TEXTDOMAIN), __("Style",REVSLIDER_TEXTDOMAIN),array(UniteSettingsRev::PARAM_ADDTEXT=>$captionsAddonHtml,"class"=>"textbox-caption"));
 	
 	$addHtmlTextarea = '';
 	if($sliderTemplate == "true"){
@@ -35,7 +36,10 @@
 	$layerSettings->addSelect("layer_animation",$arrAnimations,__("Start Animation",REVSLIDER_TEXTDOMAIN),"fade");	
 	$layerSettings->addSelect("layer_easing", $arrEasing, __("Start Easing",REVSLIDER_TEXTDOMAIN),"Power3.easeInOut");
 	$params = array("unit"=>__("ms",REVSLIDER_TEXTDOMAIN));
+	$paramssplit = array("unit"=>__(" ms (keep it low i.e. 1- 200)",REVSLIDER_TEXTDOMAIN));	
 	$layerSettings->addTextBox("layer_speed", "","Start Speed",$params);
+	$layerSettings->addTextBox("layer_splitdelay", "10","Split Delay",$paramssplit);	
+	$layerSettings->addSelect("layer_split", $arrSplit, __("Split Text per",REVSLIDER_TEXTDOMAIN),"none");	
 	$layerSettings->addCheckbox("layer_hidden", false,__("Hide Under Width",REVSLIDER_TEXTDOMAIN));
 	
 	$params = array("hidden"=>true);
@@ -63,8 +67,23 @@
 	$params = array("attrib_text"=>"data-textoffset='".$textOffsetY."' data-textnormal='".$textY."'");
 	$layerSettings->addTextBox("layer_top", "",__("Y",REVSLIDER_TEXTDOMAIN),$params);
 	
-	$layerSettings->addTextBox("layer_align_hor", "left","Hor Align",array("hidden"=>true));
-	$layerSettings->addTextBox("layer_align_vert", "top","Vert Align",array("hidden"=>true));
+	$layerSettings->addTextBox("layer_align_hor", "left",__("Hor Align",REVSLIDER_TEXTDOMAIN),array("hidden"=>true));
+	$layerSettings->addTextBox("layer_align_vert", "top",__("Vert Align",REVSLIDER_TEXTDOMAIN),array("hidden"=>true));
+	
+	$para = array("unit"=>__("&nbsp;(example: 50px, 50%, auto)",REVSLIDER_TEXTDOMAIN), 'hidden'=>true);	
+	$layerSettings->addTextBox("layer_max_width", "auto",__("Max Width",REVSLIDER_TEXTDOMAIN),$para);
+	$layerSettings->addTextBox("layer_max_height", "auto",__("Max Height",REVSLIDER_TEXTDOMAIN),$para);
+	
+	//advanced params
+	$arrWhiteSpace = array("normal"=>__("Normal",REVSLIDER_TEXTDOMAIN),
+						"pre"=>__("Pre",REVSLIDER_TEXTDOMAIN),
+						"nowrap"=>__("No-wrap",REVSLIDER_TEXTDOMAIN),
+						"pre-wrap"=>__("Pre-Wrap",REVSLIDER_TEXTDOMAIN),
+						"pre-line"=>__("Pre-Line",REVSLIDER_TEXTDOMAIN));
+						
+						
+	$layerSettings->addSelect("layer_whitespace", $arrWhiteSpace, __("White Space",REVSLIDER_TEXTDOMAIN),"nowrap", array("hidden"=>true));
+	
 	
 	$layerSettings->addSelect("layer_slide_link", $arrSlideLinkLayers, __("Link To Slide",REVSLIDER_TEXTDOMAIN),"nothing");
 	
@@ -78,8 +97,11 @@
 
 	
 	$params = array("unit"=>__("ms",REVSLIDER_TEXTDOMAIN));
+	$paramssplit = array("unit"=>__(" ms (keep it low i.e. 1- 200)",REVSLIDER_TEXTDOMAIN));	
 	$layerSettings->addTextBox("layer_endtime", "",__("End Time",REVSLIDER_TEXTDOMAIN),$params);
 	$layerSettings->addTextBox("layer_endspeed", "",__("End Speed",REVSLIDER_TEXTDOMAIN),$params);
+	$layerSettings->addTextBox("layer_endsplitdelay", "10","End Split Delay",$paramssplit);		
+	$layerSettings->addSelect("layer_endsplit", $arrSplit, __("Split Text per",REVSLIDER_TEXTDOMAIN),"none");		
 	$layerSettings->addSelect("layer_endanimation",$arrEndAnimations,__("End Animation",REVSLIDER_TEXTDOMAIN),"auto");
 	$layerSettings->addSelect("layer_endeasing", $arrEndEasing, __("End Easing",REVSLIDER_TEXTDOMAIN),"nothing");
 	$params = array("unit"=>__("ms",REVSLIDER_TEXTDOMAIN));

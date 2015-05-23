@@ -163,7 +163,7 @@ jQuery(function($) {
 	// Proportions slider
 	/*****************************************************************************************/
 
-	$( '.rwmb-slider' ).each( function() {
+	$( '.rwmb-proportion_slider-wrapper .rwmb-slider' ).each( function() {
 		var $this = $(this),
 			$prview = $this.parents('.rwmb-proportion_slider-wrapper').find('.rwmb-proportion_slider-prop-box'),
 			propIndex = parseInt( $this.parents('.rwmb-input').find('input').val() ), // proportion index
@@ -205,7 +205,7 @@ jQuery(function($) {
 			$prview.css('width', res.w);
 			$prview.css('height', res.h);
 
-			// set label						
+			// set label
 			$label.text( res.desc );
 		});
 	});

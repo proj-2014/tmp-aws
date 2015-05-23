@@ -418,7 +418,7 @@
 		 * 
 		 * add saporator
 		 */
-		public function addSap($text, $name="", $opened = false){
+		public function addSap($text, $name="", $opened = false, $icon=""){
 			
 			if(empty($text))
 				UniteFunctionsRev::throwError("sap $name must have a text");
@@ -427,6 +427,7 @@
 			$sap = array();
 			$sap["name"] = $name; 
 			$sap["text"] = $text; 
+			$sap["icon"] = $icon;
 			
 			if($opened == true) $sap["opened"] = true;
 			
@@ -689,11 +690,12 @@
 				
 				$sapName = (string)UniteFunctionsRev::getVal($attribs, "name");
 				$sapLabel = (string)UniteFunctionsRev::getVal($attribs, "label");
+				$sapIcon = (string)UniteFunctionsRev::getVal($attribs, "icon");				
 				
 				UniteFunctionsRev::validateNotEmpty($sapName,"sapName");
 				UniteFunctionsRev::validateNotEmpty($sapLabel,"sapLabel");
 				
-				$this->addSap($sapLabel,$sapName);
+				$this->addSap($sapLabel,$sapName,false,$sapIcon);
 				
 				//--- add fields
 				$fieldset = (array)$fieldset;				

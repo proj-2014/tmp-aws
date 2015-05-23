@@ -60,6 +60,7 @@
 			$settingsID = $setting["id"];
 			
 			$buttonID = $settingsID."_button";
+			$buttonRemoveID = $settingsID."_button_remove";
 			
 			$spanPreviewID = $buttonID."_preview";
 			
@@ -68,13 +69,8 @@
 			
 			if(!empty($value)){
 				$urlImage = $value;
-				$imagePath = UniteFunctionsWPRev::getImageRealPathFromUrl($urlImage);
-				if(file_exists($realPath)){
-					$filepath = UniteFunctionsWPRev::getImagePathFromURL($urlImage);
-					$urlImage = UniteBaseClassRev::getImageUrl($filepath,100,70,true);
-				}
-				
-				$img = "<img width='100' height='70' src='$urlImage'></img>";
+				$imagePath = UniteFunctionsWPRev::getImageRealPathFromUrl($urlImage);							
+				$img = '<div style="width:100px;height:70px;background:url('.$urlImage.'); background-position:center center; background-size:cover;"></div>';
 			}
 			
 			?>
@@ -82,7 +78,9 @@
 				
 				<input type="hidden" id="<?php echo $setting["id"]?>" name="<?php echo $setting["name"]?>" value="<?php echo $setting["value"]?>" />
 				
-				<input type="button" id="<?php echo $buttonID?>" class='button-image-select button-primary revblue<?php echo $class?>' value="Choose Image"></input>
+				<input type="button" id="<?php echo $buttonID?>" style="width: 110px !important; float: left;" class='button-image-select button-primary revblue<?php echo $class?>' value="<?php _e('Choose Image',REVSLIDER_TEXTDOMAIN); ?>"></input>
+				<input type="button" class="button-image-remove button-primary revred" style="width: 110px !important;" id="<?php echo $buttonRemoveID; ?>" value="<?php _e('Remove',REVSLIDER_TEXTDOMAIN); ?>" />
+				<div class="clear"></div>
 			<?php
 		}
 		

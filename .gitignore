@@ -6,3 +6,5 @@
 
 .git/*
 
+tmp/*
+wordpress/wp-content/uploads/*

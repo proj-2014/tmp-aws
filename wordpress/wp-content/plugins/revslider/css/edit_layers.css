@@ -1005,15 +1005,18 @@ background: #999;
 
 
 .tp-present-wrapper-parent	{	overflow: hidden; position: relative;}
-.caption-demo-controll		{	background:#f1f1f1; border:1px solid #dfdfdf; border-top:none; width:100%;height:60px;line-height:30px; padding:5px 10px; box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
-.caption-speed-controll		{	width:100px; float:left}
-.caption-easing-controll	{	width:250px; float:left}
-.caption-inout-controll		{	width:250px;float:right; text-align:right; cursor: pointer;webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;}
+.caption-demo-controll		{	background:#f1f1f1; border:1px solid #dfdfdf; border-top:none; width:100%;height:70px;line-height:30px; padding:5px 10px; box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
+.caption-inout-controll		{	cursor: pointer;webkit-touch-callout: none;
+								height: 30px;
+								margin-left:10px;
+								vertical-align: bottom;
+								line-height: 30px;
+								float:left;
+								-webkit-user-select: none;
+								-khtml-user-select: none;
+								-moz-user-select: none;
+								-ms-user-select: none;
+								user-select: none;}
 
 #caption-inout-controll .revicon-logout,
 #caption-inout-controll .revicon-login			{

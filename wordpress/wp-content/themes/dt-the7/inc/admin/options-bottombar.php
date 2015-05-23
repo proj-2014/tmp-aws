@@ -28,8 +28,8 @@ $options[] = array(	"name" => _x('Background', 'theme-options', LANGUAGE_ZONE), 
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "bottom_bar-bg_color",
 		"std"	=> "#ffffff",
 		"type"	=> "color"
@@ -37,8 +37,8 @@ $options[] = array(	"name" => _x('Background', 'theme-options', LANGUAGE_ZONE), 
 
 	// slider
 	$options[] = array(
-		"name"		=> '',
-		"desc"		=> _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"		=> '',
+		"name"		=> _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"		=> "bottom_bar-bg_opacity",
 		"std"		=> 100, 
 		"type"		=> "slider",
@@ -50,8 +50,8 @@ $options[] = array(	"name" => _x('Background', 'theme-options', LANGUAGE_ZONE), 
 	
 		// colorpicker
 		$options[] = array(
-			"name"	=> '',
-			"desc"	=> _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"	=> '',
+			"name"	=> _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"	=> "bottom_bar-bg_ie_color",
 			"std"	=> "#ffffff",
 			"type"	=> "color"
@@ -63,7 +63,7 @@ $options[] = array(	"name" => _x('Background', 'theme-options', LANGUAGE_ZONE), 
 	$options[] = array(
 		'type' 			=> 'background_img',
 		'id'			=> 'bottom_bar-bg_image',
-		'desc' 			=> _x( 'Image uploader', 'theme-options', LANGUAGE_ZONE ),
+		'name' 			=> _x( 'Image uploader', 'theme-options', LANGUAGE_ZONE ),
 		'preset_images' => $backgrounds_bottom_bar_bg_image,
 		'std' 			=> $background_defaults,
 	);
@@ -77,8 +77,8 @@ $options[] = array(	"name" => _x('Font color', 'theme-options', LANGUAGE_ZONE), 
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Font color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Font color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "bottom_bar-color",
 		"std"	=> "#757575",
 		"type"	=> "color"
@@ -87,14 +87,14 @@ $options[] = array(	"name" => _x('Font color', 'theme-options', LANGUAGE_ZONE), 
 $options[] = array(	"type" => "block_end");
 
 /**
- * Lines & dividers.
+ * Line above bottom bar (only for iOS 7 style).
  */
-$options[] = array(	"name" => _x('Lines &amp; dividers', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
+$options[] = array(	"name" => _x('Line above bottom bar (only for iOS 7 style)', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "bottom_bar-dividers_color",
 		"std"	=> "#828282",
 		"type"	=> "color"
@@ -102,8 +102,8 @@ $options[] = array(	"name" => _x('Lines &amp; dividers', 'theme-options', LANGUA
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"      => '',
+		"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "bottom_bar-dividers_opacity",
 		"std"       => 100, 
 		"type"      => "slider",
@@ -115,8 +115,8 @@ $options[] = array(	"name" => _x('Lines &amp; dividers', 'theme-options', LANGUA
 	
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"  => '',
+			"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "bottom_bar-dividers_ie_color",
 			"std"   => "#828282",
 			"type"  => "color"
@@ -127,39 +127,14 @@ $options[] = array(	"name" => _x('Lines &amp; dividers', 'theme-options', LANGUA
 $options[] = array(	"type" => "block_end");
 
 /**
- * Copyright information.
- */
-$options[] = array(	"name" => _x('Copyright information', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
-
-	// textarea
-	$options[] = array(
-		"name"		=> '',
-		"desc"		=> _x('Copyright information', 'theme-options', LANGUAGE_ZONE),
-		"id"		=> "bottom_bar-copyrights",
-		"std"		=> false,
-		"type"		=> 'textarea'
-	);
-
-	// checkbox
-	$options[] = array(
-		"desc"		=> _x( 'Give credits to Dream-Theme', 'theme-options', LANGUAGE_ZONE ),
-		"name"		=> '',
-		"id"		=> 'bottom_bar-credits',
-		"type"		=> 'checkbox',
-		'std'		=> 1
-	);
-
-$options[] = array(	"type" => "block_end");
-
-/**
  * Text.
  */
 $options[] = array(	"name" => _x('Text', 'theme-options', 'presscore'), "type" => "block_begin" );
 
 	// textarea
 	$options[] = array(
-		"name"		=> '',
-		"desc"		=> _x('Text', 'theme-options', 'presscore'),
+		"desc"		=> '',
+		"name"		=> _x('Text', 'theme-options', 'presscore'),
 		"id"		=> "bottom_bar-text",
 		"std"		=> false,
 		"type"		=> 'textarea'

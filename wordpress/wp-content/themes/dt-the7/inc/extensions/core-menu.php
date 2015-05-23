@@ -48,19 +48,20 @@ function dt_menu( $data = array() ) {
 	$parent_clicable = apply_filters( 'dt_menu-parent_clicable', $options['parent_clicable'] );
 
 	$args = array(
-		'container'			    => false,
-		'menu_id' 			    => 'mainmenu',
-		'fallback_cb' 		    => $options['fallback_cb'],
-		'theme_location' 	    => $theme_location,
-		'parent_clicable' 	    => $parent_clicable,
-		'menu_class' 		    => false,
-		'container_class'	    => false,
+		'container'				=> false,
+		'menu_id'				=> 'mainmenu',
+		'fallback_cb'			=> $options['fallback_cb'],
+		'theme_location'		=> $theme_location,
+		'parent_clicable'		=> $parent_clicable,
+		'menu_class'			=> false,
+		'container_class'		=> false,
 		'dt_has_nav_menu'		=> has_nav_menu( $theme_location ),
-		'dt_item_wrap_start'    => $options['menu_items'][0],
-		'dt_item_wrap_end'      => $options['menu_items'][1],
-		'dt_submenu_wrap_start' => $options['submenu'][0],
-		'dt_submenu_wrap_end'   => $options['submenu'][1],
-		'items_wrap'            => $options['menu_wraper']
+		'dt_item_wrap_start'	=> $options['menu_items'][0],
+		'dt_item_wrap_end'		=> $options['menu_items'][1],
+		'dt_submenu_wrap_start'	=> $options['submenu'][0],
+		'dt_submenu_wrap_end'	=> $options['submenu'][1],
+		'items_wrap'			=> $options['menu_wraper'],
+		'please_be_fat'			=> true
 	);
 
 	$args = array_merge( $args, $options['params'] );

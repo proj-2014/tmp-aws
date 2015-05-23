@@ -45,8 +45,14 @@ function dt_woocommerce_before_main_content () {
 		add_filter( 'woocommerce_show_page_title', '__return_false');
 	} else if ( is_product() ) {
 
-		// remove product title
-		remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
+		$config = Presscore_Config::get_instance();
+
+		if ( 'disabled' != $config->get( 'header_title' ) ) {
+
+			// remove product title
+			remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_title', 5 );
+
+		}
 	}
 ?>
 	<!-- Content -->
@@ -72,13 +78,14 @@ function dt_theme_add_woocommerce_support() {
 	add_theme_support( 'woocommerce' );
 }
 
-/**
- * Redefine woocommerce_output_related_products().
- *
- */
-function woocommerce_output_related_products() {
-	woocommerce_related_products( 4, 2 ); // Display 4 products in rows of 2
-}
+if ( ! function_exists( 'dt_woocommerce_related_products_args' ) ) :
+
+	function dt_woocommerce_related_products_args( $args ) {
+		return array_merge( $args, array( 'posts_per_page' => 4, 'columns' => 4, 'orderby' => 'date' ) );
+	}
+	add_filter( 'woocommerce_output_related_products_args', 'dt_woocommerce_related_products_args' );
+
+endif;
 
 /**
  * Remove theme title on woocommerce pages.
@@ -331,7 +338,7 @@ function dt_woocommerce_main_container_class_filter( $classes = array() ) {
  * @access public
  * @return void
  */
-function woocommerce_breadcrumb( $args = array() ) {
+function dt_woocommerce_breadcrumb( $args = array() ) {
 
 	$defaults = apply_filters( 'woocommerce_breadcrumb_defaults', array(
 		'delimiter'   => '',
@@ -355,7 +362,7 @@ function dt_woocommerce_replace_theme_breadcrumbs( $html = '' ) {
 
 	if ( !$html ) {
 		ob_start();
-		woocommerce_breadcrumb();
+		dt_woocommerce_breadcrumb();
 		$html = ob_get_clean();
 
 		$html = apply_filters('presscore_get_breadcrumbs', $html);

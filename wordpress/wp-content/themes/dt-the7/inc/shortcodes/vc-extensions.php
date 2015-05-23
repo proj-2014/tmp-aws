@@ -11,7 +11,7 @@ if (class_exists('WPBakeryVisualComposerAbstract')) {
 	 * Taxonomy checkbox list field.
 	 *
 	 */
-	function dt_taxonomy_settings_field($settings, $value) {
+	function presscore_vc_taxonomy_settings_field($settings, $value) {
 		$dependency = vc_generate_dependencies_attributes($settings);
 
 		$terms_fields = array();
@@ -50,13 +50,12 @@ if (class_exists('WPBakeryVisualComposerAbstract')) {
 				 .'</div>'
 			 .'</div>';
 	}
-	add_shortcode_param('dt_taxonomy', 'dt_taxonomy_settings_field', get_template_directory_uri() . '/inc/shortcodes/vc_extend/dt-vc-scripts.js' );
 
 	/**
 	 * Posts checkbox list field.
 	 *
 	 */
-	function dt_posttype_settings_field($settings, $value) {
+	function presscore_vc_posttype_settings_field($settings, $value) {
 		$dependency = vc_generate_dependencies_attributes($settings);
 
 		$posts_fields = array();
@@ -104,11 +103,20 @@ if (class_exists('WPBakeryVisualComposerAbstract')) {
 				 .'</div>'
 			 .'</div>';
 	}
-	add_shortcode_param('dt_posttype', 'dt_posttype_settings_field', get_template_directory_uri() . '/inc/shortcodes/vc_extend/dt-vc-scripts.js' );
 
-	function dt_register_custom_vc_scripts() {
-		// register custom pie jquery plugin
-		wp_register_script('vc_dt_pie', PRESSCORE_SHORTCODES_URI . '/vc_extend/jquery.vc_chart.js', array('jquery', 'waypoints', 'progressCircle'));
+	function presscore_vc_add_custom_fields() {
+
+		$dir = get_template_directory_uri();
+
+		add_shortcode_param('dt_taxonomy', 'presscore_vc_taxonomy_settings_field', $dir . '/inc/shortcodes/vc_extend/dt-vc-scripts.js' );
+		add_shortcode_param('dt_posttype', 'presscore_vc_posttype_settings_field', $dir . '/inc/shortcodes/vc_extend/dt-vc-scripts.js' );
 	}
-	add_action('wp_enqueue_scripts', 'dt_register_custom_vc_scripts', 15);
+	add_action( 'admin_init', 'presscore_vc_add_custom_fields', 15 );
+
+	function presscore_vc_register_custom_vc_scripts() {
+
+		// register custom pie jquery plugin
+		wp_register_script('vc_dt_pie', PRESSCORE_SHORTCODES_URI . '/vc_extend/jquery.vc_chart.js', array('jquery', 'waypoints', 'progressCircle'), wp_get_theme()->get( 'Version' ) );
+	}
+	add_action('wp_enqueue_scripts', 'presscore_vc_register_custom_vc_scripts', 15);
 }

@@ -8,6 +8,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 // remove_action( 'presscore_primary_navigation', 'presscore_add_primary_menu', 15 );
 
+/**
+ * @todo Maybe remove this
+ */
 function presscore_ubermenu_primary_menu() {
 
 	global $uberMenu;
@@ -17,7 +20,7 @@ function presscore_ubermenu_primary_menu() {
 		remove_filter( 'wp_nav_menu_args' , array( $uberMenu , 'megaMenuFilter' ), 2000 );
 	}
 }
-add_action( 'presscore_primary_navigation', 'presscore_ubermenu_primary_menu', 14 );
+// add_action( 'presscore_primary_navigation', 'presscore_ubermenu_primary_menu', 14 );
 
 
 /**
@@ -40,8 +43,6 @@ add_filter( 'body_class', 'presscore_ubermenu_body_class_filter' );
  *
  */
 function presscore_ubermenu_add_custom_skin() {
-	global $uberMenu;
-
 	$cache_name = 'wp_less_stylesheet_data_'.md5( PRESSCORE_THEME_DIR . '/css/the7-uber-menu.less' );
 	$compiled_cache = get_option($cache_name);
 
@@ -65,7 +66,7 @@ function presscore_ubermenu_add_custom_skin() {
 		wp_add_inline_style( 'dt-main', $compiled_cache['compiled'] );
 	}
 
-	$uberMenu->registerStylePreset('the7-style', _x( 'The7 skin' , 'backend', LANGUAGE_ZONE ), $stylesheet_src);
+	ubermenu_register_skin('the7-style', _x( 'The7 skin' , 'backend', LANGUAGE_ZONE ), $stylesheet_src);
 
 }
 add_action( 'init', 'presscore_ubermenu_add_custom_skin', 16 );

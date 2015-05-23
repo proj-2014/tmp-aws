@@ -63,17 +63,57 @@
 			
 			self::addMenuPage('Revolution Slider', "adminPages");
 			
-			
-			$this->addSliderMetaBox('post');
+			$this->addSliderMetaBox();
 			
 			//add common scripts there
 			//self::addAction(self::ACTION_ADMIN_INIT, "onAdminInit");
+			$validated = get_option('revslider-valid', 'false');
+			$notice = get_option('revslider-valid-notice', 'true');
+			
+			
+			if($validated === 'false' && $notice === 'true'){
+				self::addAction('admin_notices', 'addActivateNotification');
+			}
 			
 			//ajax response to save slider options.
 			self::addActionAjax("ajax_action", "onAjaxAction");
 			
+			$upgrade = new UniteUpdateClassRev( GlobalsRevSlider::SLIDER_REVISION );
+
+			$upgrade->_retrieve_version_info();
+			
+			if(get_option('revslider-valid', 'false') === 'true') {
+				$upgrade->add_update_checks();
+			}
+			
 		}
 		
+		
+		public function addActivateNotification(){
+			$nonce = wp_create_nonce("revslider_actions");
+			?>
+			<div class="updated below-h2 rs-update-notice-wrap" style="margin-left: 0;" id="message"><a href="javascript:void(0);" style="float: right;" id="rs-dismiss-notice">×</a><p><?php _e('Hi! Please activate your copy of the Revolution Slider to receive automatic updates & get premium support.',REVSLIDER_TEXTDOMAIN); ?></p></div>
+			<script type="text/javascript">
+				jQuery('#rs-dismiss-notice').click(function(){
+					var objData = {
+									action:"<?php echo self::$dir_plugin; ?>_ajax_action",
+									client_action: 'dismiss_notice',
+									nonce:'<?php echo $nonce; ?>',
+									data:''
+									};
+					
+					jQuery.ajax({
+						type:"post",
+						url:ajaxurl,
+						dataType: 'json',
+						data:objData
+					});
+					
+					jQuery('.rs-update-notice-wrap').hide();
+				});
+			</script>
+			<?php
+		}
 		
 		/**
 		 * 
@@ -156,10 +196,10 @@
 			//add google font
 			//$urlGoogleFont = "http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700";					
 			//self::addStyleAbsoluteUrl($urlGoogleFont,"google-font-pt-sans-narrow");
-			
 			self::addScriptCommon("edit_layers","unite_layers");
 			self::addScriptCommon("css_editor","unite_css_editor");
 			self::addScript("rev_admin");
+			self::addScript("jquery.themepunch.plugins.min","rs-plugin/js",'themepunchtools');
 			
 			//include all media upload scripts
 			self::addMediaUploadIncludes();
@@ -171,7 +211,10 @@
 			/*}else{
 				self::addStyle("dynamic-captions","rs-plugin-captions","rs-plugin/css");
 			}*/
-			self::addStyle("static-captions","rs-plugin-static","rs-plugin/css");
+			
+			$custom_css = RevOperations::getStaticCss();
+			wp_add_inline_style( 'rs-plugin-settings', $custom_css );
+			//self::addStyle("static-captions","rs-plugin-static","rs-plugin/css");
 			
 		}
 		
@@ -567,6 +610,42 @@
 					case "reset_slide_settings":
 						$slider->resetSlideSettings($data);
 						self::ajaxResponseSuccess(__("Settings in all Slides changed",REVSLIDER_TEXTDOMAIN));
+					break; 
+					case "activate_purchase_code":
+						
+						$result = false;
+						
+						if(!empty($data['username']) && !empty($data['api_key']) && !empty($data['code'])){
+							
+							$result = $operations->checkPurchaseVerification($data);
+							
+						}else{
+							UniteFunctionsRev::throwError(__('The API key, the Purchase Code and the Username need to be set!', REVSLIDER_TEXTDOMAIN));
+							exit();
+						}
+						
+						if($result){
+							self::ajaxResponseSuccessRedirect(
+						            __("Purchase Code Successfully Activated",REVSLIDER_TEXTDOMAIN), 
+									self::getViewUrl(self::VIEW_SLIDERS));
+						}else{
+							UniteFunctionsRev::throwError(__('Purchase Code is invalid', REVSLIDER_TEXTDOMAIN));
+						}
+					break; 
+					case "deactivate_purchase_code":
+						$result = $operations->doPurchaseDeactivation($data);
+						
+						if($result){
+							self::ajaxResponseSuccessRedirect(
+						            __("Successfully removed validation",REVSLIDER_TEXTDOMAIN), 
+									self::getViewUrl(self::VIEW_SLIDERS));
+						}else{
+							UniteFunctionsRev::throwError(__('Could not remove Validation!', REVSLIDER_TEXTDOMAIN));
+						}			
+					break;  
+					case "dismiss_notice":
+						update_option('revslider-valid-notice', 'false');
+						self::ajaxResponseSuccess(__(".",REVSLIDER_TEXTDOMAIN));
 					break; 
 					
 					default:

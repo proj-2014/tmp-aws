@@ -22,34 +22,25 @@ $options[] = array(
 $options[] = array( "name" => _x('Buttons', 'theme-options', LANGUAGE_ZONE), "type" => "heading" );
 
 /**
- * Buttons shadow.
+ * Buttons style.
  */
-/*$options[] = array(	"name" => _x('Buttons shadow', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
+$options[] = array( "name" => _x("Buttons style", "theme-options", LANGUAGE_ZONE), "type" => "block_begin" );
 
-	// colorpicker
-	$options[] = array(
-		"desc"	=> _x( 'Buttons shadow', 'theme-options', LANGUAGE_ZONE ),
-		"id"	=> "buttons-shadow",
-		"std"	=> "#a12c29",
-		"type"	=> "color"
+	// radio
+	$options["buttons-style"] = array(
+		"name"		=> "&nbsp;",
+		"id"		=> "buttons-style",
+		"std"		=> "ios7",
+		"type"		=> "radio",
+		"options"	=> array(
+			"ios7"	=> _x( "iOS 7", "theme-options", LANGUAGE_ZONE ),
+			"flat"	=> _x( "Flat", "theme-options", LANGUAGE_ZONE ),
+			"3d"	=> _x( "3D", "theme-options", LANGUAGE_ZONE )
+		)
 	);
 
-$options[] = array(	"type" => "block_end");*/
+$options[] = array( "type" => "block_end" );
 
-/**
- * Buttons text shadow.
- */
-/*$options[] = array(	"name" => _x('Buttons text shadow', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
-
-	// colorpicker
-	$options[] = array(
-		"desc"	=> _x( 'Buttons text shadow', 'theme-options', LANGUAGE_ZONE ),
-		"id"	=> "buttons-text_shadow",
-		"std"	=> "#b1302d",
-		"type"	=> "color"
-	);
-
-$options[] = array(	"type" => "block_end");*/
 
 /**
  * Small, Medium, Big Buttons.
@@ -62,39 +53,49 @@ foreach ( $buttons as $id=>$opts ) {
 	$options[] = array(	"name" => _x($opts['desc'], 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
 
 		// select
-        $options[] = array(
-            "desc"      => _x( 'Font-family', 'theme-options', LANGUAGE_ZONE ),
-            "id"        => "buttons-" . $id . "_font_family",
-            "std"       => (!empty($opts['ff']) ? $opts['ff'] : "Open Sans"),
-            "type"      => "web_fonts",
-            "options"   => $merged_fonts,
-        );
+		$options[] = array(
+			"name"      => _x( 'Font-family', 'theme-options', LANGUAGE_ZONE ),
+			"id"        => "buttons-{$id}_font_family",
+			"std"       => (!empty($opts['ff']) ? $opts['ff'] : "Open Sans"),
+			"type"      => "web_fonts",
+			"options"   => $merged_fonts,
+		);
 
-        // slider
-        $options[] = array(
-            "desc"      => _x( 'Font-size', 'theme-options', LANGUAGE_ZONE ),
-            "id"        => "buttons-" . $id . "_font_size",
-            "std"       => $opts['fs'], 
-            "type"      => "slider",
-            "options"   => array( 'min' => 9, 'max' => 71 ),
-            "sanitize"  => 'font_size'
-        );
+		// slider
+		$options[] = array(
+			"name"      => _x( 'Font-size', 'theme-options', LANGUAGE_ZONE ),
+			"id"        => "buttons-{$id}_font_size",
+			"std"       => $opts['fs'], 
+			"type"      => "slider",
+			"options"   => array( 'min' => 9, 'max' => 71 ),
+			"sanitize"  => 'font_size'
+		);
 
-        // checkbox
-        $options[] = array(
-            "desc"      => _x( 'Uppercase', 'theme-options', LANGUAGE_ZONE ),
-            "id"        => 'buttons-' . $id . '_uppercase',
-            "type"      => 'checkbox',
-            'std'       => $opts['uc']
-        );
+		// checkbox
+		$options[] = array(
+			"name"      => _x( 'Uppercase', 'theme-options', LANGUAGE_ZONE ),
+			"id"        => "buttons-{$id}_uppercase",
+			"type"      => 'checkbox',
+			'std'       => $opts['uc']
+		);
 
-        // slider
-        $options[] = array(
-            "desc"        => _x( 'Line-height', 'theme-options', LANGUAGE_ZONE ),
-            "id"        => "buttons-" . $id ."_line_height",
-            "std"        => $opts['lh'], 
-            "type"        => "slider",
-        );
+		// slider
+		$options[] = array(
+			"name"        => _x( 'Line-height', 'theme-options', LANGUAGE_ZONE ),
+			"id"        => "buttons-{$id}_line_height",
+			"std"        => $opts['lh'], 
+			"type"        => "slider",
+		);
+
+		// input
+		$options[] = array(
+			"name"		=> _x( "Border Radius (px)", "theme-options", LANGUAGE_ZONE ),
+			"id"		=> "buttons-{$id}_border_radius",
+			"class"		=> "mini",
+			"std"		=> $opts['border_radius'],
+			"type"		=> "text",
+			"sanitize"	=> "dimensions"
+		);
 
 	$options[] = array(	"type" => "block_end");
 }

@@ -1,6 +1,6 @@
 
 	<div id="toolbox_wrapper" class="toolbox_wrapper postbox unite-postbox">
-		<h3 class="box_closed tp-accordion tpa-closed"><div class="postbox-arrow"></div><span><?php _e("Import / Export",REVSLIDER_TEXTDOMAIN) ?></span></h3>
+		<h3 class="box_closed tp-accordion tpa-closed"><div class="postbox-arrow"></div><i style="float:left;margin-top:4px;font-size:14px;" class="eg-icon-export"></i><span><?php _e("Import / Export",REVSLIDER_TEXTDOMAIN) ?></span></h3>
 		<div class="toggled-content tp-closedatstart p20">
 			
 			<div class="api-caption"><?php _e("Import Slider",REVSLIDER_TEXTDOMAIN)?>:</div>

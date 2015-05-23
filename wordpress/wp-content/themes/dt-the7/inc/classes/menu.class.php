@@ -146,37 +146,6 @@ class Dt_Custom_Walker_Page extends Walker_Page {
 	}
 
 	/**
-	 * TODO: remove in 2.2.0.
-	 *
-	 */
-	function dt_menu_extra_prepare () {
-		global $wp_object_cache;
-
-		if ( 1 || $this->dt_menu_parents || empty( $wp_object_cache->cache['posts'] ) ) { return false; }
-
-		$prev = 0;
-		// get pages from cache
-		foreach ( $wp_object_cache->cache['posts'] as $index=>$cache_page ) {
-
-			if ( ! isset( $cache_page->post_type ) ) { continue; }
-
-			if ( 'page' != $cache_page->post_type ) { continue; }
-
-			// nonclicable parent menu items
-			if ( $prev != $cache_page->post_parent && $cache_page->post_parent ) {
-				$this->dt_menu_parents[] = $cache_page->post_parent;
-				$prev = $cache_page->post_parent;
-			}
-
-			// last menu item
-			if ( ! $cache_page->post_parent ) {
-				$this->dt_last_elem = $cache_page->ID;
-			}
-		}
-		$this->dt_menu_parents = array_unique( $this->dt_menu_parents );
-	}
-
-	/**
 	 * Traverse elements to create list from elements.
 	 *
 	 * Calls parent function in wp-includes/class-wp-walker.php

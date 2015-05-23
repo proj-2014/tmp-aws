@@ -1,7 +1,7 @@
 (function() {
 	var command_name = 'dt_mce_command-divider',
     	plugin_name = 'dt_mce_plugin_shortcode_divider',
-    	plugin_title = 'Divider',
+    	plugin_title = 'Divider (deprecated)',
     	plugin_image = 'divider.png';
 	
 	tinymce.create( 'tinymce.plugins.' + plugin_name, {		 

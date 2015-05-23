@@ -161,12 +161,12 @@ do_action('presscore_before_post');
 
 				$post_buttons .= presscore_post_details_link($post->ID, 'project-details');
 
-				if ( $show_links ) {
-					$post_buttons .= presscore_get_project_link('project-link');
-				}
-
 				if ( $show_zoom ) {
 					$post_buttons .= $zoom_link;
+				}
+
+				if ( $show_links ) {
+					$post_buttons .= presscore_get_project_link('project-link');
 				}
 			} else {
 				$post_buttons .= $details_button . ( $show_links ? $project_link : '' ) . ( $show_zoom ? $zoom_link : '' );

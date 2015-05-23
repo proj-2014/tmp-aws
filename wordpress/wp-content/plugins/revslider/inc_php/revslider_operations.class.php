@@ -74,7 +74,9 @@
 			return($arrButtons);
 		}
 		
-		
+	
+
+		  
 		/**
 		 * 
 		 * get easing functions array
@@ -166,6 +168,23 @@
 			);
 
 			return($arrEasing);
+		}
+		
+		
+		/**
+		 * 
+		 * get easing functions array
+		 */
+		public function getArrSplit(){ //true
+		
+			$arrSplit = array(
+				"none" => "No Split",
+				"chars" => "Char Based",
+				"words" => "Word Based",
+				"lines" => "Line Based"
+			);
+
+			return($arrSplit);
 		}
 		
 		/**
@@ -629,7 +648,20 @@
 		 * get contents of the static css file
 		 */
 		public static function getStaticCss(){
-			$contentCSS = @file_get_contents(GlobalsRevSlider::$filepath_static_captions);
+			if ( is_multisite() ){
+				if(!get_site_option('revslider-static-css')){
+					$contentCSS = @file_get_contents(GlobalsRevSlider::$filepath_static_captions);
+					self::updateStaticCss($contentCSS);
+				}
+				$contentCSS = get_site_option('revslider-static-css', '');
+			}else{
+				if(!get_option('revslider-static-css')){
+					$contentCSS = @file_get_contents(GlobalsRevSlider::$filepath_static_captions);
+					self::updateStaticCss($contentCSS);
+				}
+				$contentCSS = get_option('revslider-static-css', '');
+			}
+			
 			return($contentCSS);
 		}
 		
@@ -640,10 +672,18 @@
 		public static function updateStaticCss($content){
 			$content = str_replace(array("\'", '\"', '\\\\'),array("'", '"', '\\'), trim($content));
 			
-			UniteFunctionsRev::writeFile($content, GlobalsRevSlider::$filepath_static_captions);
-			$static = self::getStaticCss();
+			if ( is_multisite() ){
+				$c = get_site_option('revslider-static-css', '');
+				$c = update_site_option('revslider-static-css', $content);
+			}else{
+				$c = get_option('revslider-static-css', '');
+				$c = update_option('revslider-static-css', $content);
+			}
 			
-			return $static;
+			//UniteFunctionsRev::writeFile($content, GlobalsRevSlider::$filepath_static_captions);
+			//$static = self::getStaticCss();
+			
+			return $content;
 		}
 		
 		/**
@@ -860,6 +900,7 @@
 				$css = UniteCssParserRev::parseStaticArrayToCss($static);
 				$static_cur = RevOperations::getStaticCss(); //get the open sans line!
 				$css = $static_cur."\n".$css;
+				
 				self::updateStaticCss($css);
 			}
 		}
@@ -1140,6 +1181,80 @@
 				return stripslashes($font);
 			}
 		}
+		
+		
+		public function checkPurchaseVerification($data){
+			global $wp_version;
+			
+			$response = wp_remote_post('http://updates.themepunch.com/activate.php', array(
+				'user-agent' => 'WordPress/'.$wp_version.'; '.get_bloginfo('url'),
+				'body' => array(
+					'name' => urlencode($data['username']),
+					'api' => urlencode($data['api_key']),
+					'code' => urlencode($data['code']),
+					'product' => urlencode('revslider')
+				)
+			));
+			
+			$response_code = wp_remote_retrieve_response_code( $response );
+			$version_info = wp_remote_retrieve_body( $response );
+			
+			if ( $response_code != 200 || is_wp_error( $version_info ) ) {
+				return false;
+			}
+			
+			if($version_info == 'valid'){
+				update_option('revslider-valid', 'true');
+				update_option('revslider-api-key', $data['api_key']);
+				update_option('revslider-username', $data['username']);
+				update_option('revslider-code', $data['code']);
+				
+				return true;
+			}elseif($version_info == 'exist'){
+				UniteFunctionsRev::throwError(__('Purchase Code already registered!', REVSLIDER_TEXTDOMAIN));
+			}else{
+				return false;
+			}
+			
+		}
+		
+		public function doPurchaseDeactivation($data){
+			global $wp_version;
+		
+			$key = get_option('revslider-api-key', '');
+			$name = get_option('revslider-username', '');
+			$code = get_option('revslider-code', '');
+			
+			$response = wp_remote_post('http://updates.themepunch.com/deactivate.php', array(
+				'user-agent' => 'WordPress/'.$wp_version.'; '.get_bloginfo('url'),
+				'body' => array(
+					'name' => urlencode($name),
+					'api' => urlencode($key),
+					'code' => urlencode($code),
+					'product' => urlencode('revslider')
+				)
+			));
+			
+			$response_code = wp_remote_retrieve_response_code( $response );
+			$version_info = wp_remote_retrieve_body( $response );
+			
+			if ( $response_code != 200 || is_wp_error( $version_info ) ) {
+				return false;
+			}
+			
+			if($version_info == 'valid'){
+				//update_option('revslider-api-key', '');
+				//update_option('revslider-username', '');
+				//update_option('revslider-code', '');
+				update_option('revslider-valid', 'false');
+				
+				return true;
+			}else{
+				return false;
+			}
+			
+		}
+		
 		
 	}
 

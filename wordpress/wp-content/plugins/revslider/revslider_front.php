@@ -44,7 +44,7 @@
 					return(false);
 			}
 			
-			self::addStyle("settings","rs-settings","rs-plugin/css");
+			self::addStyle("settings","rs-plugin-settings","rs-plugin/css");
 
 			//check if dynamic-captions.css exists. If not, include captions.php
 			if(file_exists(self::$path_plugin."rs-plugin/css/dynamic-captions.css") == false)
@@ -52,7 +52,10 @@
 			else
 				self::addStyle("dynamic-captions","rs-captions","rs-plugin/css");
 			
-			self::addStyle("static-captions","rs-plugin-static","rs-plugin/css");
+			
+			$custom_css = RevOperations::getStaticCss();
+			wp_add_inline_style( 'rs-plugin-settings', $custom_css );
+			//self::addStyle("static-captions","rs-plugin-static","rs-plugin/css");
 			
 			$setBase = (is_ssl()) ? "https://" : "http://";
 			
@@ -62,8 +65,6 @@
 			if($includesFooter == "off"){
 				self::addScript("jquery.themepunch.plugins.min","rs-plugin/js",'themepunchtools');
 				self::addScript("jquery.themepunch.revolution.min","rs-plugin/js");
-				//self::addScriptWaitFor("jquery.themepunch.plugins.min","rs-plugin/js",'themepunchtools', array('jquery'));
-				//self::addScriptWaitFor("jquery.themepunch.revolution.min","rs-plugin/js", null, array('jquery'));
 			}else{
 				//put javascript to footer
 				UniteBaseClassRev::addAction('wp_footer', 'putJavascript');

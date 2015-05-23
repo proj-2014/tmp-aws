@@ -91,7 +91,6 @@
 				$sliderMainSettings->addRadio("full_screen_align_force", array("on"=>__("On",REVSLIDER_TEXTDOMAIN), "off"=>__("Off",REVSLIDER_TEXTDOMAIN)),__("FullScreen Align",REVSLIDER_TEXTDOMAIN),"off");
 				
 				
-				
 				$sliderMainSettings->addRadio("auto_height", array("on"=>__("On",REVSLIDER_TEXTDOMAIN), "off"=>__("Off",REVSLIDER_TEXTDOMAIN)),__("Unlimited Height",REVSLIDER_TEXTDOMAIN),"off");
 				$sliderMainSettings->addRadio("force_full_width", array("on"=>__("On",REVSLIDER_TEXTDOMAIN), "off"=>__("Off",REVSLIDER_TEXTDOMAIN)),__("Force Full Width",REVSLIDER_TEXTDOMAIN),"off");
 				

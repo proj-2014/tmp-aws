@@ -16,7 +16,44 @@ var UniteAdminRev = new function(){
 	
 	
 
+	/**********************************
+		-	SHOW INFO AND HIDE INFO	-
+	********************************/
 
+	t.showInfo = function(obj) {
+
+		var info = '<i class="eg-icon-info"></i>';
+		if (obj.type=="warning") info = '<i class="eg-icon-cancel"></i>';
+		if (obj.type=="success") info = '<i class="eg-icon-ok"></i>';
+
+		obj.showdelay = obj.showdelay != undefined ? obj.showdelay : 0;
+		obj.hidedelay = obj.hidedelay != undefined ? obj.hidedelay : 0;
+
+		// CHECK IF THE TOOLBOX WRAPPER EXIST ALREADY
+		if (jQuery('#eg-toolbox-wrapper').length==0) jQuery('#viewWrapper').append('<div id="eg-toolbox-wrapper"></div>');
+
+		// ADD NEW INFO BOX
+		jQuery('#eg-toolbox-wrapper').append('<div class="eg-toolbox newadded">'+info+obj.content+'</div>');
+		var nt = jQuery('#eg-toolbox-wrapper').find('.eg-toolbox.newadded');
+		nt.removeClass('newadded');
+
+
+		// ANIMATE THE INFO BOX
+		TweenLite.fromTo(nt,0.5,{y:-50,autoAlpha:0,transformOrigin:"50% 50%", transformPerspective:900, rotationX:-90},{autoAlpha:1,y:0,rotationX:0,ease:Back.easeOut,delay:obj.showdelay});
+
+		if (obj.hideon != "event") {
+			nt.click(function() {
+				TweenLite.to(nt,0.3,{x:200,ease:Power3.easeInOut,autoAlpha:0,onComplete:function() {nt.remove()}});
+			})
+
+			if (obj.hidedelay !=0 && obj.hideon!="click")
+				TweenLite.to(nt,0.3,{x:200,ease:Power3.easeInOut,autoAlpha:0,delay:obj.hidedelay + obj.showdelay, onComplete:function() {nt.remove()}});
+		} else  {
+			jQuery('#eg-toolbox-wrapper').on(obj.event,function() {
+				TweenLite.to(nt,0.3,{x:200,ease:Power3.easeInOut,autoAlpha:0,onComplete:function() {nt.remove()}});
+			});
+		}
+	}
     
 	/**
 	 * escape html, turn html to a string
@@ -177,10 +214,12 @@ var UniteAdminRev = new function(){
 	 * show error message or call once custom handler function
 	 */
 	t.showErrorMessage = function(htmlError){
-		if(errorMessageID !== null){
-			jQuery("#"+errorMessageID).show().html(htmlError);			
-		}else
-			jQuery("#error_message").show().html(htmlError);
+		//if(errorMessageID !== null){
+		//	jQuery("#"+errorMessageID).show().html(htmlError);			
+		//}else
+		//	jQuery("#error_message").show().html(htmlError);
+		
+		t.showInfo({content:htmlError, type:"warning", showdelay:0, hidedelay:5, hideon:"click", event:"" });
 		
 		showAjaxButton();
 	}
@@ -217,15 +256,19 @@ var UniteAdminRev = new function(){
 	 * show success message
 	 */
 	var showSuccessMessage = function(htmlSuccess){
-		var id = "#success_message";		
-		var delay = 2000;
-		if(successMessageID){
-			id = "#"+successMessageID;
-			delay = 500;
-		}
+		//var id = "#success_message";		
+		//var delay = 2000;
+		//if(successMessageID){
+		//	id = "#"+successMessageID;
+		//	delay = 500;
+		//}
 		
-		jQuery(id).show().html(htmlSuccess);
-		setTimeout("UniteAdminRev.hideSuccessMessage()",delay);
+		t.showInfo({content:htmlSuccess, type:"success", showdelay:0, hidedelay:5, hideon:"", event:"" });
+		
+		//jQuery(id).show().html(htmlSuccess);
+		//setTimeout("UniteAdminRev.hideSuccessMessage()",delay);
+		
+		showAjaxButton();
 	}
 	
 	
@@ -497,14 +540,11 @@ var UniteAdminRev = new function(){
 	/**
 	 * get show image url
 	 */
-	t.getUrlShowImage = function(imageUrl,width,height,exact){
-		var filepath = imageUrl.replace(g_urlContent,"");
+	t.getUrlShowImage = function(imageID,width,height,exact){
 		
-		//if not internal image - return normal image url
-		if(filepath == imageUrl)
-			return(imageUrl);
+		imageID = parseInt(imageID, 0)
 		
-		var urlImage = g_urlAjaxShowImage+"&img="+filepath;
+		var urlImage = g_urlAjaxShowImage+"&img="+imageID;
 		
 		if(width)
 			urlImage += "&w="+width;
@@ -1083,6 +1123,36 @@ var UniteAdminRev = new function(){
 			});
 		});
 		
+		
+	}
+	
+	
+	//adds the update/deactivate option
+	var initUpdateRoutine = function(){
+		
+		jQuery('#rs-validation-activate').click(function(){
+			
+			UniteAdminRev.setAjaxLoaderID("rs_purchase_validation");
+			UniteAdminRev.setAjaxHideButtonID("rs-validation-activate");
+			
+			var data = {
+				code: jQuery('input[name="rs-validation-token"]').val(),
+				username: jQuery('input[name="rs-validation-username"]').val(),
+				api_key: jQuery('input[name="rs-validation-api-key"]').val()
+			}
+			
+			UniteAdminRev.ajaxRequest("activate_purchase_code",data);
+		});
+		
+		jQuery('#rs-validation-deactivate').click(function(){
+			
+			UniteAdminRev.setAjaxLoaderID("rs_purchase_validation");
+			UniteAdminRev.setAjaxHideButtonID("rs-validation-deactivate");
+			
+			UniteAdminRev.ajaxRequest("deactivate_purchase_code",'');
+			
+		});
+		
 	}
 	
 	
@@ -1112,6 +1182,9 @@ var UniteAdminRev = new function(){
 		initGeneralSettings();
 		
 		initSliderMultipleText();
+		
+		initUpdateRoutine();
+		
 	});
 	
 	/**
@@ -1198,6 +1271,7 @@ var UniteAdminRev = new function(){
 		var hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
 		return [hex >> 16,(hex & 0x00FF00) >> 8,(hex & 0x0000FF)];
 	}
+	
 }
 
 

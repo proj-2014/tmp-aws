@@ -1,21 +1,6 @@
 <?php
 if ( !class_exists('lessc') ) {
 	require dirname(__FILE__).'/vendor/lessphp/lessc.inc.php';
-} else {
-	function compiler_add_error() {
-
-		if ( get_settings_errors('options-framework') ) {
-			return;
-		}
-
-		add_settings_error( 'options-framework', 'lessc_error', _x( 'Attention! Theme Options will not be saved, because one of your plugins conflicts with the theme.<br />
-	How to make it work:<br />
-	1. Deactivate all plugins.<br />
-	2. Make required changes. Save Theme Options.<br />
-	3. Activate the plugins back.', 'backend', LANGUAGE_ZONE ), 'error' );
-
-	}
-	// add_action( 'admin_init', 'compiler_add_error', 15 );
 }
 
 /**
@@ -135,13 +120,6 @@ class WPLessCompiler extends lessc
 	{
 		wp_mkdir_p(dirname($stylesheet->getTargetPath()));
 
-		set_error_handler(
-		    create_function(
-		        '$severity, $message, $file, $line',
-		        'throw new ErrorException($message, $severity, $severity, $file, $line);'
-		    )
-		);
-
 		try
 		{
 			do_action('wp-less_stylesheet_save_pre', $stylesheet, $this->getVariables());
@@ -151,7 +129,9 @@ class WPLessCompiler extends lessc
 				$css = $this->compileFile($stylesheet->getSourcePath());
 			}
 
-			file_put_contents( $stylesheet->getTargetPath(), apply_filters('wp-less_stylesheet_save', $css, $stylesheet) );
+			if ( false === file_put_contents( $stylesheet->getTargetPath(), apply_filters('wp-less_stylesheet_save', $css, $stylesheet) ) ) {
+				throw new Exception("Error Saving Stylesheet", 1);
+			}
 
 			chmod( $stylesheet->getTargetPath(), 0666 );
 
@@ -163,7 +143,5 @@ class WPLessCompiler extends lessc
 			// wp_die($e->getMessage());
 			do_action( 'wp-less_save_stylesheet_error', $e );
 		}
-
-		restore_error_handler();
 	}
 }

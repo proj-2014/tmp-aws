@@ -28,8 +28,8 @@ $options[] = array(	"name" => _x('Background', 'theme-options', LANGUAGE_ZONE), 
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "slideshow-bg_color",
 		"std"	=> "#ffffff",
 		"type"	=> "color"
@@ -37,33 +37,33 @@ $options[] = array(	"name" => _x('Background', 'theme-options', LANGUAGE_ZONE), 
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"      => '',
+		"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "slideshow-bg_opacity",
 		"std"       => 100, 
 		"type"      => "slider",
 		"options"   => array( 'java_hide_if_not_max' => true )
 	);
-	
+
 	// hidden area
 	$options[] = array( 'type' => 'js_hide_begin' );
-	
+
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"  => '',
+			"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "slideshow-bg_ie_color",
 			"std"   => "#ffffff",
 			"type"  => "color"
 		);
-	
+
 	$options[] = array( 'type' => 'js_hide_end' );
 
 	// background_img
 	$options[] = array(
-		'type' 			=> 'background_img',
+		"name" 			=> _x( 'Choose / upload background image', 'theme-options', LANGUAGE_ZONE ),
 		'id' 			=> 'slideshow-bg_image',
-		'desc' 			=> _x( 'Choose / upload background image', 'theme-options', LANGUAGE_ZONE ),
+		'type' 			=> 'background_img',
 		'preset_images' => $backgrounds_slideshow_bg_image,
 		'std' 			=> array(
 			'image'			=> '',
@@ -75,11 +75,11 @@ $options[] = array(	"name" => _x('Background', 'theme-options', LANGUAGE_ZONE), 
 
 	// checkbox
 	$options[] = array(
-		"desc"      => _x( 'Fullscreen', 'theme-options', LANGUAGE_ZONE ),
-	    "name"  	=> '',
-	    "id"    	=> 'slideshow-bg_fullscreen',
-	    "type"  	=> 'checkbox',
-	    'std'   	=> 0
+		"desc"  	=> '',
+		"name"      => _x( 'Fullscreen', 'theme-options', LANGUAGE_ZONE ),
+		"id"    	=> 'slideshow-bg_fullscreen',
+		"type"  	=> 'checkbox',
+		'std'   	=> 0
 	);
 
 $options[] = array(	"type" => "block_end");

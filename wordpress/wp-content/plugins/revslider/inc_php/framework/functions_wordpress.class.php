@@ -35,11 +35,6 @@
 		public static function initStaticVars(){
 			//UniteFunctionsRev::printDefinedConstants();
 			
-			self::$urlSite = site_url();
-			
-			if(substr(self::$urlSite, -1) != "/")
-				self::$urlSite .= "/";
-			
 			self::$urlAdmin = admin_url();			
 			if(substr(self::$urlAdmin, -1) != "/")
 				self::$urlAdmin .= "/";
@@ -1138,12 +1133,15 @@
 		 * check the current post for the existence of a short code
 		 */  
 		public static function hasShortcode($shortcode = '') {  
-		      
+		
+			if(is_404())
+				return false;
+				
 		    $post = get_post(get_the_ID());  
 		      
 		    if (empty($shortcode))   
 		        return $found;
-		        		        
+				
 		    $found = false; 
 		        
 		    if (stripos($post->post_content, '[' . $shortcode) !== false )    

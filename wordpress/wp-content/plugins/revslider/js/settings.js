@@ -228,26 +228,32 @@ var UniteSettingsRev = new function(){
 		
 		jQuery(".button-image-select").click(function(){
 			var settingID = this.id.replace("_button","");
-			UniteAdminRev.openAddImageDialog("Choose Image",function(urlImage){
-				
+			UniteAdminRev.openAddImageDialog("Choose Image",function(urlImage, imageID){
 				//update input:
 				jQuery("#"+settingID).val(urlImage);
 				
 				//update preview image:
-				var urlShowImage = UniteAdminRev.getUrlShowImage(urlImage,100,70,true);
-				jQuery("#" + settingID + "_button_preview").html("<img width='100' height='70' src='"+urlShowImage+"'></img>");
+				var urlShowImage = UniteAdminRev.getUrlShowImage(imageID,100,70,true);
+				jQuery("#" + settingID + "_button_preview").html('<div style="width:100px;height:70px;background:url(\''+urlShowImage+'\'); background-position:center center; background-size:cover;"></div>');
 				
 			});
 		});
 		
+		jQuery(".button-image-remove").click(function(){
+			var settingID = this.id.replace("_button_remove","");
+			jQuery("#"+settingID).val('');
+			
+			jQuery("#" + settingID + "_button_preview").html('');
+		});
+		
 		jQuery(".button-image-select-video").click(function(){
-			UniteAdminRev.openAddImageDialog("Choose Image",function(urlImage){
+			UniteAdminRev.openAddImageDialog("Choose Image",function(urlImage, imageID){
 				
 				//update input:
 				jQuery("#input_video_preview").val(urlImage);
 				
 				//update preview image:
-				var urlShowImage = UniteAdminRev.getUrlShowImage(urlImage,200,150,true);
+				var urlShowImage = UniteAdminRev.getUrlShowImage(imageID,200,150,true);
 				jQuery("#video-thumbnail-preview").attr('src', urlShowImage);
 				
 			});

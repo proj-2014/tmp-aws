@@ -236,48 +236,52 @@ function dt_stylesheet_make_ie_compat_rgba( $color, $ie_color, $opacity ) {
     return $return;
 }
 
-/**
- * Web Safe fonts.
- *
- * @return array.
- */
-function dt_stylesheet_get_websafe_fonts() {
-    $fonts = array(
-        'Andale Mono'                   => 'Andale Mono',
-        'Arial'                         => 'Arial',
-        'Arial:600'                     => 'Arial Bold',
-        'Arial:400italic'               => 'Arial Italic',
-        'Arial:600italic'               => 'Arial Bold Italic',
-        'Arial Black'                   => 'Arial Black',
-        'Comic Sans MS'                 => 'Comic Sans MS',
-        'Comic Sans MS:600'             => 'Comic Sans MS Bold',
-        'Courier New'                   => 'Courier New',
-        'Courier New:600'               => 'Courier New Bold',
-        'Courier New:400italic'         => 'Courier New Italic',
-        'Courier New:600italic'         => 'Courier New Bold Italic',
-        'Georgia'                       => 'Georgia',
-        'Georgia:600'                   => 'Georgia Bold',
-        'Georgia:400italic'             => 'Georgia Italic',
-        'Georgia:600italic'             => 'Georgia Bold Italic',
-        'Impact Lucida Console'         => 'Impact Lucida Console',
-        'Lucida Sans Unicode'           => 'Lucida Sans Unicode',
-        'Marlett'                       => 'Marlett',
-        'Minion Web'                    => 'Minion Web',
-        'Symbol'                        => 'Symbol',
-        'Times New Roman'               => 'Times New Roman',
-        'Times New Roman:600'           => 'Times New Roman Bold',
-        'Times New Roman:400italic'     => 'Times New Roman Italic',
-        'Times New Roman:600italic'     => 'Times New Roman Bold Italic',
-        'Tahoma'                        => 'Tahoma',
-        'Trebuchet MS'                  => 'Trebuchet MS',
-        'Trebuchet MS:600'              => 'Trebuchet MS Bold',
-        'Trebuchet MS:400italic'        => 'Trebuchet MS Italic',
-        'Trebuchet MS:600italic'        => 'Trebuchet MS Bold Italic',
-        'Verdana'                       => 'Verdana',
-        'Verdana:600'                   => 'Verdana Bold',
-        'Verdana:400italic'             => 'Verdana Italic',
-        'Verdana:600italic'             => 'Verdana Bold Italic',
-        'Webdings'                      => 'Webdings'
-    );
-    return apply_filters( 'dt_stylesheet_get_websafe_fonts', $fonts );
-}
+if ( ! function_exists( 'dt_stylesheet_get_websafe_fonts' ) ) :
+
+    /**
+     * Web Safe fonts.
+     *
+     * @return array.
+     */
+    function dt_stylesheet_get_websafe_fonts() {
+        $fonts = array(
+            'Andale Mono'                   => 'Andale Mono',
+            'Arial'                         => 'Arial',
+            'Arial:600'                     => 'Arial Bold',
+            'Arial:400italic'               => 'Arial Italic',
+            'Arial:600italic'               => 'Arial Bold Italic',
+            'Arial Black'                   => 'Arial Black',
+            'Comic Sans MS'                 => 'Comic Sans MS',
+            'Comic Sans MS:600'             => 'Comic Sans MS Bold',
+            'Courier New'                   => 'Courier New',
+            'Courier New:600'               => 'Courier New Bold',
+            'Courier New:400italic'         => 'Courier New Italic',
+            'Courier New:600italic'         => 'Courier New Bold Italic',
+            'Georgia'                       => 'Georgia',
+            'Georgia:600'                   => 'Georgia Bold',
+            'Georgia:400italic'             => 'Georgia Italic',
+            'Georgia:600italic'             => 'Georgia Bold Italic',
+            'Impact Lucida Console'         => 'Impact Lucida Console',
+            'Lucida Sans Unicode'           => 'Lucida Sans Unicode',
+            'Marlett'                       => 'Marlett',
+            'Minion Web'                    => 'Minion Web',
+            'Symbol'                        => 'Symbol',
+            'Times New Roman'               => 'Times New Roman',
+            'Times New Roman:600'           => 'Times New Roman Bold',
+            'Times New Roman:400italic'     => 'Times New Roman Italic',
+            'Times New Roman:600italic'     => 'Times New Roman Bold Italic',
+            'Tahoma'                        => 'Tahoma',
+            'Trebuchet MS'                  => 'Trebuchet MS',
+            'Trebuchet MS:600'              => 'Trebuchet MS Bold',
+            'Trebuchet MS:400italic'        => 'Trebuchet MS Italic',
+            'Trebuchet MS:600italic'        => 'Trebuchet MS Bold Italic',
+            'Verdana'                       => 'Verdana',
+            'Verdana:600'                   => 'Verdana Bold',
+            'Verdana:400italic'             => 'Verdana Italic',
+            'Verdana:600italic'             => 'Verdana Bold Italic',
+            'Webdings'                      => 'Webdings'
+        );
+        return apply_filters( 'dt_stylesheet_get_websafe_fonts', $fonts );
+    }
+
+endif;

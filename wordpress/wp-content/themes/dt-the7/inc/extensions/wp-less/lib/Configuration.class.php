@@ -52,10 +52,10 @@ class WPLessConfiguration extends WPPluginToolkitConfiguration
 	  }
 
 	  //previous setting can be overridden for special reasons (dev/prod for example)
-	  if ((defined('WP_DEBUG') && WP_DEBUG) || (defined('WP_LESS_ALWAYS_RECOMPILE') && WP_LESS_ALWAYS_RECOMPILE))
-	  {
-		  $this->setCompilationStrategy('always');
-	  }
+	  // if ((defined('WP_DEBUG') && WP_DEBUG) || (defined('WP_LESS_ALWAYS_RECOMPILE') && WP_LESS_ALWAYS_RECOMPILE))
+	  // {
+		  // $this->setCompilationStrategy('always');
+	  // }
   }
 
 	/**

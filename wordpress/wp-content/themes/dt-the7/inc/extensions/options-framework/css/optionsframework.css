@@ -2,67 +2,63 @@
 /* OptionsFramework Admin Styles */
 /*-------------------------------------------------------------------------------------------*/
 
-.updated, .error {
-	max-width:764px;
-	margin-bottom:0px !important;
-}
-
-.updated.salat {
-	background-color: #e4ffe0;
-	border-color: #73c95c;
+#wpbody-content #optionsframework-metabox.metabox-holder {
+	padding-top: 20px;
 }
 
 #optionsframework {
-	position:relative;
+	position: relative;
 	z-index: 0;
-	max-width:780px;
-	background: none;
-	box-shadow: none;
-	border: 0;
+	max-width: 840px;
 }
 
-#optionsframework .sidebar-name, 
+#optionsframework-wrap h2 {
+	font-size: 23px;
+	font-weight: normal;
+}
+
+#optionsframework-wrap h2 .nav-tab {
+	font-size: 18px;
+	font-weight: normal;
+}
+
 #optionsframework h3 {
+	font-size: 18px;
+	font-weight: normal;
 	cursor: default;
-/*
-	border-top: 0;
-	border-left: 0;
-	border-right: 0;
-*/
+	padding: 10px 15px;
+	background-color: #F9F9F9;
 }
 
-#optionsframework h3 {
-	/* background: none; */
-	font-size: 1.2em;
+#optionsframework h4 {
+	font-size: 16px;
+	font-weight: normal;
 }
-
-#optionsframework .widgets-sortables {
-	margin: 0 0 20px;
-	padding-bottom: 15px;
-
-	border: 1px solid #E5E5E5;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-	-ms-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-	-o-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-}
-
 
 #optionsframework p {
-	margin-bottom:0;
-	padding-bottom:10px;
+	margin-bottom: 0;
+	padding-bottom: 10px;
 }
-
 
 #optionsframework .section .section {
-	padding: 20px 20px 10px 20px;
+	padding: 15px;
 }
+
+#optionsframework .section .section:hover {
+	background-color: #fbfbfb;
+}
+
 #optionsframework .of-element {
 	padding-bottom: 10px;
 }
+
 #optionsframework .of-element .section {
-	padding: 0px 20px 10px 20px;
+	padding: 0px 10px 10px 10px;
+}
+
+#optionsframework .of-title {
+	padding: 0 15px;
+	overflow: hidden;
 }
 
 #optionsframework .section > .section:last-of-type {
@@ -80,26 +76,21 @@
 }
 
 #optionsframework .divider {
-    border-top: 1px solid #E5E5E5;
+    border-top: 1px dotted #E5E5E5;
     height: 0;
-    margin: 5px 0;
-    width: 100%;
+    margin: 10px 0px;
 }
 
 #optionsframework .section .controls {
 	float: left;
-	width: 79%;
+	width: 70%;
 }
 
-#optionsframework .section .explain {
-	width:18%;
+#optionsframework .section .name {
+	width:28%;
 	padding-right: 2%;
 	float: left;
-	font-size: 12px;
 	line-height:16px;
-	/*color: #777;*/
-	/* font-weight: bold; */
-	padding-bottom: 10px;
 }
 
 #optionsframework .section-fields_generator .explain,
@@ -107,7 +98,12 @@
 	display: none;
 }
 #optionsframework .section-fields_generator .controls,
+#optionsframework .section .controls.controls-fullwidth,
 #section-of-preset .explain {
+	width: 100%;
+}
+
+#optionsframework .skins .section.section-images .controls {
 	width: 100%;
 }
 
@@ -131,7 +127,10 @@
 
 
 
-#optionsframework .controls input, #optionsframework .controls select, #optionsframework .controls textarea {
+/* #optionsframework .controls input.of-input[type="text"], */
+#optionsframework .section-fields_generator input,  
+#optionsframework .controls select, 
+#optionsframework .controls textarea {
 	/* margin-bottom: 10px; */
 	width:100%;
 }
@@ -148,7 +147,7 @@
 	margin-right: 10px;
 }
 #optionsframework input.checkbox, #optionsframework input.of-radio {
-	width: auto;
+	/* width: auto; */
 	clear:both;
 }
 #optionsframework .controls .of-color {
@@ -213,6 +212,7 @@
 	max-width: 173px;
 	margin:0 5px 10px 0;
 	border-width: 0px;
+	text-align: center;
 }
 #optionsframework .controls .of-radio-img-inner-container .of-radio-img-label {
 	margin: 0px;
@@ -312,23 +312,30 @@
 #optionsframework .reset-button {
 	float:left;
 	cursor:pointer;
+	margin-right: 10px;
 }
 
 /* Bottom Section */
 
-#optionsframework-submit {
-	position: fixed;
-	z-index: 10;
-	bottom: 35px;
+#submit-wrap {
+	position: absolute;
+	bottom: 0;
 
-	-moz-box-sizing: border-box; 
-	-webkit-box-sizing: border-box; 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
 	box-sizing: border-box;
-	
-	width: 780px;
-	padding: 5px;
+
+	width: 100%;
+	max-width: 840px;
+	margin-right: 20px;
+}
+
+#optionsframework-submit {
+	padding: 10px;
+
 	background-color: #fff;
-	opacity: 0.9;
 
 	border: 1px solid #E5E5E5;
 	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
@@ -337,8 +344,27 @@
 	-o-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-#optionsframework-submit:hover {
+
+#submit-wrap.flow {
+	position: fixed;
+	z-index: 9999;
+
+	margin-right: auto;
+	opacity: 0.9;
+}
+#submit-wrap.flow:hover {
 	opacity: 1;
+}
+
+#submit-wrap.flow #optionsframework-submit {
+	float: right;
+
+	border-bottom: none;
+	-webkit-box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.04);
+	-moz-box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.04);
+	-ms-box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.04);
+	-o-box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.04);
+    box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.04);
 }
 
 #optionsframework .button-primary {
@@ -380,15 +406,15 @@
 }
 
 #optionsframework .controls .of_fields_gen_controls {
-    width: 278px;
+    width: 40%;
+    margin-left: 20%;
     display: inline-block;
     vertical-align: top;
 }
 #optionsframework .controls .of_fields_gen_list {
-    width: 300px;
+    width: 40%;
     display: block;
     vertical-align: top;
-	margin: 0 40px 0 0;
 	padding: 0;
 	float: left;
 }
@@ -449,21 +475,28 @@ div.dt-web-fonts-preview span {
 }
 
 /* Social buttons */
+#optionsframework .section.section-social_buttons .controls {
+	width: 100%;
+}
+#optionsframework .section-social_buttons .connectedSortable {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
 
-#optionsframework .section-social_buttons .connectedSortable  {
-	list-style-type: none;
-	min-height: 31px;
-	margin: 0;
-	padding: 5px 5px 0px 5px;
-	margin-right: 10px;
-	width: 390px;
+	min-height: 43px;
+	margin: 0 0 0 0;
+	padding: 5px 2% 0 5px;
+	width: 68%;
 	border-color: #DFDFDF;
 	border-width: 2px;
 	border-style: solid;
 	float: left;
+	list-style-type: none;
 }
 #optionsframework .section-social_buttons .connectedSortable.tools-palette {
-	width: 143px;
+	width: 30%;
 	border-color: #DFDFDF;
 	border-width: 2px;
 	border-style: dashed;
@@ -499,4 +532,95 @@ div.dt-web-fonts-preview span {
 	border-width: 2px;
 	border-style: dashed;
 	float: left;
+}
+
+/* sortable */
+
+#optionsframework .section.section-sortable .controls {
+	width: 100%;
+}
+
+#optionsframework .section-sortable .connectedSortable {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+
+	min-height: 60px;
+	margin: 0 0 10px 0;
+	padding: 10px;
+	list-style-type: none;
+	background-color: #e1e1e2;
+	float: left;
+	width: 100%;
+}
+
+#optionsframework .section-sortable .connectedSortable li span {
+	vertical-align: middle;
+}
+
+#optionsframework .section-sortable .sortable-field {
+}
+
+#optionsframework .section-sortable .connectedSortable li {
+	cursor: default;
+	margin: 5px;
+	padding: 5px;
+	height: 20px;
+	width: 100px;
+	background-color: rgba(255, 255, 255, 0.6);
+	float: left;
+	color: #3e3e3e;
+	/*display: inline-block;*/
+}
+
+#optionsframework .section-sortable .content-holder li {
+}
+
+#optionsframework .section-sortable .connectedSortable li.of-socbuttons-highlight {
+	height: 20px;
+	width: 100px;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+#optionsframework .section-sortable .connectedSortable li.ui-dt-sb-hidden {
+	display: none;
+}
+
+#optionsframework .section-sortable .sortable-fields-holder {
+	display: inline-block;
+	width: 60%;
+	vertical-align: top;
+}
+
+#optionsframework .section-sortable .sortable-items-holder {
+	display: inline-block;
+	width: 291px;
+	vertical-align: top;
+	margin-left: 32px;
+}
+
+#optionsframework .section-sortable .sortable-items-holder .sortable-palette-title,
+#optionsframework .section-sortable .sortable-fields-holder .sortable-field-title {
+	padding: 10px 0px;
+}
+
+/* import / export */
+#optionsframework .section-import_export_options .explain {
+	display: none;
+}
+
+#optionsframework .section-import_export_options .controls {
+	width: 100%;
+}
+
+#optionsframework .explain {
+	color: #c0c0c0;
+}
+
+/* Hide default widgetareas delete button */
+#section-widgetareas .nav-menu-index-1 .submitdelete,
+#section-widgetareas .nav-menu-index-2 .submitdelete {
+	display: none;
 }

@@ -93,9 +93,6 @@ class DT_Shortcode_Portfolio_Slider extends DT_Shortcode {
 		$attributes['hover_content_visibility'] = in_array($attributes['hover_content_visibility'], array('on_hover', 'always')) ? $attributes['hover_content_visibility'] : 'on_hover';
 		$attributes['hover_content_visibility'] = str_replace('hover', 'hoover', $attributes['hover_content_visibility']);
 
-		// save atts for ... what for ?
-		// $this->atts = $attributes;
-
 		$output = $this->portfolio_slider($attributes);
 
 		return $output; 
@@ -107,32 +104,6 @@ class DT_Shortcode_Portfolio_Slider extends DT_Shortcode {
 	 */
 	public function portfolio_slider( $attributes = array() ) {
 		$config = Presscore_Config::get_instance();
-
-		$related_posts_args = array(
-			'exclude_current'   => false,
-			'post_type'         => 'dt_portfolio',
-			'taxonomy'          => 'dt_portfolio_category',
-			'field'             => 'slug',
-			'args'              => array(
-				'posts_per_page'    => $attributes['number'],
-				'orderby'           => $attributes['orderby'],
-				'order'             => $attributes['order'],
-			)
-		);
-
-		if ( !empty($attributes['category']) ) {
-			$related_posts_args['cats'] = $attributes['category'];
-			$related_posts_args['select'] = 'only';
-		} else {
-			$related_posts_args['select'] = 'all';
-		}
-
-		$attachments_data = presscore_get_related_posts( $related_posts_args );
-
-		$slider_class = array();
-		if ( 'disabled' == $config->get('sidebar_position') ) {
-			$slider_class[] = 'full';
-		}
 
 		$slider_fields = array();
 
@@ -172,7 +143,6 @@ class DT_Shortcode_Portfolio_Slider extends DT_Shortcode {
 		$slider_args = array(
 			'mode' => $attributes['appearance'],
 			'fields' => $slider_fields,
-			'class' => $slider_class,
 			'style' => implode(';', $slider_style),
 			'under_image_buttons' => $attributes['under_image_buttons'],
 			'hover_animation' => $attributes['hover_animation'],
@@ -188,7 +158,43 @@ class DT_Shortcode_Portfolio_Slider extends DT_Shortcode {
 			$slider_args['img_width'] = $attributes['width'];
 		}
 
-		$output = presscore_get_fullwidth_slider_two_with_hovers( $attachments_data, $slider_args );
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+
+			$terms_list = presscore_get_terms_list_by_slug( array( 'slugs' => $attributes['category'], 'taxonomy' => 'dt_portfolio_category' ) );
+
+			$output = '
+				<div class="dt_vc-shortcode_dummy dt_vc-portfolio_scroller" style="height: ' . $slider_args['height'] . 'px;">
+					<h5>Portfolio scroller</h5>
+					<p class="text-small"><strong>Display categories:</strong> ' . $terms_list . '</p>
+				</div>
+			';
+
+		} else {
+
+			$related_posts_args = array(
+				'exclude_current'   => false,
+				'post_type'         => 'dt_portfolio',
+				'taxonomy'          => 'dt_portfolio_category',
+				'field'             => 'slug',
+				'args'              => array(
+					'posts_per_page'    => $attributes['number'],
+					'orderby'           => $attributes['orderby'],
+					'order'             => $attributes['order'],
+				)
+			);
+
+			$related_posts_args['cats'] = $attributes['category'];
+			if ( !empty($attributes['category']) ) {
+				$related_posts_args['select'] = 'only';
+			} else {
+				$related_posts_args['select'] = 'all';
+			}
+
+			$attachments_data = presscore_get_related_posts( $related_posts_args );
+
+			$output = presscore_get_fullwidth_slider_two_with_hovers( $attachments_data, $slider_args );
+
+		}
 
 		return $output;
 	}

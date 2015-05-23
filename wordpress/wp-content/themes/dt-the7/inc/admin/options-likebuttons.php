@@ -1,6 +1,6 @@
 <?php
 /**
- * Like Buttons.
+ * Share buttons.
  */
 
 // File Security Check
@@ -10,8 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  * Page definition.
  */
 $options[] = array(
-		"page_title"	=> _x( "Like Buttons", 'theme-options', LANGUAGE_ZONE ),
-		"menu_title"	=> _x( "Like Buttons", 'theme-options', LANGUAGE_ZONE ),
+		"page_title"	=> _x( "Share Buttons", 'theme-options', LANGUAGE_ZONE ),
+		"menu_title"	=> _x( "Share Buttons", 'theme-options', LANGUAGE_ZONE ),
 		"menu_slug"		=> "of-likebuttons-menu",
 		"type"			=> "page"
 );
@@ -19,7 +19,7 @@ $options[] = array(
 /**
  * Heading definition.
  */
-$options[] = array( "name" => _x('Like buttons', 'theme-options', LANGUAGE_ZONE), "type" => "heading" );
+$options[] = array( "name" => _x('Share Buttons', 'theme-options', LANGUAGE_ZONE), "type" => "heading" );
 
 foreach ( presscore_themeoptions_get_template_list() as $id=>$desc ) {
 

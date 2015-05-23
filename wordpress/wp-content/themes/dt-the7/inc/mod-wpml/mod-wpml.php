@@ -8,17 +8,44 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 /**
- * Change position of icl_redirect_canonical_wrapper.
+ * Dirty hack that fixes front page pagination with custom query
  *
  */
-if ( has_action('template_redirect', 'icl_redirect_canonical_wrapper') ) {
+remove_action( 'template_redirect',   'wp_shortlink_header',             11, 0 );
+add_action( 'template_redirect',   'wp_shortlink_header',             11, 0 );
 
-	remove_action('template_redirect', 'icl_redirect_canonical_wrapper', 11);
-	add_action('template_redirect', 'icl_redirect_canonical_wrapper', 10);
+
+/**
+ * Fix js  errors on pages without WISIWIG editor.
+ *
+ * Add editor for some custom post types
+ */
+function presscore_wpml_modify_custom_post_types() {
+
+	// add editor
+	add_post_type_support( 'dt_slideshow', 'editor' );
+	add_post_type_support( 'dt_gallery', 'editor' );
+	add_post_type_support( 'dt_logos', 'editor' );
+
 }
+add_action( 'init', 'presscore_wpml_modify_custom_post_types', 16 );
+
+/**
+ * Hide editor for some custom post types
+ *
+ */
+function presscore_wpml_hide_richeditor() {
+
+	if ( in_array( get_post_type(), array( 'dt_slideshow', 'dt_gallery', 'dt_logos' ) ) ) {
+		wp_add_inline_style( 'dt-mb-magick', '#postdivrich { display: none; }' );
+	}
+}
+add_action( 'admin_print_styles-post.php', 'presscore_wpml_hide_richeditor' );
+add_action( 'admin_print_styles-post-new.php', 'presscore_wpml_hide_richeditor' );
+
 
 if ( class_exists('WPML_Media') ) {
-	add_action( 'save_post', 'presscore_wpml_media_duplicate', 11, 2 );
+	// add_action( 'save_post', 'presscore_wpml_media_duplicate', 11, 2 );
 }
 
 /**

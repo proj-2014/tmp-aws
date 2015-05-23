@@ -58,7 +58,7 @@ class Presscore_Inc_Widgets_Photos extends WP_Widget {
 			'post_status'       => 'publish',
 			'tax_query'         => array( array(
 				'taxonomy'      => 'dt_gallery_category',
-				'field'         => 'id',
+				'field'         => 'term_id',
 				'terms'         => $instance['cats']
 			) ),
 		);
@@ -136,7 +136,7 @@ class Presscore_Inc_Widgets_Photos extends WP_Widget {
 					'img_id'		=> $post_id,
 					'class'			=> 'rollover rollover-small dt-mfp-item mfp-image',
 					'options'       => array( 'w' => 90, 'h' => 90 ),
-					'wrap'          => "\n" . '<a %HREF% %CLASS% %CUSTOM% title="%RAW_ALT%" data-dt-img-description="%RAW_TITLE%" data-dt-location="' . esc_attr(get_permalink($post_id)) . '"><img %IMG_CLASS% %SRC% %SIZE% %ALT% /></a>' . "\n"
+					'wrap'          => "\n" . '<a %HREF% %CLASS% %CUSTOM% %IMG_TITLE% data-dt-img-description="%RAW_TITLE%" data-dt-location="' . esc_attr(get_permalink($post_id)) . '"><img %IMG_CLASS% %SRC% %SIZE% %ALT% /></a>' . "\n"
 				) );
 			}
 			wp_reset_postdata();

@@ -183,7 +183,6 @@ function presscore_compile_less_vars() {
 					}
 
 					// image
-					$computed_image['image'] = str_replace( content_url(), $relative_base, $computed_image['image'] );
 					$options[ current($less_vars) ] = $computed_image['image'];
 
 					// repeat
@@ -237,9 +236,15 @@ function presscore_compile_less_vars() {
 
 					$computed_keyword = (string) of_get_option($keyword[0], $keyword[1]);
 
-					if ( false !== $interface && isset( $interface[ $computed_keyword ] ) ) {
+					if ( false !== $interface ) {
 
-						$computed_keyword = $interface[ $computed_keyword ];
+						if ( isset( $interface[ $computed_keyword ] ) ) {
+
+							$computed_keyword = $interface[ $computed_keyword ];
+						} else {
+
+							$computed_keyword = current($interface);
+						}
 					}
 
 					$options[ current($less_vars) ] = $computed_keyword;

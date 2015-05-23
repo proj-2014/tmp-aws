@@ -57,7 +57,7 @@ class Presscore_Inc_Widgets_TestimonialsSlider extends WP_Widget {
 			'order'             => $instance['order'],
 			'tax_query'         => array( array(
 				'taxonomy'      => 'dt_testimonials_category',
-				'field'         => 'id',
+				'field'         => 'term_id',
 				'terms'         => $instance['cats']
 			) ),
 		);

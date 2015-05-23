@@ -83,6 +83,7 @@ $DT_META_BOXES[] = array(
 				'masonry'	=> array( _x('Masonry', 'backend metabox', LANGUAGE_ZONE), array('admin-masonry.png', 56, 80) ),
 				'grid'		=> array( _x('Grid', 'backend metabox', LANGUAGE_ZONE), array('admin-grid.png', 56, 80) ),
 			),
+			'divider' => 'bottom',
 
 			'after'		=> '</div>'
 		),
@@ -96,7 +97,6 @@ $DT_META_BOXES[] = array(
 			'type'  	=> 'text',
 			'std'   	=> '20',
 			'desc' 		=> _x('Image paddings (e.g. 5 pixel padding will give you 10 pixel gaps between images)', 'backend metabox', LANGUAGE_ZONE),
-			'top_divider'	=> true,
 
 			'after'		=> '</div>'
 		),
@@ -119,7 +119,7 @@ $DT_META_BOXES[] = array(
 			'before'		=> '<div class="rwmb-hidden-field hide-if-js" data-show-on="template-albums.php">',
 
 			'name'			=> _x('Column target width (px):', 'backend metabox', LANGUAGE_ZONE),
-			'desc'			=> _x('Real column width will slightly wary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
+			'desc'			=> _x('Real column width will slightly vary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
 			'id'    		=> "{$prefix}target_width",
 			'type'  		=> 'text',
 			'std'   		=> '370',
@@ -330,8 +330,7 @@ $DT_META_BOXES[] = array(
 			'name'			=> _x('Images proportions:', 'backend metabox', LANGUAGE_ZONE),
 			'id'    		=> "{$prefix}thumb_proportions",
 			'type'  		=> 'simple_proportions',
-			'std'   		=> array('width' => 1, 'height' => 1),
-			'top_divider'	=> true
+			'std'   		=> array('width' => 1, 'height' => 1)
 		),
 
 		// Number of posts to display on one page
@@ -509,6 +508,7 @@ $DT_META_BOXES[] = array(
 				'masonry'	=> array( _x('Masonry', 'backend metabox', LANGUAGE_ZONE), array('admin-masonry.png', 56, 80) ),
 				'grid'		=> array( _x('Grid', 'backend metabox', LANGUAGE_ZONE), array('admin-grid.png', 56, 80) ),
 			),
+			'divider' => 'bottom',
 
 			'after'		=> '</div>'
 		),
@@ -522,7 +522,6 @@ $DT_META_BOXES[] = array(
 			'type'  	=> 'text',
 			'std'   	=> '20',
 			'desc' 		=> _x('Image paddings (e.g. 5 pixel padding will give you 10 pixel gaps between images)', 'backend metabox', LANGUAGE_ZONE),
-			'top_divider'	=> true,
 
 			'after'		=> '</div>'
 		),
@@ -545,7 +544,7 @@ $DT_META_BOXES[] = array(
 			'before'		=> '<div class="rwmb-hidden-field hide-if-js" data-show-on="template-media.php">',
 
 			'name'			=> _x('Column target width (px):', 'backend metabox', LANGUAGE_ZONE),
-			'desc'			=> _x('Real column width will slightly wary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
+			'desc'			=> _x('Real column width will slightly vary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
 			'id'    		=> "{$prefix}target_width",
 			'type'  		=> 'text',
 			'std'   		=> '370',
@@ -732,8 +731,7 @@ $DT_META_BOXES[] = array(
 			'name'			=> _x('Images proportions:', 'backend metabox', LANGUAGE_ZONE),
 			'id'    		=> "{$prefix}thumb_proportions",
 			'type'  		=> 'simple_proportions',
-			'std'   		=> array('width' => 1, 'height' => 1),
-			'top_divider'	=> true
+			'std'   		=> array('width' => 1, 'height' => 1)
 		),
 
 		// Number of posts to display on one page
@@ -751,11 +749,7 @@ $DT_META_BOXES[] = array(
 			'id'      	=> "{$prefix}load_style",
 			'type'    	=> 'radio',
 			'std'		=> 'ajax_pagination',
-			'options'	=> array(
-				'ajax_pagination'	=> _x('Pagination with AJAX', 'backend metabox', LANGUAGE_ZONE),
-				'ajax_more'			=> _x('"Load more" button with AJAX', 'backend metabox', LANGUAGE_ZONE),
-				'default'			=> _x('Standard (no AJAX)', 'backend metabox', LANGUAGE_ZONE)
-			),
+			'options'	=> $load_style_options,
 		),
 
 		// Show items titles

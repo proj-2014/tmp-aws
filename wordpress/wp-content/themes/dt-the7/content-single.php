@@ -50,9 +50,8 @@ add_filter( 'presscore_post_navigation-args', 'presscore_show_navigation_next_pr
 					'class'		=> $img_class . ' rollover dt-single-mfp-popup dt-mfp-item mfp-image',
 					'img_meta' 	=> $thumb_meta,
 					'img_id'	=> $thumb_id,
-					// 'img_class'	=> $img_class,
 					'options' 	=> $img_options,
-					'wrap'		=> '<a %HREF% %CLASS% %CUSTOM% title="%RAW_ALT%" data-dt-img-description="%RAW_TITLE%"><img %IMG_CLASS% %SRC% %SIZE% %IMG_TITLE% %ALT% /></a>',
+					'wrap'		=> '<a %HREF% %CLASS% %CUSTOM% %IMG_TITLE% data-dt-img-description="%RAW_TITLE%"><img %IMG_CLASS% %SRC% %SIZE% %IMG_TITLE% %ALT% /></a>',
 				) );
 			}
 
@@ -64,7 +63,6 @@ add_filter( 'presscore_post_navigation-args', 'presscore_show_navigation_next_pr
 	<?php wp_link_pages( array( 'before' => '<div class="page-links">' . __( 'Pages:', LANGUAGE_ZONE ), 'after' => '</div>' ) ); ?>
 
 	<?php
-	// $post_meta = presscore_posted_on(false, '');
 	$post_meta = presscore_new_posted_on( 'post' );
 	$share_buttons = presscore_display_share_buttons('post', array('echo' => false));
 	$share_buttons = str_replace('class="entry-share', 'class="entry-share wf-td', $share_buttons);

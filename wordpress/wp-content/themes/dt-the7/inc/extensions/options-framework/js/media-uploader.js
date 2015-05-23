@@ -55,10 +55,10 @@
 		}
         
 		function optionsframework_remove_file(selector) {
-			selector.find('.remove-image').hide();
 			selector.find('.upload').val('');
 			selector.find('.of-background-properties').hide();
 			selector.find('.screenshot').slideUp();
+			selector.find('.remove-image').unbind();
 			selector.find('.remove-file').unbind().addClass('upload-button').removeClass('remove-file').val(optionsframework_l10n.upload);
 			selector.find('.upload-id').val(0);
 			// We don't display the upload button if .upload-notice is present

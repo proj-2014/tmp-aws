@@ -27,11 +27,8 @@
 			margin: 0 5px 0 0 !important;
 		}
 
-
-.wpb_bootstrap_modals [class*="dt_vc_ico"].vc-element-icon {
-	/*margin-top: -1px;*/
-	/*height: 16px;*/
-	/*width: 16px;*/
+/*
+[class*="dt_vc_ico"].vc_element-icon {
 	background-position: center center;
 	background-repeat: no-repeat;
 }
@@ -48,105 +45,84 @@
 		display: block;
 		clear: both;
 	}
-
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_quote,
-.dt_vc_sc_quote.wpb_content_element > .wpb_element_wrapper  {
-	background-image: url("../includes/quote/quotes.png");
+*/
+.vc_element-icon.dt_vc_ico_quote {
+	background-image: url("../includes/quote/quotes.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_call_to_action,
-.dt_vc_sc_call_to_action.wpb_content_element > .wpb_element_wrapper  {
-	background-image: url("../includes/call-to-action/call-to-action.png");
+.vc_element-icon.dt_vc_ico_call_to_action {
+	background-image: url("../includes/call-to-action/call-to-action.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_teaser,
-.dt_vc_sc_teaser.wpb_content_element > .wpb_element_wrapper  {
-	background-image: url("../includes/shortcode-teasers/sc-teaser.png");
+.vc_element-icon.dt_vc_ico_teaser {
+	background-image: url("../includes/shortcode-teasers/sc-teaser.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_banner,
-.dt_vc_sc_banner.wpb_content_element > .wpb_element_wrapper  {
-	background-image: url("../includes/banner/banner.png");
+.vc_element-icon.dt_vc_ico_banner {
+	background-image: url("../includes/banner/banner.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_contact_form,
-.dt_vc_sc_contact_form.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/contact-form/contact-form.png");
+.vc_element-icon.dt_vc_ico_contact_form {
+	background-image: url("../includes/contact-form/contact-form.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_map,
-.dt_vc_sc_map.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/map/map.png");
+.vc_element-icon.dt_vc_ico_map {
+	background-image: url("../includes/map/map.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_blog_posts_small,
-.dt_vc_sc_blog_posts_small.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/blog-posts-small/blog-posts-small.png");
+.vc_element-icon.dt_vc_ico_blog_posts_small {
+	background-image: url("../includes/blog-posts-small/blog-posts-small.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_blog_posts,
-.dt_vc_sc_blog_posts.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/blog-posts/blog-posts.png");
+.vc_element-icon.dt_vc_ico_blog_posts {
+	background-image: url("../includes/blog-posts/blog-posts.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_portfolio_slider,
-.dt_vc_sc_portfolio_slider.wpb_content_element > .wpb_element_wrapper,
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_portfolio,
-.dt_vc_sc_portfolio.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/portfolio-slider/portfolio.png");
+.vc_element-icon.dt_vc_ico_portfolio_slider,
+.vc_element-icon.dt_vc_ico_portfolio {
+	background-image: url("../includes/portfolio-slider/portfolio.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_small_photos,
-.dt_vc_sc_small_photos.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/small-photos/photos-slideshow.png");
+.vc_element-icon.dt_vc_ico_small_photos {
+	background-image: url("../includes/small-photos/photos-slideshow.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_slideshow,
-.dt_vc_sc_slideshow.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/slideshow/slider.png");
+.vc_element-icon.dt_vc_ico_slideshow {
+	background-image: url("../includes/slideshow/slider.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_logos,
-.dt_vc_sc_logos.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/logos/clients-logos.png");
+.vc_element-icon.dt_vc_ico_logos {
+	background-image: url("../includes/logos/clients-logos.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_team,
-.dt_vc_sc_team.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/team/team.png");
+.vc_element-icon.dt_vc_ico_team {
+	background-image: url("../includes/team/team.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_testimonials,
-.dt_vc_sc_testimonials.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/testimonials/testimonials.png");
+.vc_element-icon.dt_vc_ico_testimonials {
+	background-image: url("../includes/testimonials/testimonials.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_gap,
-.dt_vc_sc_gap.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/gap/gap.png");
+.vc_element-icon.dt_vc_ico_gap {
+	background-image: url("../includes/gap/gap.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_divider,
-.dt_vc_sc_divider.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/divider/divider.png");
+.vc_element-icon.dt_vc_ico_divider {
+	background-image: url("../includes/divider/divider.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_fancy_image,
-.dt_vc_sc_fancy_image.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/fancy-image/fancy-img.png");
+.vc_element-icon.dt_vc_ico_fancy_image {
+	background-image: url("../includes/fancy-image/fancy-img.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_button,
-.dt_vc_sc_button.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/button/buttons.png");
+.vc_element-icon.dt_vc_ico_button {
+	background-image: url("../includes/button/buttons.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_list,
-.dt_vc_sc_list.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/list/list.png");
+.vc_element-icon.dt_vc_ico_list {
+	background-image: url("../includes/list/list.png") !important;
 }
 
-.wpb_bootstrap_modals .vc-element-icon.dt_vc_ico_benefits,
-.dt_vc_sc_benefits.wpb_content_element > .wpb_element_wrapper {
-	background-image: url("../includes/benefits/benefits.png");
+.vc_element-icon.dt_vc_ico_benefits {
+	background-image: url("../includes/benefits/benefits.png") !important;
 }

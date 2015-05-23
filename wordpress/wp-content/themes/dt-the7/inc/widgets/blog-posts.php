@@ -58,7 +58,7 @@ class Presscore_Inc_Widgets_BlogPosts extends WP_Widget {
         		'select'			=> $instance['select'],
         		'post_type' 		=> 'post',
         		'taxonomy'			=> 'category',
-        		'field'				=> 'id',
+        		'field'				=> 'term_id',
         		'args'				=> array(
         			'posts_per_page' 	=> $instance['show'],
         			'orderby'			=> $instance['orderby'],
@@ -66,14 +66,9 @@ class Presscore_Inc_Widgets_BlogPosts extends WP_Widget {
         		)
         	) );
 
-        	// unset thumbnails
-        	if ( !$instance['thumbnails'] ) {
-        		foreach ( $attachments_data as $k=>$v ) {
-        			$attachments_data[ $k ]['full'] = '';
-        		}
-        	}
+			$list_args = array( 'show_images' => (boolean) $instance['thumbnails'] );
 
-        	$posts_list = presscore_get_posts_small_list( $attachments_data );
+        	$posts_list = presscore_get_posts_small_list( $attachments_data, $list_args );
         	if ( $posts_list ) {
 
         		foreach ( $posts_list as $p ) {

@@ -285,6 +285,70 @@ var RevSliderAdmin = new function(){
 		
 		
 		/**
+		Init Slider Spinner Admin View
+		**/				
+		this.initSpinnerAdmin = function() {
+			jQuery('#use_spinner_row').parent().prepend('<div id="spinner_preview"></div>');
+			var spin = jQuery('#spinner_preview');
+			var sel = jQuery('#use_spinner');	
+			var col = jQuery('#spinner_color');					
+			var oldcol = col.val();
+			resetSpin(spin);		 
+			
+			sel.on("change",function() {
+				resetSpin(spin,true);
+			});	
+			setInterval(function() {
+				if (oldcol!=col.val()) {
+					spinnerColorChange();	
+					oldocl=col.val();
+				}												
+			},300)								
+		}
+		/**
+		CHANGE SPINNER COLOR ON CALL BACK
+		**/
+		function spinnerColorChange() {
+				var col = jQuery('#spinner_color').val();	
+				var sel = jQuery('#use_spinner');
+				if (sel.val()==0 || sel.val()==5) col ="#ffffff";
+				
+				var spin = jQuery('#spinner_preview .tp-loader.tp-demo');
+				if (spin.hasClass("spinner0") || spin.hasClass("spinner1") || spin.hasClass("spinner2")) {
+					spin.css({'backgroundColor':col});
+				} else {
+					spin.find('div').css({'backgroundColor':col});
+				}
+		};
+		
+		/**
+		RESET SPINNER DEMO
+		**/
+		function resetSpin(spin,remove) {
+				var sel = jQuery('#use_spinner');
+				spin.find('.tp-loader').remove();
+				spin.append('<div class="tp-loader tp-demo">'+
+													  		'<div class="dot1"></div>'+
+													  	    '<div class="dot2"></div>'+
+													  	    '<div class="bounce1"></div>'+
+															'<div class="bounce2"></div>'+
+															'<div class="bounce3"></div>'+
+														 '</div>');															 															 
+				spin.find('.tp-demo').addClass("spinner"+sel.val());	
+				if (sel.val()==0 || sel.val()==5) {
+					//jQuery('#spinner_color').val("#ffffff");
+					jQuery('#spinner_color_row').css({display:"none"});
+				} else {
+					jQuery('#spinner_color_row').css({display:"block"});
+				}
+				spinnerColorChange();
+				
+		};
+		
+
+		
+		
+		/**
 		 * init "slider->add" view.
 		 */
 		this.initAddSliderView = function(){
@@ -297,6 +361,9 @@ var RevSliderAdmin = new function(){
 			enableSliderViewResponsitiveFields(false,false,false,"normal"); //show grid settings for fixed
 			
 			jQuery("#reset_slide_button_row").parent().parent().parent().hide();
+			
+			
+			this.initSpinnerAdmin();
 		}
 		
 		/**
@@ -418,6 +485,9 @@ var RevSliderAdmin = new function(){
 			
 			jQuery('#reset_transitions option')[0].checked = true;
 			jQuery('#reset_transition_duration').val(0);
+			
+			
+			this.initSpinnerAdmin();
 		}
 		
 		

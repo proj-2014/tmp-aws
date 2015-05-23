@@ -24,6 +24,39 @@ function of_sanitize_social_buttons($input) {
 }
 add_filter( 'of_sanitize_social_buttons', 'of_sanitize_social_buttons' );
 
+/* Sortable */
+
+function of_sanitize_sortable( $input, $option ) {
+	$output = array();
+
+	if ( empty($option['items']) || empty($option['fields']) ) {
+		return $output;
+	}
+
+	$items = array_keys($option['items']);
+	$fields = array_keys($option['fields']);
+
+	foreach ( (array)$input as $field_id=>$field_items ) {
+		
+		if ( !in_array($field_id, $fields) ) {
+			continue;
+		}
+
+		foreach ( (array)$field_items as $field_item ) {
+			
+			if ( !in_array($field_item, $items) ) {
+				continue;
+			}
+
+			$output[ $field_id ][] = $field_item;
+		}
+		
+	}
+
+	return $output;
+}
+add_filter( 'of_sanitize_sortable', 'of_sanitize_sortable', 10, 2 );
+
 /* Without sanitize */
 
 function of_sanitize_without_sanitize($input) {
@@ -178,7 +211,9 @@ function of_sanitize_textarea($input) {
 		$input
 	);
 
+	add_filter( 'safe_style_css', 'of_add_safe_style_css' );
 	$output = wp_kses( $output, $allowed_tags );
+	remove_filter( 'safe_style_css', 'of_add_safe_style_css' );
 
 	$output = str_replace(
 		array( '%callto%' ),
@@ -187,6 +222,15 @@ function of_sanitize_textarea($input) {
 	);
 
 	return $output;
+}
+
+function of_add_safe_style_css( $allowed_attr = array() ) {
+
+	$of_allowed_attr = array(
+		'max-width'
+	);
+
+	return array_merge( $allowed_attr, $of_allowed_attr );
 }
 
 add_filter( 'of_sanitize_textarea', 'of_sanitize_textarea' );
@@ -241,6 +285,10 @@ add_filter( 'of_sanitize_multicheck', 'of_sanitize_multicheck', 10, 2 );
 
 add_filter( 'of_sanitize_color', 'of_sanitize_color', 10, 2 );
 
+/* Gradient */
+
+add_filter( 'of_sanitize_gradient', 'of_sanitize_gradient', 10, 2 );
+
 /* Uploader */
 
 function of_sanitize_upload( $input, $option = array() ) {
@@ -259,24 +307,33 @@ function of_sanitize_upload( $input, $option = array() ) {
 			$filetype = wp_check_filetype($val);
 			if ( $filetype["ext"] ) {
 				//todo check in wp folder installation
-				
+
 				$_url = parse_url( $val );
-				$url = explode( site_url(), $val );
-				
+
+				$scheme = isset($_url['scheme']) ? $_url['scheme'] : null;
+				$site_url = site_url('', $scheme);
+
+				$url = explode( $site_url, $val );
+
 				if ( ! empty( $_url['scheme'] ) && ! empty( $url[0] ) ) {
 					$val = '';
 				}else { 
-					$val = str_replace( site_url(), '', $val );
+					$val = str_replace( $site_url, '', $val );
 				}
 			}
 		}
 		$output[] = $val;
 		$output[] = $id;
 	}else {
+
 		$filetype = wp_check_filetype( $input );
 		if ( $filetype["ext"] ) {
 			//todo check in wp folder installation
-			$output = str_replace( site_url(), '', $input );
+
+			$_url = parse_url( $input );
+			$scheme = isset($_url['scheme']) ? $_url['scheme'] : null;
+
+			$output = str_replace( site_url('', $scheme), '', $input );
 		}
 	}
 
@@ -316,6 +373,13 @@ function of_sanitize_allowedposttags($input) {
 
 add_filter( 'of_sanitize_info', 'of_sanitize_allowedposttags' );
 
+/**
+ * Sanitize email
+ */
+function of_sanitize_email( $input ) {
+	return sanitize_email( $input );
+}
+add_filter( 'of_sanitize_email', 'of_sanitize_email' );
 
 /* Check that the key value sent is valid */
 
@@ -538,6 +602,41 @@ function of_sanitize_color( $input, $option = array() ) {
 }
 
 /**
+ * Sanitize gradient.
+ *
+ */
+function of_sanitize_gradient( $input, $option = array() ) {
+
+	if ( !is_array($input) ) {
+		$input = array();
+	}
+
+	$std0 = '';
+	$std1 = '';
+
+	if ( !empty($option['std']) && is_array($option['std']) ) {
+
+		if ( !empty($option['std'][0]) ) {
+			$std0 = $option['std'][0];
+		}
+
+		if ( !empty($option['std'][1]) ) {
+			$std1 = $option['std'][1];
+		}
+	}
+
+	if ( !array_key_exists(0, $input) ) {
+		$input['0'] = $std0;
+	}
+
+	if ( !array_key_exists(1, $input) ) {
+		$input['1'] = $std1;
+	}
+
+	return array( 0 => of_sanitize_hex( $input['0'], $std0 ), 1 => of_sanitize_hex( $input['1'], $std1 ) );
+}
+
+/**
  * Get recognized font sizes.
  *
  * Returns an indexed array of all recognized font sizes.
@@ -665,7 +764,26 @@ add_filter( 'of_background_position_y', 'of_sanitize_background_position_y' );
  * Description here.
  *
  */
-function of_sanitize_dimensions( $input = '' ) {
+function of_sanitize_absint( $input = '' ) {
 	return absint($input);
 }
-add_filter( 'of_sanitize_dimensions', 'of_sanitize_dimensions' );
+add_filter( 'of_sanitize_dimensions', 'of_sanitize_absint' );
+add_filter( 'of_sanitize_pages_list', 'of_sanitize_absint' );
+
+/**
+ * Sanitize css width.
+ *
+ */
+function of_sanitize_css_width( $input = '' ) {
+
+	preg_match( '/(\d*)(px|%)?/', (string) $input, $matches );
+
+	if ( array_key_exists(2, $matches) && in_array( $matches[2], array( 'px', '%' ) ) ) {
+		$input = absint( $matches[1] ) . $matches[2];
+	} else {
+		$input = absint( $input ) . 'px';
+	}
+
+	return $input;
+}
+add_filter( 'of_sanitize_css_width', 'of_sanitize_css_width' );

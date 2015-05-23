@@ -76,13 +76,6 @@ class Dt_Walker_Nav_Menu extends Walker_Nav_Menu {
 			if ( !empty($args->please_be_mega_menu) ) {
 
 
-				$columns_classes = array(
-					1 => 'wf-1',
-					2 => 'wf-1-2',
-					3 => 'wf-1-3',
-					4 => 'wf-1-4',
-					5 => 'wf-1-5'
-				);
 
 				if ( 0 == $depth ) {
 
@@ -96,7 +89,15 @@ class Dt_Walker_Nav_Menu extends Walker_Nav_Menu {
 					}
 				}
 
-				if ( $this->dt_fat_menu ) {
+				if ( $this->dt_fat_menu && !empty($args->please_be_fat) ) {
+
+					$columns_classes = array(
+						1 => 'wf-1',
+						2 => 'wf-1-2',
+						3 => 'wf-1-3',
+						4 => 'wf-1-4',
+						5 => 'wf-1-5'
+					);
 
 					if ( 0 == $depth ) {
 
@@ -188,6 +189,7 @@ class Dt_Walker_Nav_Menu extends Walker_Nav_Menu {
 				if ( !empty($item->dt_mega_menu_icon) ) {
 
 					switch ( $item->dt_mega_menu_icon ) {
+
 						case 'image' :
 
 							if ( !empty($item->dt_mega_menu_image) ) {
@@ -211,6 +213,7 @@ class Dt_Walker_Nav_Menu extends Walker_Nav_Menu {
 							break;
 					} 
 				}
+
 			}
 			// mega menu part ends
 
@@ -238,16 +241,35 @@ class Dt_Walker_Nav_Menu extends Walker_Nav_Menu {
 				$classes[] = 'has-children';
 			}
 
-			// nonclicable parent menu items
+			$atts = array();
+			$atts['title']  = ! empty( $item->attr_title ) ? $item->attr_title : '';
+			$atts['target'] = ! empty( $item->target )     ? $item->target     : '';
+			$atts['rel']    = ! empty( $item->xfn )        ? $item->xfn        : '';
+			$atts['href']   = ! empty( $item->url )        ? $item->url        : '';
+
+			if ( ! $args->parent_clicable && $dt_is_parent ) {
+				$atts['onclick'] = 'return false;';
+				$atts['style'] = 'cursor: default;';
+
+				$if_parent_not_clickable = isset( $args->if_parent_not_clickable ) ? $args->if_parent_not_clickable : '';
+
+				$classes[] = 'no-link';
+			}
+
+			$atts = apply_filters( 'nav_menu_link_attributes', $atts, $item, $args );
+
+			$item_href = esc_url( $atts['href'] );
+			$item_title = esc_attr( $atts['title'] );
+
+			unset( $atts['href'], $atts['title'] );
+
 			$attributes = '';
 
-			$attributes .= !empty( $item->target ) ? '" target="'. esc_attr( $item->target ) : '';
-			$attributes .= !empty( $item->xfn ) ? '" rel="'. esc_attr( $item->xfn ) : '';
-
-			if ( !$args->parent_clicable && $dt_is_parent ) {
-				$attributes .= '" onclick="return false;" style="cursor: default;';
-				$if_parent_not_clickable = isset( $args->if_parent_not_clickable ) ? $args->if_parent_not_clickable : '';
-				$classes[] = 'no-link';
+			foreach ( $atts as $attr => $value ) {
+				if ( ! empty( $value ) ) {
+					$value = esc_attr( $value );
+					$attributes .= '" ' . $attr . '="' . $value;
+				}
 			}
 
 			$before_link = $after_link = '';
@@ -274,23 +296,25 @@ class Dt_Walker_Nav_Menu extends Walker_Nav_Menu {
 					'%IF_PARENT_NOT_CLICKABLE%',
 					'%DESCRIPTION%',
 					'%SPAN_DESCRIPTION%',
-					'%ICON%'
+					'%ICON%',
+					'%ID%'
 				),
 				array(
-					esc_attr($item->url) . $attributes,
+					$item_href . $attributes,
 					$args->link_before . $dt_title . $args->link_after,
-					!empty($item->attr_title) ? ' title="'. esc_attr( $item->attr_title ). '"':'',
+					! empty( $item_title ) ? ' title="'. $item_title . '"':'',
 					esc_attr( $class_names ),
 					$first_class,
 					$before_link,
 					$after_link,
 					$depth + 1,
 					$act_class,
-					esc_attr($item->url),
+					$item_href,
 					$if_parent_not_clickable,
-					esc_html($item->description),
+					esc_html( $item->description ),
 					$item->description ? '<span class="menu-subtitle">' . esc_html($item->description) . '</span>' : '',
-					$item_icon
+					$item_icon,
+					$id
 				),
 				$args->dt_item_wrap_start
 			);
@@ -300,46 +324,5 @@ class Dt_Walker_Nav_Menu extends Walker_Nav_Menu {
 	function end_el( &$output, $item, $depth = 0, $args = array() ) {
 		$output .= $args->dt_item_wrap_end;
 		$this->dt_is_first = false;
-	}
-
-	/**
-	 * TODO: remove it in 2.2.0.
-	 *
-	 */
-	function dt_menu_extra_prepare () {
-		global $wp_object_cache;
-
-		if ( 1 || $this->dt_menu_parents || empty( $wp_object_cache->cache['posts'] ) ) { return false; }
-
-		// get menu items from cache
-		$menu_items = array();
-		foreach ( $wp_object_cache->cache['posts'] as $menu_item ) {
-			if ( ! isset( $menu_item->post_type ) ) { continue; }
-			if ( 'nav_menu_item' != $menu_item->post_type ) { continue; }
-			$menu_items[ $menu_item->ID ] = $menu_item;
-		}
-
-		// form menu items parents array
-		$prev = 0;
-		foreach ( $menu_items as $menu_item ) {
-
-			// get menu item meta from cache
-			$item_meta = wp_cache_get( $menu_item->ID, 'post_meta' );
-
-			// get menu item parent
-			$menu_item_parent = isset( $item_meta['_menu_item_menu_item_parent'] ) ? intval( $item_meta['_menu_item_menu_item_parent'][0] ) : 0;
-
-			// nonclicable parent menu items
-			if ( $prev != $menu_item_parent && $menu_item_parent ) {
-				$this->dt_menu_parents[] = $menu_item_parent;
-				$prev = $menu_item_parent;
-			}
-
-			// last menu item
-			if ( ! $menu_item_parent ){
-				$this->dt_last_elem = $menu_item->ID;
-			}
-		}
-		$this->dt_menu_parents = array_unique( $this->dt_menu_parents );
 	}
 }

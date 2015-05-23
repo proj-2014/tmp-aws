@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  * Page definition.
  */
 $options[] = array(
-		"page_title"	=> _x( "Theme update", 'theme-options', 'presscore' ),
-		"menu_title"	=> _x( "Theme update", 'theme-options', 'presscore' ),
+		"page_title"	=> _x( "Theme Update", 'theme-options', LANGUAGE_ZONE ),
+		"menu_title"	=> _x( "Theme Update", 'theme-options', LANGUAGE_ZONE ),
 		"menu_slug"		=> "of-themeupdate-menu",
 		"type"			=> "page"
 );
@@ -20,16 +20,16 @@ $options[] = array(
 /**
  * Heading definition.
  */
-$options[] = array( "name" => _x('Theme update', 'theme-options', 'presscore'), "type" => "heading" );
+$options[] = array( "name" => _x('Theme Update', 'theme-options', LANGUAGE_ZONE), "type" => "heading" );
 
 /**
  * User credentials.
  */
-$options[] = array(	"name" => _x('User credentials', 'theme-options', 'presscore'), "type" => "block_begin" );
+$options[] = array(	"name" => _x('User credentials', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
 
 	// input
 	$options[] = array(
-		"desc"		=> _x( 'Themeforest user name', 'theme-options', 'presscore' ),
+		"name"		=> _x( 'Themeforest user name', 'theme-options', LANGUAGE_ZONE ),
 		"id"		=> 'theme_update-user_name',
 		"std"		=> '',
 		"type"		=> 'text',
@@ -38,7 +38,7 @@ $options[] = array(	"name" => _x('User credentials', 'theme-options', 'presscore
 
 	// input
 	$options[] = array(
-		"desc"		=> _x( 'Secret API key', 'theme-options', 'presscore' ),
+		"name"		=> _x( 'Secret API key', 'theme-options', LANGUAGE_ZONE ),
 		"id"		=> 'theme_update-api_key',
 		"std"		=> '',
 		"type"		=> 'password',

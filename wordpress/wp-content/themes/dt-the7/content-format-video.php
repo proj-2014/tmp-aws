@@ -79,7 +79,7 @@ if ( 'wide' == $preview_mode ) {
 
 			$thumb_args['href'] = $video_url;
 			$thumb_args['class'] = 'video-icon dt-single-mfp-popup dt-mfp-item mfp-iframe';
-			$thumb_args['wrap'] = '<img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /><a %HREF% %CLASS% title="%RAW_ALT%" data-dt-img-description="%RAW_TITLE%"></a>';
+			$thumb_args['wrap'] = '<img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /><a %HREF% %CLASS% %IMG_TITLE% data-dt-img-description="%RAW_TITLE%"></a>';
 
 			$media = dt_get_thumb_img( $thumb_args );
 

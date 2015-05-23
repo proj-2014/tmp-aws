@@ -165,7 +165,7 @@ if ( ($show_content && $desc_on_hover) || $is_new_hover ) {
 			'class'		=> $link_class,
 			'custom'	=> $link_custom,
 			'echo'		=> false,
-			'wrap'		=> '<a %HREF% %CLASS% %CUSTOM% title="%RAW_ALT%"><img %IMG_CLASS% %SRC% %IMG_TITLE% %ALT% %SIZE% /></a>',
+			'wrap'		=> '<a %HREF% %CLASS% %CUSTOM% %IMG_TITLE%><img %IMG_CLASS% %SRC% %IMG_TITLE% %ALT% %SIZE% /></a>',
 		);
 
 		// if cover not excluded, not pass protected and only one

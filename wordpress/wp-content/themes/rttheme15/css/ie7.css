@@ -1,0 +1,65 @@
+	.content{
+		display: block;
+	}
+
+	span.frame,.imagemask, .imagemask img{
+		width: auto;
+		max-width: auto;
+		min-width: auto;
+	}
+
+ 	/* Layout general*/
+	#container{
+		width:auto;
+		max-width:none !important;
+		border:0 !important; 
+	}
+	
+	/* Layout general*/
+	#wrapper{ 
+		padding:0;
+		border:0 !important; 
+	}
+	
+	/* background border */
+	.background_pic_border{
+		max-width:none !important;
+	}
+	
+	/* background image holder */
+	.background_pic_holder{ 
+		overflow:hidden !important;
+	} 
+
+	/* backgroun curv image */	
+	.back-curv{ 
+		max-width:none !important; 
+	} 
+	
+	
+	#comments ol.commentlist li .comment-body .comment-meta,.cancel-reply{	
+		float:none;
+		margin-left:30px;
+	}
+	
+	
+	 
+	/* single page categories */ 	
+	.content .blog.single .post_data .categories{  
+		display:inline !important; 
+	}
+ 
+	/* coda */
+	.coda-nav ul li a {  padding: 0 4px; font-size:7px;  line-height:2px !important; }
+
+
+	/* framework fixes */
+	.box .five.box{
+		width: 16.7% !important;
+	}
+
+ 
+	.box.dynamic_sidebar.widget.widget_recent_posts_gallery {
+	    position: relative;
+	    z-index: 9999;
+	}	

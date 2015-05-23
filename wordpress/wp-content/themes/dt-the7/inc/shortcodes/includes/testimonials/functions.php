@@ -82,19 +82,36 @@ class DT_Shortcode_Testimonials extends DT_Shortcode {
 	 *
 	 */
 	public function testimonials_list( $attributes = array() ) {
+		global $post;
 		$dt_query = $this->get_posts_by_terms( $attributes );
 
 		$output = '';
 		if ( $dt_query->have_posts() ) {
 
-			foreach ( $dt_query->posts as $dt_post ) {
+			$post_backup = $post;
 
-				$output .= '<div class="wf-cell wf-1"><div class="testimonial-item">' . Presscore_Inc_Testimonials_Post_Type::render_testimonial( $dt_post->ID ) . '</div></div>';
+			while ( $dt_query->have_posts() ) { $dt_query->the_post();
+
+				$output .= '<div class="wf-cell wf-1"><div class="testimonial-item">' . Presscore_Inc_Testimonials_Post_Type::render_testimonial() . '</div></div>';
 
 			}
 
+			$post = $post_backup;
+			setup_postdata( $post );
+
 			$output = '<div class="wf-container testimonials-list">' . $output . '</div>';
 		} // if have posts
+
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+			$terms_list = presscore_get_terms_list_by_slug( array( 'slugs' => $attributes['category'], 'taxonomy' => 'dt_testimonials_category' ) );
+
+			$output = '
+				<div class="dt_vc-shortcode_dummy dt_vc-testimonials" style="height: 250px;">
+					<h5>Testimonials list</h5>
+					<p class="text-small"><strong>Display categories:</strong> ' . $terms_list . '</p>
+				</div>
+			';
+		}
 
 		return $output;
 	}
@@ -104,20 +121,25 @@ class DT_Shortcode_Testimonials extends DT_Shortcode {
 	 *
 	 */
 	public function testimonials_masonry( $attributes = array() ) {
-
+		global $post;
 		$dt_query = $this->get_posts_by_terms( $attributes );
 
 		$output = '';
 		if ( $dt_query->have_posts() ) {
 
-			foreach ( $dt_query->posts as $dt_post ) {
+			$post_backup = $post;
+
+			while ( $dt_query->have_posts() ) { $dt_query->the_post();
 
 				$output .= sprintf(
 					'<div class="iso-item wf-cell"><div class="testimonial-item">%s</div></div>',
-					Presscore_Inc_Testimonials_Post_Type::render_testimonial( $dt_post->ID )
+					Presscore_Inc_Testimonials_Post_Type::render_testimonial()
 				);
 
 			}
+
+			$post = $post_backup;
+			setup_postdata( $post );
 
 			$masonry_container_data_attr = array(
 				'data-padding="' . intval($attributes['padding']) . 'px"',
@@ -140,6 +162,17 @@ class DT_Shortcode_Testimonials extends DT_Shortcode {
 
 		} // if have posts
 
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+			$terms_list = presscore_get_terms_list_by_slug( array( 'slugs' => $attributes['category'], 'taxonomy' => 'dt_testimonials_category' ) );
+
+			$output = '
+				<div class="dt_vc-shortcode_dummy dt_vc-testimonials" style="height: 250px;">
+					<h5>Testimonials masonry</h5>
+					<p class="text-small"><strong>Display categories:</strong> ' . $terms_list . '</p>
+				</div>
+			';
+		}
+
 		return $output;
 	}
 
@@ -148,6 +181,7 @@ class DT_Shortcode_Testimonials extends DT_Shortcode {
 	 *
 	 */
 	public function testimonials_slider( $attributes = array() ) {
+		global $post;
 		$dt_query = $this->get_posts_by_terms( $attributes );
 
 		$autoslide = absint($attributes['autoslide']);
@@ -155,18 +189,35 @@ class DT_Shortcode_Testimonials extends DT_Shortcode {
 		$output = '';
 		if ( $dt_query->have_posts() ) {
 
+			$post_backup = $post;
+
 			$output .= '<ul class="testimonials slider-content rsCont"' . ($autoslide ? ' data-autoslide="' . $autoslide . '"' : '') . '>' . "\n";
 
-			foreach ( $dt_query->posts as $dt_post ) {
+			while ( $dt_query->have_posts() ) { $dt_query->the_post();
 
-				$output .= '<li>' . Presscore_Inc_Testimonials_Post_Type::render_testimonial( $dt_post->ID ) . '</li>';
+				$output .= '<li>' . Presscore_Inc_Testimonials_Post_Type::render_testimonial() . '</li>';
 
 			}
+
+			$post = $post_backup;
+			setup_postdata( $post );
 
 			$output .= '</ul>' . "\n";
 
 			$output = '<section class="testimonial-item testimonial-item-slider">' . $output . '</section>';
+
 		} // if have posts
+
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+			$terms_list = presscore_get_terms_list_by_slug( array( 'slugs' => $attributes['category'], 'taxonomy' => 'dt_testimonials_category' ) );
+
+			$output = '
+				<div class="dt_vc-shortcode_dummy dt_vc-testimonials" style="height: 250px;">
+					<h5>Testimonials slider</h5>
+					<p class="text-small"><strong>Display categories:</strong> ' . $terms_list . '</p>
+				</div>
+			';
+		}
 
 		return $output;
 	}

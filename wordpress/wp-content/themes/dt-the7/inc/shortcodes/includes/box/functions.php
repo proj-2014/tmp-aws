@@ -31,7 +31,7 @@ class DT_Shortcode_Box extends DT_Shortcode {
 
     public function shortcode( $atts, $content = null ) {
         if ( !$content ) return '';
-	    return '<div class="wf-container">' . do_shortcode($content) . '</div>';
+	    return '<div class="wf-container">' . do_shortcode( $content ) . '</div>';
     }
 
 }

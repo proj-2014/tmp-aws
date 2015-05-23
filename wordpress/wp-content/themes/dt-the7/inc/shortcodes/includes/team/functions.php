@@ -89,8 +89,12 @@ class DT_Shortcode_Team extends DT_Shortcode {
 			$config->set('target_width', $attributes['column_width']);
 
 			// add masonry wrap
-			add_action('presscore_before_post', 'presscore_before_post_masonry', 15);
-			add_action('presscore_after_post', 'presscore_after_post_masonry', 15);
+			$has_masonry_filters = has_filter( 'presscore_before_post', 'presscore_before_post_masonry' );
+
+			if ( !$has_masonry_filters ) {
+				add_action('presscore_before_post', 'presscore_before_post_masonry', 15);
+				add_action('presscore_after_post', 'presscore_after_post_masonry', 15);
+			}
 
 			while ( $dt_query->have_posts() ) { $dt_query->the_post();
 				ob_start();
@@ -102,8 +106,10 @@ class DT_Shortcode_Team extends DT_Shortcode {
 			}
 
 			// remove masonry wrap
-			remove_action('presscore_before_post', 'presscore_before_post_masonry', 15);
-			remove_action('presscore_after_post', 'presscore_after_post_masonry', 15);
+			if ( !$has_masonry_filters ) {
+				remove_action('presscore_before_post', 'presscore_before_post_masonry', 15);
+				remove_action('presscore_after_post', 'presscore_after_post_masonry', 15);
+			}
 
 			// restore original $post
 			$post = $post_backup;
@@ -142,6 +148,17 @@ class DT_Shortcode_Team extends DT_Shortcode {
 				$output = '<div class="full-width-wrap">' . $output . '</div>';
 			}
 		} // if have posts
+
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+			$terms_list = presscore_get_terms_list_by_slug( array( 'slugs' => $attributes['category'], 'taxonomy' => 'dt_team_category' ) );
+
+			$output = '
+				<div class="dt_vc-shortcode_dummy dt_vc-team" style="height: 250px;">
+					<h5>Team</h5>
+					<p class="text-small"><strong>Display categories:</strong> ' . $terms_list . '</p>
+				</div>
+			';
+		}
 
 		return $output;
 	}

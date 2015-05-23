@@ -73,7 +73,7 @@ do_action('presscore_before_post');
 				'class'		=> $link_classes,
 				'echo'		=> true,
 				'custom'	=> 'data-dt-location="' . get_permalink($post->ID) . '" ',
-				'wrap'		=> '<a %HREF% %CLASS% title="%RAW_ALT%" data-dt-img-description="%RAW_TITLE%" %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /></a>',
+				'wrap'		=> '<a %HREF% %CLASS% %IMG_TITLE% data-dt-img-description="%RAW_TITLE%" %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /></a>',
 			);
 
 			$video_url = esc_url( get_post_meta( $post->ID, 'dt-video-url', true ) );
@@ -84,7 +84,7 @@ do_action('presscore_before_post');
 				// dt-single-mfp-popup
 				if ( 'under_image' == $description ) {
 					$thumb_args['class'] .= ' rollover-video';
-					$thumb_args['wrap'] = '<div %CLASS%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /><a %HREF% class="video-icon dt-mfp-item mfp-iframe" title="%RAW_ALT%" data-dt-img-description="%RAW_TITLE%" %CUSTOM%></a></div>';
+					$thumb_args['wrap'] = '<div %CLASS%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /><a %HREF% class="video-icon dt-mfp-item mfp-iframe" %IMG_TITLE% data-dt-img-description="%RAW_TITLE%" %CUSTOM%></a></div>';
 				} else {
 					$thumb_args['class'] .= ' dt-mfp-item mfp-iframe';
 				}

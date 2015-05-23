@@ -27,9 +27,11 @@ get_header(); ?>
 
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); // main loop ?>
 
-					<?php
-					do_action( 'presscore_before_loop' );
+					<?php do_action( 'presscore_before_loop' ); ?>
 
+					<?php if ( !post_password_required() ) : ?>
+
+					<?php
 					$ppp = $config->get('posts_per_page');
 					$order = $config->get('order');
 					$orderby = $config->get('orderby');
@@ -65,7 +67,7 @@ get_header(); ?>
 
 						$page_args['tax_query'] = array( array(
 							'taxonomy'	=> 'dt_portfolio_category',
-							'field'		=> 'id',
+							'field'		=> 'term_id',
 							'terms'		=> array_values($display['terms_ids']),
 							'operator'	=> 'IN',
 						) );
@@ -97,7 +99,7 @@ get_header(); ?>
 
 						$page_args['tax_query'] = array( array(
 							'taxonomy'	=> 'dt_portfolio_category',
-							'field'		=> 'id',
+							'field'		=> 'term_id',
 							'terms'		=> array_values($request_display['terms_ids']),
 							'operator'	=> 'IN',
 						) );
@@ -151,6 +153,12 @@ get_header(); ?>
 					<?php endwhile; wp_reset_postdata(); endif; ?>
 
 					<?php dt_paginator($page_query); ?>
+
+					<?php else: // pass protected ?>
+
+						<?php the_content(); ?>
+
+					<?php endif; // pass protected ?>
 
 					<?php do_action( 'presscore_after_loop' ); ?>
 

@@ -97,26 +97,22 @@ if ( ! function_exists( 'presscore_post_navigation' ) ) :
 		$output .= str_replace( array( '%TITLE%' ), array( $title ), $args['title_wrap'] );
 
 		// next link
-		ob_start();
-		next_post_link( '%link', $args['next_post_text'] );
-		$link = ob_get_clean();
-		if ( $link ) {
-			$output .= str_replace( 'href=', 'class="'. $args['next_post_class']. '" href=', $link );
+		$next_post_link = get_next_post_link( '%link', $args['next_post_text'] );
+		if ( $next_post_link ) {
+			$next_post_link = str_replace( 'href=', 'class="'. $args['next_post_class']. '" href=', $next_post_link );
 		} else {
-			$output .= $args['no_link_next'];
+			$next_post_link = $args['no_link_next'];
 		}
 
 		// previos link
-		ob_start();
-		previous_post_link( '%link', $args['prev_post_text'] );
-		$link = ob_get_clean();
-		if ( $link ) {
-			$output .= str_replace( 'href=', 'class="'. $args['prev_post_class']. '" href=', $link );
+		$previous_post_link = get_previous_post_link( '%link', $args['prev_post_text'] );
+		if ( $previous_post_link ) {
+			$previous_post_link = str_replace( 'href=', 'class="'. $args['prev_post_class']. '" href=', $previous_post_link );
 		} else {
-			$output .= $args['no_link_prev'];
+			$previous_post_link = $args['no_link_prev'];
 		}
 
-		$output = str_replace( '%LINKS%', $output, $args['wrap'] );
+		$output = str_replace( array( '%LINKS%', '%NEXT_POST_LINK%', '%PREV_POST_LINK%' ), array( $next_post_link . $previous_post_link, $next_post_link, $previous_post_link ), $args['wrap'] );
 
 		if ( $args['echo'] ) {
 			echo $output;
@@ -171,6 +167,7 @@ if ( ! function_exists( 'presscore_get_royal_slider' ) ) :
 			'heught'	=> null,
 			'class'		=> array(),
 			'style'		=> '',
+			'show_info'	=> array( 'title', 'link', 'description' )
 		);
 		$options = wp_parse_args( $options, $default_options );
 
@@ -223,15 +220,15 @@ if ( ! function_exists( 'presscore_get_royal_slider' ) ) :
 
 			$caption_html = '';
 
-			if ( !empty($data['title']) ) {
+			if ( !empty($data['title']) && in_array('title', $options['show_info']) ) {
 				$caption_html .= "\n\t\t\t\t" . '<h4>' . esc_html($data['title']) . '</h4>';
 			}
 
-			if ( !empty($data['link']) ) {
+			if ( !empty($data['link']) && in_array('link', $options['show_info']) ) {
 				$caption_html .= "\n\t\t\t\t" . '<a href="' . $data['link'] . '" class="slider-link"></a>';
 			}
 
-			if ( !empty($data['description']) ) {
+			if ( !empty($data['description']) && in_array('description', $options['show_info']) ) {
 				$caption_html .= "\n\t\t\t\t" . wpautop($data['description']);
 			}
 
@@ -335,12 +332,20 @@ if ( ! function_exists( 'presscore_get_fullwidth_slider_two' ) ) :
 				continue;
 			}
 
-			$image_data = $data['image_attachment_data'];
+			if ( array_key_exists( 'image_attachment_data', $data ) ) {
+				$image_data = $data['image_attachment_data'];
+			} else {
+				$image_data = array(
+					'permalink' => get_permalink( $data['ID'] ),
+					'title' => get_the_title( $data['ID'] ),
+					'description' => wp_kses_post( get_post_field( 'post_content', $data['ID'] ) )
+				);
+			}
 
 			$img_args = array(
 				'img_meta' 	=> array( $data['full'], $data['width'], $data['height'] ),
 				'title'		=> $data['description'],
-				'alt'		=> $data['title']
+				'alt'		=> $data['alt']
 			);
 
 			if ( $options['img_width'] ) {
@@ -356,10 +361,10 @@ if ( ! function_exists( 'presscore_get_fullwidth_slider_two' ) ) :
 				case 'file':
 					// add anchor to image
 					$img_args['wrap'] = sprintf(
-						'<a href="%s" class="%s" title="%%RAW_ALT%%" data-dt-img-description="%%RAW_TITLE%%">%s</a>',
+						'<a href="%s" class="%s" title="%%RAW_ALT%%" data-dt-img-description="%%RAW_TITLE%%" data-dt-location="%s">%s</a>',
 						$data['full'],
 						esc_attr($file_link_class),
-						// esc_attr($data['description']),
+						esc_url($image_data['permalink']),
 						$img_base_args['wrap']
 					);
 				default:
@@ -472,6 +477,7 @@ if ( ! function_exists( 'presscore_get_fullwidth_slider_two_with_hovers' ) ) :
 			'link'						=> 'page',
 			'height'					=> 210,
 			'img_width'					=> null,
+			'img_zoom'					=> 0,
 			'echo'						=> false,
 			'style'						=> '',
 			'class'						=> array(),
@@ -566,7 +572,7 @@ if ( ! function_exists( 'presscore_get_fullwidth_slider_two_with_hovers' ) ) :
 								<ul class="clearfix">';
 
 		$img_base_args = array(
-			'options'	=> array( 'h' => absint($options['height']), 'z' => 0 ),
+			'options'	=> array( 'h' => absint($options['height']), 'z' => $options['img_zoom'] ),
 			'wrap'		=> '<img %SRC% %IMG_CLASS% %SIZE% %ALT% />',
 			'img_class' => '',
 			'echo'		=> false
@@ -578,12 +584,20 @@ if ( ! function_exists( 'presscore_get_fullwidth_slider_two_with_hovers' ) ) :
 				continue;
 			}
 
-			$image_data = $data['image_attachment_data'];
+			if ( array_key_exists( 'image_attachment_data', $data ) ) {
+				$image_data = $data['image_attachment_data'];
+			} else {
+				$image_data = array(
+					'permalink' => get_permalink( $data['ID'] ),
+					'title' => get_the_title( $data['ID'] ),
+					'description' => wp_kses_post( get_post_field( 'post_content', $data['ID'] ) )
+				);
+			}
 
 			$img_args = array(
 				'img_meta' 	=> array( $data['full'], $data['width'], $data['height'] ),
 				'title'		=> $data['description'],
-				'alt'		=> $data['title']
+				'alt'		=> $data['alt']
 			);
 
 			if ( $options['img_width'] ) {
@@ -637,9 +651,21 @@ if ( ! function_exists( 'presscore_get_fullwidth_slider_two_with_hovers' ) ) :
 				if ( in_array('zoom', $options['fields']) ) {
 					$buttonts_count++;
 					$zoom_classes = 'project-zoom ';
+					$zoom_href = $data['full'];
 
 					if ( 'single' == $options['popup'] ) {
-						$zoom_classes .= ' dt-single-mfp-popup dt-mfp-item mfp-image';
+
+						$zoom_classes .= ' dt-single-mfp-popup dt-mfp-item';
+
+						if ( !empty($data['video_url']) ) {
+
+							$zoom_href = $data['video_url'];
+							$zoom_classes .= ' mfp-iframe';
+						} else {
+
+							$zoom_classes .= ' mfp-image';
+						}
+
 					} else if ( 'gallery' == $options['popup'] ) {
 						$zoom_classes .= ' dt-trigger-first-mfp';
 					}
@@ -650,7 +676,7 @@ if ( ! function_exists( 'presscore_get_fullwidth_slider_two_with_hovers' ) ) :
 
 					$post_buttons .= sprintf(
 						'<a href="%s" class="%s" title="%s" data-dt-img-description="%s">%s</a>',
-						esc_url($data['full']),
+						esc_url($zoom_href),
 						$zoom_classes,
 						esc_attr($image_data['title']),
 						esc_attr($image_data['description']),
@@ -790,7 +816,7 @@ if ( ! function_exists( 'presscore_get_images_list' ) ) :
 				'class' => 'dt-mfp-item rollover rollover-zoom mfp-image',
 				'img_class' => 'images-list',
 				'echo' => false,
-				'wrap' => '<a %HREF% %CLASS% title="%RAW_ALT%" data-dt-img-description="%RAW_TITLE%"><img %SRC% %IMG_CLASS% %ALT% style="width: 100%;" /></a>'
+				'wrap' => '<a %HREF% %CLASS% %IMG_TITLE% data-dt-img-description="%RAW_TITLE%"><img %SRC% %IMG_CLASS% %ALT% style="width: 100%;" /></a>'
 			);
 
 		} else {
@@ -811,7 +837,7 @@ if ( ! function_exists( 'presscore_get_images_list' ) ) :
 				'img_meta' 	=> array( $data['full'], $data['width'], $data['height'] ),
 				'img_id'	=> empty($data['ID']) ? 0 : $data['ID'],
 				'title'		=> $data['description'],
-				'alt'		=> $data['title']
+				'alt'		=> $data['alt']
 			);
 
 			$image_args = array_merge( $base_img_args, $image_args );
@@ -943,7 +969,7 @@ if ( ! function_exists( 'presscore_get_images_gallery_1' ) ) :
 				'img_meta' 	=> array( $big_image['full'], $big_image['width'], $big_image['height'] ),
 				'img_id'	=> empty( $big_image['ID'] ) ? $big_image['ID'] : 0, 
 				'options'	=> array( 'w' => 600, 'h' => 600, 'z' => true ),
-				'alt'		=> $big_image['title'],
+				'alt'		=> $big_image['alt'],
 				'title'		=> $big_image['title'],
 				'echo'		=> false,
 				'custom'	=> $image_custom . ' data-dt-img-description="' . esc_attr($big_image['description']) . '"'
@@ -977,7 +1003,7 @@ if ( ! function_exists( 'presscore_get_images_gallery_1' ) ) :
 					'img_meta' 	=> array( $data['full'], $data['width'], $data['height'] ),
 					'img_id'	=> empty( $data['ID'] ) ? $data['ID'] : 0, 
 					'options'	=> array( 'w' => 300, 'h' => 300, 'z' => true ),
-					'alt'		=> $data['title'],
+					'alt'		=> $data['alt'],
 					'title'		=> $data['title'],
 					'echo'		=> false,
 					'custom'	=> $image_custom . ' data-dt-img-description="' . esc_attr($data['description']) . '"'
@@ -1048,6 +1074,7 @@ if ( ! function_exists( 'presscore_get_images_gallery_hoovered' ) ) :
 			'share_buttons'	=> false,
 			'exclude_cover'	=> false,
 			'title_img_options' => array(),
+			'title_image_args' => array(),
 			'attachments_count' => null,
 			'show_preview_on_hover' => true,
 			'video_icon' => true
@@ -1161,8 +1188,8 @@ if ( ! function_exists( 'presscore_get_images_gallery_hoovered' ) ) :
 		$big_image_args = array(
 			'img_meta' 	=> array( $big_image['full'], $big_image['width'], $big_image['height'] ),
 			'img_id'	=> empty( $big_image['ID'] ) ? $big_image['ID'] : 0,
-			'wrap'		=> '<a %HREF% %CLASS% %CUSTOM% %TITLE%><img %SRC% %IMG_CLASS% %ALT% %IMG_TITLE% %SIZE% />' . $image_hover . '</a>',
-			'alt'		=> $big_image['title'],
+			'wrap'		=> '<a %HREF% %CLASS% %CUSTOM% %IMG_TITLE%><img %SRC% %IMG_CLASS% %ALT% %IMG_TITLE% %SIZE% />' . $image_hover . '</a>',
+			'alt'		=> $big_image['alt'],
 			'title'		=> $big_image['title'],
 			'class'		=> $class,
 			'options'	=> $options['title_img_options']
@@ -1202,9 +1229,9 @@ if ( ! function_exists( 'presscore_get_images_gallery_hoovered' ) ) :
 			$big_image_args['class'] = str_replace( array('rollover', 'mfp-image'), array('rollover-video', ''), $class);
 			$big_image_args['custom'] = $options['style'];
 
-			$big_image_args['wrap'] = '<div %CLASS% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /><a %HREF% %TITLE% class="' . $video_link_classes . '"' . $video_link_custom . '></a></div>';
+			$big_image_args['wrap'] = '<div %CLASS% %CUSTOM%><img %IMG_CLASS% %SRC% %ALT% %IMG_TITLE% %SIZE% /><a %HREF% %IMG_TITLE% class="' . $video_link_classes . '"' . $video_link_custom . '></a></div>';
 		}
-		$image = dt_get_thumb_img( array_merge( $image_args, $big_image_args ) );
+		$image = dt_get_thumb_img( array_merge( $image_args, $big_image_args, $options['title_image_args'] ) );
 
 		$html = $image . $html;
 
@@ -1231,6 +1258,7 @@ if ( ! function_exists( 'presscore_get_posts_small_list' ) ) :
 		global $post;
 		$default_options = array(
 			'links_rel'		=> '',
+			'show_images'	=> true
 		);
 		$options = wp_parse_args( $options, $default_options );
 
@@ -1291,7 +1319,7 @@ if ( ! function_exists( 'presscore_get_posts_small_list' ) ) :
 			$article = sprintf(
 				'<article class="%s"><div class="wf-td">%s</div><div class="post-content">%s%s</div></article>',
 				$class,
-				$data['full'] ? dt_get_thumb_img( array_merge($image_args, $attachment_args) ) : '',
+				$options['show_images'] ? dt_get_thumb_img( array_merge($image_args, $attachment_args) ) : '',
 				'<a href="' . $permalink . '">' . esc_html($data['title']) . '</a><br />',
 				'<time class="text-secondary" datetime="' . get_the_date('c') . '">' . get_the_date(get_option('date_format')) . '</time>'
 			);
@@ -1572,7 +1600,7 @@ if ( ! function_exists( 'presscore_get_post_media_slider' ) ) :
 
 		$default_options = array(
 			'class'	=> array(),
-			'style'	=> ' style="width: 100%"',
+			'style'	=> ' style="width: 100%"'
 		);
 		$options = wp_parse_args( $options, $default_options );
 
@@ -1587,7 +1615,7 @@ if ( ! function_exists( 'presscore_get_post_media_slider' ) ) :
 			'width'		=> $width,
 			'height'	=> $height,
 			'class' 	=> $options['class'],
-			'style'		=> $options['style'],
+			'style'		=> $options['style']
 		) );
 
 		return $slideshow;
@@ -1630,7 +1658,7 @@ if ( ! function_exists( 'presscore_get_post_attachment_html' ) ) :
 		$image_args = array(
 			'img_meta' 	=> array( $attachment_data['full'], $attachment_data['width'], $attachment_data['height'] ),
 			'img_id'	=> empty( $attachment_data['ID'] ) ? $attachment_data['ID'] : 0,
-			'alt'		=> $attachment_data['title'],
+			'alt'		=> $attachment_data['alt'],
 			'title'		=> $attachment_data['title'],
 			'img_class' => 'preload-me',
 			'custom'	=> $options['link_rel'] . ' data-dt-img-description="' . esc_attr($attachment_data['description']) . '"',
@@ -1666,6 +1694,39 @@ if ( ! function_exists( 'presscore_get_post_attachment_html' ) ) :
 	}
 
 endif; // presscore_get_post_attachment_html
+
+
+if ( ! function_exists( 'presscore_get_attachments' ) ) :
+
+	function presscore_get_attachments( $args = array() ) {
+
+		$default_args = array(
+			'posts_per_page' => -1,
+			'orderby' => 'post__in',
+			'order' => 'DESC'
+		);
+
+		$args = wp_parse_args( $args, $default_args );
+
+		// return error if post__in empty
+		if ( !array_key_exists('post__in', $args) || empty($args['post__in']) ) {
+			return new WP_Error( 'no_attachments', __( 'Please set "post__in" argument' ) );
+		}
+
+		// return attachments query
+		return new WP_Query( array(
+			'no_found_rows'     => true,
+			'posts_per_page'    => $args['posts_per_page'],
+			'post_type'         => 'attachment',
+			'post_mime_type'    => 'image',
+			'post_status'       => 'inherit',
+			'post__in'			=> $args['post__in'],
+			'orderby'			=> $args['orderby'],
+			'order'				=> $args['order']
+		) );
+	}
+
+endif;
 
 
 if ( ! function_exists( 'presscore_get_attachment_post_data' ) ) :
@@ -1764,7 +1825,7 @@ if ( ! function_exists( 'presscore_get_posts_in_categories' ) ) :
 		$default_options = array(
 			'post_type'	=> 'post',
 			'taxonomy'	=> 'category',
-			'field'		=> 'id',
+			'field'		=> 'term_id',
 			'cats'		=> array( 0 ),
 			'select'	=> 'all',
 			'args'		=> array(),
@@ -1834,13 +1895,13 @@ if ( ! function_exists( 'presscore_get_related_posts' ) ) :
 
 				// thumbnail or first attachment id
 				if ( has_post_thumbnail() ) {
-					$attachments_ids[] = get_post_thumbnail_id();
+					$attachment_id = get_post_thumbnail_id();
 
 				} else if ( $attachment = presscore_get_first_image() ) {
-					$attachments_ids[] = $attachment->ID;
+					$attachment_id = $attachment->ID;
 
 				} else {
-					$attachments_ids[] = 0;
+					$attachment_id = 0;
 
 				}
 
@@ -1855,55 +1916,54 @@ if ( ! function_exists( 'presscore_get_related_posts' ) ) :
 						$post_meta = presscore_new_posted_on();
 				}
 
-				$attachments_data_override[] = array(
-					'permalink'		=> get_permalink(),
-					'link'			=> presscore_get_project_link('project-link'),
-					'title'			=> get_the_title(),
-					'description'	=> get_the_excerpt(),
-					'alt'			=> get_the_title(),
-					'parent_id'		=> get_the_ID(),
-					'meta'			=> $post_meta
+				$post_data = array();
+
+				/////////////////////////
+				// attachment data //
+				/////////////////////////
+
+				$post_data['full'] = $post_data['width'] = $post_data['height'] = '';
+				$meta = wp_get_attachment_image_src( $attachment_id, 'full' );
+				if ( !empty($meta) ) {
+					$post_data['full'] = esc_url($meta[0]);
+					$post_data['width'] = absint($meta[1]);
+					$post_data['height'] = absint($meta[2]);
+				}
+
+				$post_data['thumbnail'] = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
+
+				$post_data['caption'] = '';
+				$post_data['video_url'] = esc_url( get_post_meta( $attachment_id, 'dt-video-url', true ) );
+				$post_data['mime_type_full'] = get_post_mime_type( $attachment_id );
+				$post_data['mime_type'] = dt_get_short_post_myme_type( $attachment_id );
+				$post_data['ID'] = $attachment_id;
+
+				$post_data['image_attachment_data'] = array(
+					'caption' => $post_data['caption'],
+					'description' => wp_kses_post( get_post_field( 'post_content', $attachment_id ) ),
+					'title' => presscore_imagee_title_is_hidden( $attachment_id ) ? '' : get_the_title( $attachment_id ),
+					'permalink' => get_permalink( $attachment_id ),
+					'video_url' => $post_data['video_url'],
+					'ID' => $attachment_id
 				);
+
+				///////////////////
+				// post data //
+				///////////////////
+
+				$post_data['title'] = get_the_title();
+				$post_data['permalink'] = get_permalink();
+				$post_data['link'] = presscore_get_project_link('project-link');
+				$post_data['description'] = get_the_excerpt();
+				$post_data['alt'] = get_the_title();
+				$post_data['parent_id'] = get_the_ID();
+				$post_data['meta'] = $post_meta;
+
+				// save data
+				$posts_data[] = $post_data;
 			}
 			wp_reset_postdata();
 
-		}
-
-		if ( $attachments_ids ) {
-
-			// what we want
-			$attachments_data = presscore_get_attachment_post_data( $attachments_ids );
-
-			// what we get
-			$attachments_data_ids = array();
-			if ( $attachments_data ) {
-				$attachments_data_ids = wp_list_pluck($attachments_data, 'ID');
-			}
-
-			$default_image = presscore_get_default_image();
-
-			foreach ( $attachments_ids as $key=>$id ) {
-
-				$attachments_data_key = array_search( $id, $attachments_data_ids );
-
-				// if there are image - add it to array
-				if ( false !== $attachments_data_key ) {
-
-					$posts_data[ $key ] = $attachments_data[ $attachments_data_key ];
-
-				// or add noimage
-				} else {
-					$posts_data[ $key ] = array(
-						'full' 		=> $default_image[0],
-						'width' 	=> $default_image[1],
-						'height' 	=> $default_image[2],
-					);
-				}
-
-				if ( isset($attachments_data_override[ $key ]) ) {
-					$posts_data[ $key ] = array_merge( $posts_data[ $key ], $attachments_data_override[ $key ] );
-				}
-			}
 		}
 
 		return $posts_data;
@@ -1954,8 +2014,8 @@ if ( ! function_exists( 'presscore_get_button_html' ) ) :
 
 	/**
 	 * Button helper.
+	 * Look for filters in template-tags.php
 	 *
-	 * Description here.
 	 * @return string HTML.
 	 */
 	function presscore_get_button_html( $options = array() ) {
@@ -1968,16 +2028,12 @@ if ( ! function_exists( 'presscore_get_button_html' ) ) :
 
 		$options = wp_parse_args( $options, $default_options );
 
-		if ( empty($options['href']) ) {
-			return '';
-		}
-
 		$html = sprintf(
 			'<a href="%1$s" class="%2$s"%3$s>%4$s</a>',
-			esc_url($options['href']),
+			$options['href'],
 			esc_attr($options['class']),
 			$options['target'] ? ' target="_blank"' : '',
-			esc_html($options['title'])
+			$options['title']
 		);
 
 		return apply_filters('presscore_get_button_html', $html, $options);
@@ -2154,18 +2210,15 @@ if ( ! function_exists( 'presscore_get_post_data' ) ) :
 			// remove link if in date archive
 			if ( !(is_day() && is_month() && is_year()) ) {
 
-				$archive_year  = get_the_time('Y'); 
-				$archive_month = get_the_time('m'); 
+				$archive_year  = get_the_time('Y');
+				$archive_month = get_the_time('m');
 				$archive_day   = get_the_time('d');
 				$href = get_day_link( $archive_year, $archive_month, $archive_day );
 			}
-		} elseif ( 'dt_portfolio' == get_post_type() ) {
-
-			$href = get_permalink();
 		}
 
 		$html .= sprintf(
-			'<a href="%s" title="%s" rel="bookmark"><time class="entry-date" datetime="%s">%s</time></a>',
+			'<a href="%s" title="%s" rel="bookmark"><time class="entry-date updated" datetime="%s">%s</time></a>',
 				$href,	// href
 				esc_attr( get_the_time() ),	// title
 				esc_attr( get_the_date( 'c' ) ),	// datetime
@@ -2185,10 +2238,11 @@ if ( ! function_exists( 'presscore_get_post_author' ) ) :
 	 */
 	function presscore_get_post_author( $html = '' ) {
 		$html .= sprintf(
-			'<a class="author vcard" href="%s" title="%s" rel="author">%s</a>',
+			'<a class="author vcard" href="%s" title="%s" rel="author">%s<span class="fn">%s</span></a>',
 				esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ), // href
 				esc_attr( sprintf( _x( 'View all posts by %s', 'frontend post meta', LANGUAGE_ZONE ), get_the_author() ) ), // title
-				_x('By ', 'frontend post meta', LANGUAGE_ZONE) . get_the_author() // author
+				_x( 'By ', 'frontend post meta', LANGUAGE_ZONE ),
+				get_the_author() // author
 		);
 
 		return $html;
@@ -2378,8 +2432,7 @@ if ( ! function_exists( 'presscore_get_breadcrumbs' ) ) :
 				if ( get_post_type() != 'post' ) {
 
 					$post_type = get_post_type_object(get_post_type());
-					$slug = $post_type->rewrite;
-					$breadcrumbs_html .= sprintf($link, $homeLink . '' . $slug['slug'] . '/', $post_type->labels->singular_name);
+					$breadcrumbs_html .= sprintf($link, get_post_type_archive_link( get_post_type() ), $post_type->labels->singular_name);
 
 					if ($showCurrent == 1) {
 						$breadcrumbs_html .= $delimiter . $before . get_the_title() . $after;
@@ -2411,17 +2464,6 @@ if ( ! function_exists( 'presscore_get_breadcrumbs' ) ) :
 				}
 
 			} elseif ( is_attachment() ) {
-
-				// $parent = get_post($post->post_parent);
-				// $cat = get_the_category($parent->ID);
-				// $cat = $cat[0];
-				// $cats = is_wp_error( $cat = get_category_parents($cat, TRUE, $delimiter) ) ? '' : $cat;
-				// $cats = str_replace('<a', $linkBefore . '<a' . $linkAttr, $cats);
-				// $cats = str_replace('</a>', '</a>' . $linkAfter, $cats);
-
-				// $breadcrumbs_html .= $cats;
-
-				// $breadcrumbs_html .= sprintf($link, get_permalink($parent), $parent->post_title);
 
 				if ($showCurrent == 1) {
 					$breadcrumbs_html .= $delimiter . $before . get_the_title() . $after;
@@ -2501,81 +2543,6 @@ if ( ! function_exists( 'presscore_get_breadcrumbs' ) ) :
 endif; // presscore_get_breadcrumbs
 
 
-if ( ! function_exists( 'presscore_get_breadcrumbs' ) ) :
-
-	/**
-	 * Breadckumbs helper.
-	 *
-	 * TODO: remove this in future ... far future ...
-	 *
-	 * @return string HTML.
-	 */
-	function presscore_get_breadcrumbs() {
-		global $post;
-
-		$breadcrumbs = apply_filters( 'presscore_get_breadcrumbs-html', '' );
-		if ( $breadcrumbs ) {
-			return $breadcrumbs;
-		}
-
-		// TODO: provide exception for archive/404/search
-		$crumbs = array();
-		$crumbs[] = '<li><a href="' . get_home_url() . '">' . _x('Home', 'breadcrumbs', LANGUAGE_ZONE) . '</a></li>';
-
-		// for all pages except homepage
-		if ( is_page() || is_single() ) {
-
-			if ( is_single() ) {
-				// set taxonomy based on post_type
-				$post_type = get_post_type( $post->ID );
-				switch ( $post_type ) {
-					case 'post': $tax = 'category'; break;
-					case 'dt_portfolio': $tax = 'dt_portfolio_category'; break;
-				}
-
-				if ( isset($tax) ) {
-					// terms loop
-					$terms = wp_get_object_terms( $post->ID, $tax );
-					if ( $terms && !is_wp_error($terms) ) {
-						$terms_links = array();
-
-						foreach ( $terms as $term ) {
-							$terms_links[] = sprintf( '<a href="%s">%s</a>', get_term_link($term->slug, $tax), presscore_substring($term->name) );
-						}
-						$crumbs[] = '<li>' . implode(', ', $terms_links) . '</li>';
-					}
-				}
-			} else if ( is_page() ) {
-				$ancestors = get_ancestors( $post->ID, 'page' );
-				if ( $ancestors ) {
-					$ancestors = array_reverse($ancestors);
-					foreach ( $ancestors as $ancestor ) {
-						$crumbs[] = sprintf( '<li><a href="%s">%s</a></li>', get_permalink($ancestor), presscore_substring(get_the_title($ancestor)) );
-					}
-				}
-			}
-
-			$crumbs[] = '<li><a href="' . get_permalink($post->ID) . '">' . presscore_substring(get_the_title($post->ID)) . '</a></li>';
-
-		}
-
-		$crumbs = apply_filters( 'presscore_get_breadcrumbs-crumbs', $crumbs );
-
-		$breadcrumbs = sprintf(
-			'<div class="assistive-text">%s</div>
-			<ol class="breadcrumbs wf-td text-small">
-			%s
-			</ol>',
-			_x('You are here:', 'breeadcrumbs', LANGUAGE_ZONE),
-			implode('', $crumbs)
-		);
-
-		return apply_filters('presscore_get_breadcrumbs', $breadcrumbs);
-	}
-
-endif; // presscore_get_breadcrumbs
-
-
 if ( ! function_exists( 'presscore_display_share_buttons' ) ) :
 
 	/**
@@ -2594,15 +2561,22 @@ if ( ! function_exists( 'presscore_display_share_buttons' ) ) :
 		);
 		$options = wp_parse_args($options, $default_options);
 
-		$options['id'] = $options['id'] ? absint($options['id']) : $post->ID;
-
 		$class = $options['class'];
 		if ( !is_array($class) ) { $class = explode(' ', $class); }
 
 		$class[] = 'entry-share';
 
+		// get title
+		if ( !$options['id'] ) {
+			$options['id'] = $post->ID;
+			$t = isset( $post->post_title ) ? $post->post_title : '';
+		} else {
+			$_post = get_post( $options['id'] );
+			$t = isset( $_post->post_title ) ? $_post->post_title : '';
+		}
+
+		// get permalink
 		$u = get_permalink( $options['id'] );
-		$t = get_the_title( $options['id'] );
 
 		$protocol = "http";
 		if ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] == 'on' ) $protocol = "https";
@@ -2637,6 +2611,10 @@ if ( ! function_exists( 'presscore_display_share_buttons' ) ) :
 							$url_args[] = urlencode('p[images][0]') . '=' . esc_url($thumbnail[0]);
 						}
 					}
+
+					// mobile args
+					$url_args[] = 't=' . urlencode($t);
+					$url_args[] = 'u=' . esc_url($u);
 
 					$classes[] = 'facebook';
 
@@ -2774,6 +2752,18 @@ if ( ! function_exists( 'presscore_main_container_classes' ) ) :
 	 * Main container classes.
 	 */
 	function presscore_main_container_classes( $classes = array() ) {
+
+		// if sidebar bg disabled
+		switch ( of_get_option( 'sidebar-bg_status' ) ) {
+			case 'disabled':
+				$classes[] = 'sidebar-bg-off';
+				break;
+
+			case 'partial_bg':
+				$classes[] = 'bg-under-widget';
+				break;
+		}
+
 		$classes = apply_filters('presscore_main_container_classes', $classes);
 		if ( !empty($classes) ) {
 			printf( 'class="%s"', esc_attr( implode(' ', (array)$classes) ) );
@@ -2804,8 +2794,6 @@ if ( ! function_exists( 'presscore_nav_menu_list' ) ) :
 				return '';
 			}
 
-			$menu_items = wp_get_nav_menu_items($menu->term_id);
-
 			if ( 'left' == $style ) {
 
 				$class = 'wf-float-left';
@@ -2818,27 +2806,15 @@ if ( ! function_exists( 'presscore_nav_menu_list' ) ) :
 
 			$menu_list .= dt_menu( array(
 				'menu_wraper' 		=> '<ul>%MENU_ITEMS%' . "\n" . '</ul>',
-				'menu_items'		=>  "\n" . '<li class="%ITEM_CLASS%"><a href="%ITEM_HREF%">%ITEM_TITLE%</a>%SUBMENU%</li> ',
+				'menu_items'		=>  "\n" . '<li class="%ITEM_CLASS%"><a href="%ITEM_HREF%" data-level="%DEPTH%"%ESC_ITEM_TITLE%>%ICON%<span>%ITEM_TITLE%</span></a>%SUBMENU%</li> ',
 				'submenu' 			=> '<ul class="sub-nav">%ITEM%</ul>',
 				'parent_clicable'	=> true,
-				'params'			=> array( 'act_class' => 'act' ),
+				'params'			=> array( 'act_class' => 'act', 'please_be_mega_menu' => true, 'echo' => false, 'please_be_fat' => false ),
 				'fallback_cb'		=> '',
-				'location'			=> $menu_name,
-				'params'			=> array( 'echo' => false )
+				'location'			=> $menu_name
 			) );
 
 			$menu_list .= '<div class="menu-select">';
-
-			$menu_list .= dt_menu( array(
-				'menu_wraper' 		=> '<select>%MENU_ITEMS%</select>',
-				'menu_items'		=> '<option data-level="%DEPTH%" value="%ITEM_HREF%"%ACT_CLASS%>%ITEM_TITLE%</option>%SUBMENU%',
-				'submenu' 			=> '%ITEM%',
-				'parent_clicable'	=> true,
-				'fallback_cb'		=> '',
-				'location'			=> $menu_name,
-				'params'			=> array( 'echo' => false, 'act_class' => ' selected' ),
-				'depth'				=> 3
-			) );
 
 			$menu_list .= '<span class="customSelect1"><span class="customSelectInner">' . $menu->name . '</span></span></div>';
 
@@ -3546,29 +3522,33 @@ if ( ! function_exists( 'presscore_get_social_icons' ) ) :
 
 	/**
 	 * Generate social icons links list.
-	 * $icons = array( 'icon_class' => array( 'title', 'link' ) )
+	 * $icons = array( array( 'icon_class', 'title', 'link' ) )
 	 *
 	 * @param $icons array
 	 *
 	 * @return string
 	 */
-	function presscore_get_social_icons( $icons, $common_classes = array() ) {
-		if ( !is_array($icons) ) {
+	function presscore_get_social_icons( $icons = array(), $common_classes = array() ) {
+		if ( empty($icons) || !is_array($icons) ) {
 			return '';
 		}
 
+		$classes = $common_classes;
+		if ( !is_array($classes) ) {
+			$classes = explode( ' ', trim($classes) );
+		}
+
 		$output = array();
+		foreach ( $icons as $icon ) {
 
-		if ( !is_array($common_classes) ) {
-			$common_classes = explode( ' ', trim($common_classes) );
+			if ( !isset($icon['icon'], $icon['link'], $icon['title']) ) {
+				continue;
+			}
+
+			$output[] = presscore_get_social_icon( $icon['icon'], $icon['link'], $icon['title'], $classes );
 		}
 
-		foreach ( $icons as $icon_class=>$icon ) {
-
-			$output[] = presscore_get_social_icon( $icon_class, $icon['link'], $icon['title'], $common_classes );
-		}
-
-		return apply_filters( 'presscore_get_social_icons', implode( '', $output ), $icons, $output );
+		return apply_filters( 'presscore_get_social_icons', implode( '', $output ), $output, $icons, $common_classes );
 	}
 
 endif; // presscore_get_social_icons
@@ -3581,26 +3561,29 @@ if ( ! function_exists( 'presscore_get_social_icon' ) ) :
 	 *
 	 * @return string
 	 */
-	function presscore_get_social_icon( $icon, $url, $title = '', $classes = array(), $target = '_blank' ) {
+	function presscore_get_social_icon( $icon = '', $url = '#', $title = '', $classes = array(), $target = '_blank' ) {
+
+		$clean_target = esc_attr( $target );
 
 		// check for skype
 		if ( 'skype' == $icon ) {
-			$url = esc_attr( $url );
+			$clean_url = esc_attr( $url );
 		} else if ( 'mail' == $icon && is_email($url) ) {
-			$url = 'mailto:' . esc_attr($url);
-			$target = '_top';
+			$clean_url = 'mailto:' . esc_attr($url);
+			$clean_target = '_top';
 		} else {
-			$url = esc_url( $url );
+			$clean_url = esc_url( $url );
 		}
 
-		$classes[] = $icon;
+		$icon_classes = is_array($classes) ? $classes : array();
+		$icon_classes[] = $icon;
 
 		$output = sprintf(
 			'<a title="%2$s" target="%4$s" href="%1$s" class="%3$s"><span class="assistive-text">%2$s</span></a>',
-			$url,
+			$clean_url,
 			esc_attr( $title ),
-			esc_attr( implode( ' ',  $classes ) ),
-			$target
+			esc_attr( implode( ' ',  $icon_classes ) ),
+			$clean_target
 		);
 
 		return $output;
@@ -3615,29 +3598,52 @@ if ( ! function_exists( 'presscore_get_topbar_social_icons' ) ) :
 	 *
 	 */
 	function presscore_get_topbar_social_icons() {
-		$icons_list = presscore_get_social_icons_data();
+		$saved_icons = of_get_option('header-soc_icons');
 
-		$icons_array = array();
+		if ( !is_array($saved_icons) || empty($saved_icons) ) {
+			return '';
+		}
 
-		foreach ( $icons_list as $class=>$title ) {
+		// reverse array coz it's have float: right and shown in front end in opposite order
+		$saved_icons = array_reverse( $saved_icons );
 
-			$icon_link = of_get_option( "top_bar-soc_ico_{$class}" );
-			if ( !$icon_link ) {
+		$icons_data = presscore_get_social_icons_data();
+		$icons_white_list = array_keys($icons_data);
+		$clean_icons = array();
+		foreach ( $saved_icons as $saved_icon ) {
+
+			if ( !is_array($saved_icon) ) {
 				continue;
 			}
 
-			$icons_array[ $class ] = array(
-				'title' => $title,
-				'link' => $icon_link
+			if ( empty($saved_icon['icon']) || !in_array( $saved_icon['icon'], $icons_white_list ) ) {
+				continue;
+			}
+
+			if ( empty($saved_icon['url']) ) {
+				$saved_icon['url'] = '#';
+			}
+
+			$icon = $saved_icon['icon'];
+
+			$clean_icons[] = array(
+				'icon' =>  $icon,
+				'title' => $icons_data[ $icon ],
+				'link' => $saved_icon['url']
 			);
 		}
 
 		$output = '';
-		if ( $icons_array ) {
+		if ( $clean_icons ) {
 
-			$output .= '<div class="soc-ico">';
+			$soc_icons_class = 'soc-ico';
+			if ( of_get_option( 'top_bar-soc_icon_show_round_outlines', true ) ) {
+				$soc_icons_class .= ' show-round';
+			}
 
-			$output .= presscore_get_social_icons( $icons_array );
+			$output .= '<div class="' . $soc_icons_class . '">';
+
+			$output .= presscore_get_social_icons( $clean_icons );
 
 			$output .= '</div>';
 
@@ -3675,10 +3681,322 @@ endif;
  *
  */
 function presscore_imagee_title_is_hidden( $img_id ) {
-	$hide_title = get_post_meta( $img_id, 'dt-img-hide-title', true );
-	if ( '' === $hide_title ) {
-		// $hide_title = 1;
+	return get_post_meta( $img_id, 'dt-img-hide-title', true );
+}
+
+if ( !function_exists('dt_get_next_page_button') ) :
+	/**
+	 * Next page button.
+	 *
+	 */
+	function dt_get_next_page_button( $max, $class = '' ) {
+		$next_posts_link = dt_get_next_posts_url( $max );
+
+		if ( $next_posts_link ) {
+
+			$icon = '<svg class="loading-icon" viewBox="0 0 48 48" ><path d="M23.98,0.04c-13.055,0-23.673,10.434-23.973,23.417C0.284,12.128,8.898,3.038,19.484,3.038c10.76,0,19.484,9.395,19.484,20.982c0,2.483,2.013,4.497,4.496,4.497c2.482,0,4.496-2.014,4.496-4.497C47.96,10.776,37.224,0.04,23.98,0.04z M23.98,48c13.055,0,23.673-10.434,23.972-23.417c-0.276,11.328-8.89,20.42-19.476,20.42	c-10.76,0-19.484-9.396-19.484-20.983c0-2.482-2.014-4.496-4.497-4.496C2.014,19.524,0,21.537,0,24.02C0,37.264,10.736,48,23.98,48z"/></svg>';
+
+			return '<div class="' . esc_attr($class) . '">
+				<a class="button-load-more" href="javascript: void(0);" data-dt-page="' . dt_get_paged_var() .'" >' . $icon . '<span class="button-caption">' . __( 'Load more', LANGUAGE_ZONE ) . '</span></a>
+			</div>';
+
+		}
+
+		return '';
+	}
+endif;
+
+
+if ( ! function_exists( 'presscore_favicon' ) ) :
+
+	function presscore_favicon() {
+
+		$regular_icon_src = of_get_option('general-favicon', '');
+		$hd_icon_src = of_get_option('general-favicon_hd', '');
+
+		$output_icon_src = presscore_choose_right_image_based_on_device_pixel_ratio( $regular_icon_src, $hd_icon_src );
+		if ( $output_icon_src ) {
+			echo dt_get_favicon( $output_icon_src );
+		}
+
 	}
 
-	return $hide_title;
-}
+endif;
+
+if ( ! function_exists( 'presscore_choose_right_image_based_on_device_pixel_ratio' ) ) :
+
+	/**
+	 * Chooses what src to use, based on device pixel ratio and theme settings
+	 * @param  string $regular_img_src Regular image src
+	 * @param  string $hd_img_src      Hd image src
+	 * @return string                  Best suitable src
+	 */
+	function presscore_choose_right_image_based_on_device_pixel_ratio( $regular_img_src, $hd_img_src = '' ) {
+
+		$output_src = '';
+
+		if ( !$regular_img_src && !$hd_img_src ) {
+		} elseif ( !$regular_img_src ) {
+
+			$output_src = $hd_img_src;
+		} elseif ( !$hd_img_src ) {
+
+			$output_src = $regular_img_src;
+		} else {
+
+			if ( dt_retina_on() ) {
+				$output_src = dt_is_hd_device() ? $hd_img_src : $regular_img_src;
+			} else {
+				$output_src = $regular_img_src;
+			}
+
+		}
+
+		return $output_src;
+
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_icons_for_handhelded_devices' ) ) :
+
+	function presscore_icons_for_handhelded_devices() {
+
+		$icon_link_tpl = '<link rel="apple-touch-icon"%2$s href="%1$s">';
+
+		$old_iphone_icon = dt_get_of_uploaded_image( of_get_option( 'general-handheld_icon-old_iphone', '' ) );
+		if ( $old_iphone_icon ) {
+			printf( $icon_link_tpl, esc_url( $old_iphone_icon ), '' );
+		}
+
+		$old_ipad_icon = dt_get_of_uploaded_image( of_get_option( 'general-handheld_icon-old_ipad', '' ) );
+		if ( $old_ipad_icon ) {
+			printf( $icon_link_tpl, esc_url( $old_ipad_icon ), ' sizes="76x76"' );
+		}
+
+		$retina_iphone_icon = dt_get_of_uploaded_image( of_get_option( 'general-handheld_icon-retina_iphone', '' ) );
+		if ( $retina_iphone_icon ) {
+			printf( $icon_link_tpl, esc_url( $retina_iphone_icon ), ' sizes="120x120"' );
+		}
+
+		$retina_ipad_icon = dt_get_of_uploaded_image( of_get_option( 'general-handheld_icon-retina_ipad', '' ) );
+		if ( $retina_ipad_icon ) {
+			printf( $icon_link_tpl, esc_url( $retina_ipad_icon ), ' sizes="152x152"' );
+		}
+
+	}
+
+endif;
+
+
+if ( ! function_exists( 'presscore_get_top_bar_content' ) ) :
+
+	/**
+	 * Get top bar content parts
+	 * 
+	 * @return array Top bar content parts i.e. array( 'left'=>'', 'center'=>'', 'right'=>'' )
+	 */
+	function presscore_get_top_bar_content() {
+
+		$top_bar_content = array();
+
+		ob_start();
+		get_template_part( 'templates/header/top-bar-content-left' );
+		$top_bar_content['left'] = ob_get_contents();
+		ob_end_clean();
+
+		ob_start();
+		get_template_part( 'templates/header/top-bar-content-center' );
+		$top_bar_content['center'] = ob_get_contents();
+		ob_end_clean();
+
+		ob_start();
+		get_template_part( 'templates/header/top-bar-content-right' );
+		$top_bar_content['right'] = ob_get_contents();
+		ob_end_clean();
+
+		return $top_bar_content;
+	}
+
+endif;
+
+
+if ( ! function_exists( 'presscore_get_terms_list_by_slug' ) ) :
+
+	/**
+	 * Returns terms names list separated by separator based on terms slugs
+	 *
+	 * @since 4.1.5
+	 * @param  array  $args Default arguments: array( 'slugs' => array(), 'taxonomy' => 'category', 'separator' => ', ', 'titles' => array() ).
+	 * Default titles: array( 'empty_slugs' => __( 'All', LANGUAGE_ZONE ), 'no_result' => __('There is no categories', LANGUAGE_ZONE) )
+	 * @return string       Terms names list or title
+	 */
+	function presscore_get_terms_list_by_slug( $args = array() ) {
+
+		$default_args = array(
+			'slugs' => array(),
+			'taxonomy' => 'category',
+			'separator' => ', ',
+			'titles' => array()
+		);
+
+		$default_titles = array(
+			'empty_slugs' => __( 'All', LANGUAGE_ZONE ),
+			'no_result' => __('There is no categories', LANGUAGE_ZONE)
+		);
+
+		$args = wp_parse_args( $args, $default_args );
+		$args['titles'] = wp_parse_args( $args['titles'], $default_titles );
+
+		// get categories names list or show all
+		if ( empty( $args['slugs'] ) ) {
+			$output = $args['titles']['empty_slugs'];
+
+		} else {
+
+			$terms_names = array();
+			foreach ( $args['slugs'] as $term_slug ) {
+				$term = get_term_by( 'slug', $term_slug, $args['taxonomy'] );
+
+				if ( $term ) {
+					$terms_names[] = $term->name;
+				}
+
+			}
+
+			if ( $terms_names ) {
+				asort( $terms_names );
+				$output = join( $args['separator'], $terms_names );
+
+			} else {
+				$output = $args['titles']['no_result'];
+
+			}
+
+		}
+
+		return $output;
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_enqueue_theme_stylesheet' ) ) :
+
+	/**
+	 * [presscore_enqueue_theme_stylesheet description]
+	 *
+	 * @since  4.2.2
+	 * 
+	 * @param  string       $handle [description]
+	 * @param  string|bool  $src    [description]
+	 * @param  array        $deps   [description]
+	 * @param  string|bool  $ver    [description]
+	 * @param  string       $media  [description]
+	 */
+	function presscore_enqueue_theme_stylesheet( $handle, $src, $deps = array(), $ver = false, $media = 'all' ) {
+		$src = get_template_directory_uri() . '/' . presscore_locate_stylesheet( $src );
+		if ( ! $ver ) {
+			$ver = wp_get_theme()->get( 'Version' );
+		}
+
+		wp_enqueue_style( $handle, $src, $deps, $ver, $media );
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_enqueue_theme_script' ) ) :
+
+	/**
+	 * [presscore_enqueue_theme_script description]
+	 *
+	 * @since 4.2.2
+	 * 
+	 * @param string      $handle    Name of the script.
+	 * @param string|bool $src       Path to the script from the root directory of WordPress. Example: '/js/myscript'.
+	 * @param array       $deps      An array of registered handles this script depends on. Default jquery.
+	 * @param string|bool $ver       Optional. String specifying the script version number, if it has one. This parameter
+	 *                               is used to ensure that the correct version is sent to the client regardless of caching,
+	 *                               and so should be included if a version number is available and makes sense for the script.
+	 * @param bool        $in_footer Optional. Whether to enqueue the script before </head> or before </body>.
+	 *                               Default 'false'. Accepts 'false' or 'true'.
+	 */
+	function presscore_enqueue_theme_script( $handle, $src = false, $deps = array( 'jquery' ), $ver = false, $in_footer = true ) {
+		$src = get_template_directory_uri() . '/' . presscore_locate_script( $src );
+		if ( ! $ver ) {
+			$ver = wp_get_theme()->get( 'Version' );
+		}
+
+		wp_enqueue_script( $handle, $src, $deps, $ver, $in_footer );
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_locate_asset' ) ) :
+
+	/**
+	 * Try to locate minified file first, if file not exists - return $path.$ext
+	 * 
+	 * @since 4.2.2
+	 * 
+	 * @param  string $path File path without extension
+	 * @param  string $ext  File extension
+	 * @return string       File path
+	 */
+	function presscore_locate_asset( $path, $ext = 'css' ) {
+		if ( locate_template( $path . '.min.' . $ext, false ) ) {
+			return $path . '.min.' . $ext;
+
+		} else {
+			return $path . '.' . $ext;
+
+		}
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_locate_stylesheet' ) ) :
+
+	/**
+	 * Locate stylesheet file
+	 *
+	 * @since 4.2.2
+	 * 
+	 * @param  string $path File path
+	 * @return string       File path
+	 */
+	function presscore_locate_stylesheet( $path ) {
+		return presscore_locate_asset( $path, 'css' );
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_locate_script' ) ) :
+
+	/**
+	 * Locate script file
+	 *
+	 * @since 4.2.2
+	 * 
+	 * @param  string $path File path
+	 * @return string       File path
+	 */
+	function presscore_locate_script( $path ) {
+		return presscore_locate_asset( $path, 'js' );
+	}
+
+endif;
+
+if ( ! function_exists( 'presscore_is_load_more_pagination' ) ) :
+
+	/**
+	 * Description here
+	 *
+	 * @since 4.3.0
+	 * @return bool
+	 */
+	function presscore_is_load_more_pagination() {
+		$config = Presscore_Config::get_instance();
+		return in_array( $config->get( 'load_style' ), array( 'ajax_more', 'lazy_loading' ) );
+	}
+
+endif;

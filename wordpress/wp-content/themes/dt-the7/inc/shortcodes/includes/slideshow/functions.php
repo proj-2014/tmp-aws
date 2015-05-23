@@ -47,6 +47,7 @@ class DT_Shortcode_Slideshow extends DT_Shortcode {
 		$posts = array_map( 'trim', explode(',', $posts) );
 
 		$attachments_id = array();
+		$selected_posts_titles = array();
 
 		if ( $posts ) {
 			// get posts by slug
@@ -63,6 +64,9 @@ class DT_Shortcode_Slideshow extends DT_Shortcode {
 				$dt_query = new WP_Query( $args );
 				if ( $dt_query->have_posts() ) {
 					$dt_post = $dt_query->posts[0];
+
+					$selected_posts_titles[] = get_the_title( $dt_post );
+
 					$slides_id = get_post_meta( $dt_post->ID, '_dt_slider_media_items', true );
 					if ( $slides_id ) {
 						$attachments_id = array_merge( $attachments_id, $slides_id );
@@ -84,6 +88,9 @@ class DT_Shortcode_Slideshow extends DT_Shortcode {
 			$dt_query = new WP_Query( $args );
 			if ( $dt_query->have_posts() ) {
 				$dt_post = $dt_query->posts[0];
+
+				$selected_posts_titles[] = get_the_title( $dt_post );
+
 				$slides_id = get_post_meta( $dt_post->ID, '_dt_slider_media_items', true );
 				if ( $slides_id ) {
 					$attachments_id = array_merge( $attachments_id, $slides_id );
@@ -91,14 +98,34 @@ class DT_Shortcode_Slideshow extends DT_Shortcode {
 			}
 		}
 
-		$attachments_data = presscore_get_attachment_post_data( $attachments_id );
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
 
-		$output = presscore_get_royal_slider( $attachments_data, array(
-			'width'     => $width,
-			'height'    => $height,
-			'class'     => array( 'slider-simple' ),
-			'style'     => ' style="width: 100%"'
-		) );
+			if ( empty($selected_posts_titles) ) {
+				$dummy_posts_titles = __( 'No posts selected', LANGUAGE_ZONE );
+
+			} else {
+				$dummy_posts_titles = esc_html( join( ', ', $selected_posts_titles ) );
+
+			}
+
+			$output = '
+				<div class="dt_vc-shortcode_dummy dt_vc-royal_slider" style="height: 250px;">
+					<h5>Royal slider</h4>
+					<p class="text-small"><strong>Display slider(s):</strong> ' . $dummy_posts_titles . '</p>
+				</div>
+			';
+
+		} else {
+
+			$attachments_data = presscore_get_attachment_post_data( $attachments_id );
+			$output = presscore_get_royal_slider( $attachments_data, array(
+				'width'     => $width,
+				'height'    => $height,
+				'class'     => array( 'slider-simple' ),
+				'style'     => ' style="width: 100%"'
+			) );
+
+		}
 
 		return $output; 
 	}

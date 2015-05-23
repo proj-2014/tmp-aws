@@ -54,7 +54,7 @@ function optionsframework_uploader( $_id, $_value, $_mode = 'uri_only', $_desc =
 		$output .= '<input type="hidden" class="upload-id" name="'.$name.'[id]" value="' . $att_id . '" />' . "\n";
 	}
 
-	$output .= '<input id="' . $id . '" class="upload' . $class . '" type="text" name="'.$uploader_name.'" value="' . $value . '" placeholder="' . __('No file chosen', LANGUAGE_ZONE) .'" />' . "\n";
+	$output .= '<input id="' . $id . '" class="upload' . $class . '" type="text" name="'.$uploader_name.'" value="' . $value . '" placeholder="' . __('No file chosen', LANGUAGE_ZONE) .'" readonly="readonly"/>' . "\n";
 	
 	if ( function_exists( 'wp_enqueue_media' ) ) {
 		if ( ( $value == '' ) ) {

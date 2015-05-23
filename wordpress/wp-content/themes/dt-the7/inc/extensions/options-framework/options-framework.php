@@ -58,8 +58,39 @@ function optionsframework_rolescheck() {
 			// If the user can edit theme options, let the fun begin!
 			add_action( 'admin_menu', 'optionsframework_add_page' );
 			add_action( 'admin_init', 'optionsframework_init' );
+			add_action( 'admin_enqueue_scripts', 'of_load_global_admin_assets' );
+
+			if ( is_admin() ) {
+				add_action( 'admin_enqueue_scripts', 'of_admin_bar_inline_styles' );
+			} else {
+				add_action( 'wp_enqueue_scripts', 'of_admin_bar_inline_styles' );
+			}
 		}
 	}
+}
+
+/**
+ * Get options id.
+ *
+ */
+function optionsframework_get_options_id() {
+	return preg_replace("/\W/", "", strtolower(wp_get_theme()->Name) );
+}
+
+/**
+ * A unique identifier is defined to store the options in the database and reference them from the theme.
+ * By default it uses the theme name, in lowercase and without spaces, but this can be changed if needed.
+ * If the identifier changes, it'll appear as if the options have been reset.
+ * 
+ */
+function optionsframework_option_name() {
+
+	// This gets the theme name from the stylesheet (lowercase and without spaces)
+
+	$optionsframework_settings = get_option('optionsframework');
+	$optionsframework_settings['id'] = optionsframework_get_options_id();
+	update_option('optionsframework', $optionsframework_settings);
+
 }
 
 /* Loads the file for option sanitization */
@@ -206,21 +237,12 @@ if ( !function_exists( 'optionsframework_add_page' ) ) {
 
 	function optionsframework_add_page() {
 
-		// Get options
-		$options_arr =& _optionsframework_options();
-
-		// Filter options for subpages
-		$subpages = array_filter( $options_arr, 'optionsframework_options_page_filter' );
-
-		// Get main page name
-		$main_menu_name = current( $options_arr );
-		$main_menu_name = esc_html( $main_menu_name['name'] );
-
-		$framework_pages = array();
+		$subpages = optionsframework_get_menu_items();
+		$main_menu_item = $subpages[0];
+		unset( $subpages[0] );
 
 		// Add main page
-		$main_page = add_menu_page( $main_menu_name, _x( 'Theme Options', 'backend', LANGUAGE_ZONE ), 'edit_theme_options', 'options-framework', 'optionsframework_page' );
-		$framework_pages[] = $main_page;
+		$main_page = add_menu_page( $main_menu_item['menu_title'], $main_menu_item['main_title'], 'edit_theme_options', $main_menu_item['menu_slug'], 'optionsframework_page' );
 
 		// Adds actions to hook in the required css and javascript
 		add_action( 'admin_print_styles-' . $main_page, 'optionsframework_load_styles' );
@@ -242,34 +264,38 @@ if ( !function_exists( 'optionsframework_add_page' ) ) {
 			add_action( 'admin_print_styles-' . $subpage,'optionsframework_load_styles' );
 			add_action( 'admin_print_scripts-' . $subpage, 'optionsframework_load_scripts' );
 			add_action( 'admin_print_scripts-' . $subpage, 'optionsframework_media_scripts' );
-
-			$framework_pages[] = $subpage;
 		}
 
 		// Change menu name for main page
 		global $submenu;
-		if ( isset( $submenu['options-framework'] ) ) {
-			$submenu['options-framework'][0][0] = $main_menu_name;
+		if ( isset( $submenu[ $main_menu_item['menu_slug'] ] ) ) {
+			$submenu[ $main_menu_item['menu_slug'] ][0][0] = $main_menu_item['menu_title'];
 		}
-
-		optionsframework_pages( $framework_pages );
 	}
 
 }
-
 
 /**
  * Store framework pages.
  *
  */
-function optionsframework_pages( $pages = array() ) {
-	static $stored_pages = array();
+function optionsframework_get_menu_items() {
 
-	if ( !empty($pages) && is_array($pages) ) {
-		$stored_pages = $pages;
-	}
-	return $stored_pages;
+	// Get options
+	$options_arr =& _optionsframework_options();
+
+	// Filter options for subpages
+	$menu_items = array_filter( $options_arr, 'optionsframework_options_page_filter' );
+
+	// Get main page name
+	// $main_menu_name = current( $options_arr );
+	// $main_menu_name = esc_html( $main_menu_name['name'] );
+
+	array_unshift( $menu_items, array( 'page_title' => _x( 'General', 'backend', LANGUAGE_ZONE ), 'menu_title' => _x( 'General', 'backend', LANGUAGE_ZONE ), 'main_title' => _x( 'Theme Options', 'backend', LANGUAGE_ZONE ) , 'menu_slug' => 'options-framework') );
+
+	return $menu_items;
 }
+
 
 
 /* Loads the CSS */
@@ -314,6 +340,16 @@ function of_admin_head() {
 	do_action( 'optionsframework_custom_scripts' );
 }
 
+function of_load_global_admin_assets() {
+	wp_enqueue_style('optionsframework-global', OPTIONS_FRAMEWORK_URL . 'css/admin-stylesheet.css');
+}
+
+function of_admin_bar_inline_styles() {
+	wp_add_inline_style( 'admin-bar', '#wpadminbar #wp-admin-bar-options-framework-parent > .ab-item:before {
+	content: "\f111";
+}' );
+}
+
 /*
  * Builds out the options panel.
  *
@@ -331,21 +367,28 @@ function optionsframework_page() {
 	settings_errors(); ?>
 
 	<div id="optionsframework-wrap" class="wrap">
+
+	<h2>Theme Options</h2>
+
 	<?php screen_icon( 'themes' ); ?>
 	<h2 class="nav-tab-wrapper">
 		<?php echo optionsframework_tabs(); ?>
 	</h2>
 
 	<div id="optionsframework-metabox" class="metabox-holder">
-		<div id="optionsframework" class="postbox">
+		<div id="optionsframework">
 			<form action="options.php" method="post">
 			<?php settings_fields( 'optionsframework' ); ?>
 			<?php optionsframework_fields(); /* Settings */ ?>
-			<div id="optionsframework-submit">
-				<input type="submit" class="button-primary" name="update" value="<?php esc_attr_e( 'Save Options', LANGUAGE_ZONE ); ?>" />
-				<input type="submit" class="reset-button button-secondary" name="reset" value="<?php esc_attr_e( 'Restore Defaults', LANGUAGE_ZONE ); ?>" onclick="return confirm( '<?php print esc_js( __( 'Click OK to reset. Any theme settings will be lost!', LANGUAGE_ZONE ) ); ?>' );" />
-				<div class="clear"></div>
+
+			<div id="submit-wrap">
+				<div id="optionsframework-submit">
+					<input type="submit" class="button-primary" name="update" value="<?php esc_attr_e( 'Save Options', LANGUAGE_ZONE ); ?>" />
+					<input type="submit" class="reset-button button-secondary" name="reset" value="<?php esc_attr_e( 'Restore Defaults', LANGUAGE_ZONE ); ?>" onclick="return confirm( '<?php print esc_js( __( 'Click OK to restore default settings on this page!', LANGUAGE_ZONE ) ); ?>' );" />
+					<div class="clear"></div>
+				</div>
 			</div>
+
 			</form>
 		</div> <!-- / #container -->
 	</div>
@@ -397,10 +440,7 @@ function optionsframework_validate( $input ) {
 
 	// Get all saved options
 	$known_options = get_option( 'optionsframework', array() );
-	$saved_options = get_option( $known_options['id'], array() );
-
-	$clean = array();
-	$preserve = apply_filters( 'optionsframework_validate_preserve_fields', array() );
+	$saved_options = $used_options = get_option( $known_options['id'], array() );
 	$presets_list = optionsframework_get_presets_list();
 
 	// If there are preset option on this page - use this options instead saved
@@ -408,6 +448,8 @@ function optionsframework_validate( $input ) {
 
 		// Get preset options
 		$preset_options = optionsframework_presets_data( $input['preset'] );
+
+		$preserve = apply_filters( 'optionsframework_validate_preserve_fields', array() );
 
 		// Ignore preserved options
 		foreach ( $preserve as $option ) {
@@ -424,7 +466,21 @@ function optionsframework_validate( $input ) {
 		$options = $options_orig;
 
 		// Merge options, use preset options 
-		$saved_options = $used_options = array_merge( (array) $saved_options, $preset_options );
+		$used_options = array_merge( (array) $saved_options, $preset_options );
+
+		$is_preset = true;
+
+	// if import / export
+	} else if ( !empty( $input['import_export'] ) ) {
+
+		// Use all options for sanitazing
+		$options = $options_orig;
+
+		$import_options = @unserialize(@base64_decode($input['import_export']));
+
+		if ( is_array( $import_options ) ) {
+			$used_options = array_merge( (array) $saved_options, $import_options );
+		}
 
 		$is_preset = true;
 
@@ -443,6 +499,8 @@ function optionsframework_validate( $input ) {
 		$is_preset = false;
 
 	}
+
+	$clean = array();
 
 	// Sanitize options
 	foreach ( $options as $option ) {
@@ -631,13 +689,42 @@ function optionsframework_adminbar() {
 
 	global $wp_admin_bar;
 
+	$menu_items = optionsframework_get_menu_items();
+	$parent_menu_item = $menu_items[0];
+	$parent_menu_id = $parent_menu_item['menu_slug'] . '-parent';
+
 	$wp_admin_bar->add_menu( array(
-		'parent' => 'appearance',
-		'id' => 'of_theme_options_adminbar',
-		'title' => __( 'Theme Options', LANGUAGE_ZONE ),
-		'href' => admin_url( 'admin.php?page=options-framework' )
+		'id' => $parent_menu_id,
+		'title' => $parent_menu_item['main_title'],
+		'href' => admin_url( 'admin.php?page=' . urlencode($parent_menu_item['menu_slug']) )
 	));
+
+	foreach( $menu_items as $menu_item ) {
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => $parent_menu_id,
+			'id' => $menu_item['menu_slug'],
+			'title' => $menu_item['menu_title'],
+			'href' => admin_url( 'admin.php?page=' . urlencode($menu_item['menu_slug']) )
+		));
+	}
+
 }
+
+/**
+ * Description here.
+ *
+ */
+function optionsframework_get_options() {
+	$config_id = optionsframework_get_options_id();
+	$config = get_option( 'optionsframework' );
+	if ( !isset($config['knownoptions']) || !in_array($config_id, $config['knownoptions']) ) {
+		return null;
+	}
+
+	return get_option( $config_id );
+}
+
 
 /**
  * Get Option.
@@ -650,13 +737,20 @@ function optionsframework_adminbar() {
 if ( ! function_exists( 'of_get_option' ) ) :
 
 	function of_get_option( $name, $default = false ) {
-		$config = get_option( 'optionsframework' );
 
-		if ( ! isset( $config['id'] ) ) {
-			return $default;
+		static $saved_options = null;
+
+		if ( null === $saved_options ) {
+
+			$saved_options = optionsframework_get_options();
+			if ( null === $saved_options ) {
+				return $default;
+			}
+
+			$saved_options = apply_filters( 'dt_of_get_option_static', $saved_options );
 		}
 
-		$options = apply_filters( 'dt_of_get_option', get_option( $config['id'] ), $name );
+		$options = apply_filters( 'dt_of_get_option', $saved_options, $name );
 
 		if ( isset( $options[$name] ) ) {
 			return $options[$name];

@@ -73,13 +73,17 @@
             });
         },
         draw: function(redraw) {
-            var w = this.$el.width()/100*80,
+            var w = this.$el.addClass('vc_ready').width(),
                 border_w = 5,
+                radius;
+            if(!w) w = this.$el.parents(':visible').first().width()-2;
+            w = w/100*80;
                 radius = w/2 - border_w - 1;
             this.$wrapper.css({"width" : w + "px"});
             this.$label.css({"width" : w, "height" : w, "line-height" : w+"px"});
             this.$back.css({"width" : w, "height" : w});
             this.$canvas.attr({"width" : w + "px", "height" : w + "px"});
+            this.$el.addClass('vc_ready');
             this.circle = new ProgressCircle({
                 canvas: this.$canvas.get(0),
                 minRadius: radius,
@@ -127,7 +131,7 @@
      * @param option - object with settings
      * @return {*}
      */
-    $.fn.vcChat = function(option) {
+    $.fn.vcChat = function(option, value) {
         return this.each(function () {
             var $this = $(this),
                 data = $this.data('vc_chart'),
@@ -135,8 +139,8 @@
                     color: $this.data('pie-color'),
                     units: $this.data('pie-units')
                 };
-            if (!data) $this.data('vc_chart', (data = new VcChart(this, options)));
-            if (typeof option == 'string') data[option]();
+            if (typeof option == 'undefined') $this.data('vc_chart', (data = new VcChart(this, options)));
+            if (typeof option == 'string') data[option](value);
         });
     };
     /**
@@ -144,11 +148,11 @@
      */
     if ( typeof window['vc_pieChart'] !== 'function' ) {
         window.vc_pieChart = function() {
-            $('.vc_pie_chart').vcChat();
+            $('.vc_pie_chart:visible').vcChat();
         }
     }
     $(document).ready(function(){
-        vc_pieChart();
+        !window.vc_iframe && vc_pieChart();
     });
 
 })(window.jQuery);

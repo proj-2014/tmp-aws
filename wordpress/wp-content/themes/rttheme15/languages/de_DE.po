@@ -1,0 +1,310 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+
+# Latest News
+#. Text in function
+#: loop.php:69
+#: single.php:54
+msgid "% Comments"
+msgstr "% Kommentare"
+
+#. Text in function
+#: rt-framework/functions/rt_comments.php:30
+msgid "%1$s at %2$s"
+msgstr "%1$s um %2$s"
+
+#. Text in function
+#: rt-framework/functions/rt_comments.php:30
+msgid "(Edit)"
+msgstr "(Bearbeiten)"
+
+#. Text in function
+#: loop.php:69
+#: single.php:54
+msgid "0 Comment"
+msgstr "0 Kommentare"
+
+#. Text in function
+#: loop.php:69
+#: single.php:54
+msgid "1 Comment"
+msgstr "1 Kommentar"
+
+#. Text in function
+#: comments.php:58
+msgid "<span class=\"meta-nav\">&larr;</span> Older Comments"
+msgstr "<span class=\"meta-nav\">&larr;</span> Ältere Kommentare"
+
+#. Text in echo
+#: single.php:97
+msgid "About the Author"
+msgstr "Über den Autor"
+
+#. Text in echo
+#: 404.php:12
+msgid "Apologies, but the page you requested could not be found. Perhaps searching will help."
+msgstr "Verzeihung, aber die gesuchte Seite wurde nicht gefunden, vielleicht kann die Suchfunktion helfen."
+
+#. Text in function
+#: single-products.php:174
+msgid "Attached Documents"
+msgstr "Angefügte Dokumente"
+
+#. Text in function
+#: comments.php:137
+msgid "Cancel Reply"
+msgstr "Antworten abbrechen"
+
+#. Text in function
+#: rt-framework/widgets/recent_posts_gallery.php:1
+msgid "Close"
+msgstr "Schliessen"
+
+#. Text in echo
+#: comments.php:129
+msgid "Comment"
+msgstr "Kommentar"
+
+#. Text in echo
+#: comments.php:64
+msgid "Comments are closed."
+msgstr "Kommentarfunktion geschlossen"
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "Company Name:"
+msgstr "Name des Betriebes:"
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "Company URL:"
+msgstr "Ihre Homepage:"
+
+#. Text in echo
+#: single-products.php:225
+msgid "Download Charts"
+msgstr "Charts downloaden"
+
+#. Text in echo
+#: single-products.php:226
+msgid "Download Excel File"
+msgstr "Excel Datei downloaden"
+
+#. Text in echo
+#: single-products.php:227
+msgid "Download PDF File"
+msgstr "PDF Datei downloaden"
+
+#. Text in echo
+#: single-products.php:228
+msgid "Download Word File"
+msgstr "Word Datei downloaden"
+
+#. Text in echo
+#: comments.php:119
+msgid "Email"
+msgstr "E-Mail"
+
+#. Text in function
+#: rt-framework/widgets/recent_posts_gallery.php:1
+msgid "Enlarge"
+msgstr "Vergrößern"
+
+#. Text in function
+#: rt-framework/widgets/flickr.php:50
+msgid "Flickr Feeds"
+msgstr "Flickr Feeds"
+
+#. Text in echo
+#: single-products.php:173
+msgid "General Details"
+msgstr "Generelle Angaben"
+
+#. Text in function
+#: rt-framework/functions/rt_breadcrumb.php:1
+msgid "Home"
+msgstr "Home"
+
+#. Text in echo
+#: comments.php:95
+msgid "Leave a Reply"
+msgstr "Antworten"
+
+#. Text in echo
+#: comments.php:87
+msgid "Log in"
+msgstr "Einloggen"
+
+#. Text in echo
+#: comments.php:110
+msgid "Log out"
+msgstr "Ausloggen"
+
+#. Text in echo
+#: comments.php:109
+msgid "Logged in as"
+msgstr "Eingeloggt als"
+
+#. Text in echo
+#: comments.php:118
+msgid "Name"
+msgstr "Name"
+
+#. Text in function
+#: comments.php:59
+msgid "Newer Comments <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Neuere Kommentare <span class=\"meta-nav\">&rarr;</span>"
+
+#. Text in function
+#: rt-framework/widgets/recent_posts_gallery.php:1
+msgid "Next post"
+msgstr "Nächster Artikel"
+
+#. Text in echo
+#: single-products.php:145
+msgid "Order Enquiry"
+msgstr "Bestellanfrage"
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "Phone Number:"
+msgstr "Telefon:"
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "Please enter a valid email address!"
+msgstr "Geben Sie eine gültige E-Mail-Adresse an!"
+
+#. Text in function
+#: rt-framework/widgets/popular_posts.php:95
+msgid "Popular Posts"
+msgstr "Beliebte Beiträge"
+
+#. Text in function
+#: rt-framework/widgets/recent_posts_gallery.php:1
+msgid "Previous post"
+msgstr "Voriger Eintrag"
+
+#. Text in function
+#: rt-framework/widgets/latest_posts_2.php:88
+#: rt-framework/widgets/latest_posts.php:91
+#: rt-framework/widgets/recent_posts_gallery.php:124
+msgid "Recent Posts"
+msgstr "Aktuelle Beiträge"
+
+#. Text in function
+#: single-products.php:247
+msgid "Related Products"
+msgstr "Ähnliche Produkte"
+
+#. Text in echo
+#: sub_page_header.php:14
+msgid "Search"
+msgstr "Suche"
+
+#. Text in echo
+#: single.php:115
+#: single-portfolio.php:105
+#: page.php:29
+#: single-products.php:269
+msgid "Sorry, no page found."
+msgstr "Leider wurde keine Seite gefunden."
+
+#. Text in echo
+#: loop.php:108
+#: list_loop.php:70
+msgid "Sorry, no posts matched your criteria."
+msgstr "Leider entsprechen keine Artikel den Suchkriterien."
+
+#. Text in echo
+#: comments.php:134
+msgid "Submit"
+msgstr "Absenden"
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "Thanks"
+msgstr "Danke"
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "There was an error submitting the form."
+msgstr "Fehler bei der Übertragung."
+
+#. Text in echo
+#: comments.php:4
+msgid "This post is password protected. Enter the password to view any comments."
+msgstr "Dieser Artikel ist passwortgeschützt. Passwort eingeben um Kommentare anzuzeigen."
+
+#. Text in function
+#: rt-framework/widgets/twitter.php:51
+msgid "Twitter Feeds"
+msgstr "Twitter Feeds"
+
+#. Text in echo
+#: comments.php:120
+msgid "Website"
+msgstr "Homepage"
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "Your Email: (*)"
+msgstr "Ihre E-Mail: (*)"
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "Your Name: (*)"
+msgstr "Ihr Name: (*)"
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:332
+msgid "Send"
+msgstr "Senden"
+
+#. Text in echo
+#: rt-framework/functions/rt_comments.php:44
+msgid "Your comment is awaiting moderation."
+msgstr "Ihr Kommentar wartet aus die Freigabe."
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "Your email was successfully sent. We will be in touch soon."
+msgstr "Ihre Nachricht wurde erfolgreich gesendet. Wir antworten Ihnen baldmöglichst."
+
+#. Text in function
+#: rt-framework/functions/rt_shortcodes.php:1
+msgid "Your message (*)"
+msgstr "Ihre Nachricht (*)"
+
+#. Text in function
+#: loop.php:49
+#: portfolio_loop.php:171
+#: list_loop.php:27
+#: rt-framework/widgets/recent_posts_gallery.php:1
+msgid "read more →"
+msgstr "weiter →"
+
+#. Text in echo
+#: comments.php:87
+msgid "to post a comment."
+msgstr ",um einen Kommentar zu schreiben."
+
+#. Text in echo
+#: single.php:91
+#: comments.php:91
+msgid "top"
+msgstr "zum Anfang"
+
+#. Text in echo
+#: searchform.php:3
+msgid "type and hit enter.."
+msgstr "Schreiben und Enter drücken..."
+

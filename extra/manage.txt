@@ -1,0 +1,10 @@
+
+modify history:
+
+20150523: add or update for wordpress The7 theme.
+
+1. replace the theme The7 from version 3.2.1 to 4.4.4(chinese version also)
+2. add woocommerce plugin version 2.2.10 for support theme The7 
+3. add plugin  woosidebars for wordpress .
+4. update plugin  revolution slider / go_pricing .
+5. active plugins for The7 theme . 

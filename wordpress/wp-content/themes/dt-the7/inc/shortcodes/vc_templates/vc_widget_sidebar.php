@@ -23,8 +23,8 @@ ob_end_clean();
 
 $sidebar_value = trim($sidebar_value);
 $sidebar_value = (substr($sidebar_value, 0, 3) == '<li' ) ? '<ul>'.$sidebar_value.'</ul>' : $sidebar_value;
-//
-$css_class =  apply_filters(VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'wpb_widgetised_column wpb_content_element'.$el_class, $this->settings['base']);
+
+$css_class =  apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'wpb_widgetised_column wpb_content_element'.$el_class, $this->settings['base'], $atts );
 $output .= "\n\t".'<div class="'.$css_class.'">';
 $output .= "\n\t\t".'<div class="wpb_wrapper">';
 $output .= wpb_widget_title(array('title' => $title, 'extraclass' => 'wpb_widgetised_column_heading'));

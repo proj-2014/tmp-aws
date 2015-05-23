@@ -54,7 +54,7 @@ class Presscore_Inc_Widgets_ContactForm extends WP_Widget {
 		if ( !is_admin() ) {
 			add_action('init', array(&$this, 'presscore_enqueue_styles'));
 		}
-		add_filter('dt_core_send_mail-to', array(&$this, 'presscore_send_to_filter'));
+		add_filter('dt_core_send_mail-to', array(&$this, 'presscore_send_to_filter'), 20);
 	}
 
 	/* Display the widget  */
@@ -196,13 +196,23 @@ class Presscore_Inc_Widgets_ContactForm extends WP_Widget {
 			$button_title = !empty($instance['button_title']) ? $instance['button_title'] : _x('Submit', 'widget', LANGUAGE_ZONE);
 
 			// buttons
-			echo '
-			<p>
-				<a class="dt-btn dt-btn-' . esc_attr( $instance['button_size'] ) . ' dt-btn-submit" href="#">' . esc_html( $button_title ) . '</a>
-				<a class="clear-form" href="#">' . _x('clear', 'widget', LANGUAGE_ZONE) . '</a>
-				<input class="assistive-text" type="submit" value="' . esc_attr( _x('submit', 'widget', LANGUAGE_ZONE) ) . '">
-			</p>
-			';
+			echo '<p>';
+
+			echo presscore_get_button_html( array(
+				'href' => '#',
+				'title' => esc_html( $button_title ),
+				'class' => 'dt-btn dt-btn-' . esc_attr( $instance['button_size'] ) . ' dt-btn-submit'
+			) );
+
+			echo presscore_get_button_html( array(
+				'href' => '#',
+				'title' => _x('clear', 'widget', LANGUAGE_ZONE),
+				'class' => 'clear-form'
+			) );
+
+			echo '<input class="assistive-text" type="submit" value="' . esc_attr( _x('submit', 'widget', LANGUAGE_ZONE) ) . '">';
+
+			echo '</p>';
 
 			// form end
 			echo '</form>' . "\n";

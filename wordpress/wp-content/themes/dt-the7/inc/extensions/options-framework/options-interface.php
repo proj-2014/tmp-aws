@@ -50,6 +50,8 @@ function optionsframework_fields() {
 	// Filter options for current page
 	$options = array_filter( $options, 'optionsframework_options_for_page_filter' );
 
+	$optionsframework_debug = (defined('OPTIONS_FRAMEWORK_DEBUG') && OPTIONS_FRAMEWORK_DEBUG) ? true: false;
+
 	$counter = 0;
 	$menu = '';
 	$elements_without_wrap = array(
@@ -59,7 +61,9 @@ function optionsframework_fields() {
 		'info',
 		'page',
 		'js_hide_begin',
-		'js_hide_end'
+		'js_hide_end',
+		'title',
+		'divider'
 	);
 
 	foreach ( $options as $value ) {
@@ -90,20 +94,29 @@ function optionsframework_fields() {
 			}
 
 			$output .= '<div id="' . esc_attr( $id ) .'" class="' . esc_attr( $class ) . '">'."\n";
-			if ( !empty( $value['name'] ) ) {
-				$output .= '<h4 class="heading">' . esc_html( $value['name'] ) . '</h4>' . "\n";
-			}
 
 			$output .= '<div class="option">' . "\n";
 
-			$explain_value = '';
-			if ( isset( $value['desc'] ) ) {
-				$explain_value = $value['desc'];
+			if ( !empty( $value['name'] ) || $optionsframework_debug ) {
+
+				$output .= '<div class="name">' . ( !empty( $value['name'] ) ? esc_html( $value['name'] ): '' ) . "\n";
+
+				$explain_value = '';
+				if ( isset( $value['desc'] ) ) {
+					$explain_value = $value['desc'];
+				}
+				$output .= '<div class="explain"><small>' . wp_kses( $explain_value, $allowedtags) . ( $optionsframework_debug ? '<br /><code>' . $value['id'] . '</code>' : '' ) . '</small></div>'."\n";
+
+				$output .= '</div>' . "\n";
 			}
-			$output .= '<div class="explain">' . wp_kses( $explain_value, $allowedtags) . ( (defined('OPTIONS_FRAMEWORK_DEBUG') && OPTIONS_FRAMEWORK_DEBUG) ? '<br /><code>' . $value['id'] . '</code>' : '' ) . '</div>'."\n";
 
 			if ( $value['type'] != 'editor' ) {
-				$output .= '<div class="controls">' . "\n";
+
+				if ( empty( $value['name'] ) ) {
+					$output .= '<div class="controls controls-fullwidth">' . "\n";
+				} else {
+					$output .= '<div class="controls">' . "\n";
+				}
 			}
 			else {
 				$output .= '<div>' . "\n";
@@ -182,22 +195,41 @@ function optionsframework_fields() {
 			foreach ($value['options'] as $key => $option) {
 				$id = $option_name . '-' . $value['id'] .'-'. $key;
 				$input_classes = $classes;
+				$attr = '';
 
 				if ( !empty($show_hide[ $key ]) ) {
 					$input_classes[] = 'js-hider-show';
+
+					if ( true !== $show_hide[ $key ] ) {
+						$attr = ' data-js-target="' . $show_hide[ $key ] . '"';
+					}
 				}
 
-				$output .= '<input class="' . esc_attr(implode(' ', $input_classes)) . '" type="radio" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '" value="'. esc_attr( $key ) . '" '. checked( $val, $key, false) .' /><label for="' . esc_attr( $id ) . '">' . esc_html( $option ) . '</label>';
+				$output .= '<input class="' . esc_attr(implode(' ', $input_classes)) . '"' . $attr . ' type="radio" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '" value="'. esc_attr( $key ) . '" '. checked( $val, $key, false) .' /><label for="' . esc_attr( $id ) . '">' . esc_html( $option ) . '</label>';
 			}
 			break;
 
 		// Image Selectors
 		case "images":
 			$name = $option_name .'['. $value['id'] .']';
-			$dir = get_template_directory_uri();
+			$show_hide = empty($value['show_hide']) ? array() : (array) $value['show_hide'];
+			$classes = array('of-radio-img-radio');
+
+			if ( !empty($show_hide) ) {
+				$classes[] = 'of-js-hider';
+			}
+
+			if ( empty($value['base_dir']) ) {
+				$dir = get_template_directory_uri();
+			} else {
+				$dir = $value['base_dir'];
+			}
+
 			foreach ( $value['options'] as $key => $option ) {
+				$input_classes = $classes;
 				$selected = '';
 				$checked = '';
+				$attr = '';
 				if ( $val != '' ) {
 					if ( $val == $key ) {
 						$selected = ' of-radio-img-selected';
@@ -205,9 +237,17 @@ function optionsframework_fields() {
 					}
 				}
 
+				if ( !empty($show_hide[ $key ]) ) {
+					$input_classes[] = 'js-hider-show';
+
+					if ( true !== $show_hide[ $key ] ) {
+						$attr = ' data-js-target="' . $show_hide[ $key ] . '"';
+					}
+				}
+
 				$output .= '<div class="of-radio-img-inner-container">';
 
-				$output .= '<input type="radio" id="' . esc_attr( $value['id'] .'_'. $key) . '" class="of-radio-img-radio" value="' . esc_attr( $key ) . '" name="' . esc_attr( $name ) . '" '. $checked .' />';
+				$output .= '<input type="radio" id="' . esc_attr( $value['id'] .'_'. $key) . '" class="' . esc_attr(implode(' ', $input_classes)) . '"' . $attr . ' value="' . esc_attr( $key ) . '" name="' . esc_attr( $name ) . '" '. $checked .' />';
 
 				$img_info = '';
 				if ( is_array( $option ) && isset( $option['src'], $option['title'] ) ) {
@@ -435,7 +475,7 @@ function optionsframework_fields() {
 		// Info
 		case "info":
 			$id = '';
-			$class = 'widgets-sortables section';
+			$class = 'section';
 			if ( isset( $value['id'] ) ) {
 				$id = 'id="' . esc_attr( $value['id'] ) . '" ';
 			}
@@ -447,12 +487,19 @@ function optionsframework_fields() {
 			}
 
 			$output .= '<div ' . $id . 'class="' . esc_attr( $class ) . '">' . "\n";
+
 			if ( isset($value['name']) ) {
 				$output .= '<h4 class="heading">' . esc_html( $value['name'] ) . '</h4>' . "\n";
 			}
+
 			if ( $value['desc'] ) {
 				$output .= apply_filters('of_sanitize_info', $value['desc'] ) . "\n";
 			}
+
+			if ( !empty($value['image']) ) {
+				$output .= '<div class="info-image-holder"><img src="' . esc_url($value['image']) . '" /></div>';
+			}
+
 			$output .= '</div>' . "\n";
 			break;
 
@@ -574,9 +621,9 @@ function optionsframework_fields() {
 			if( isset( $value['id'] ) ){
 				$id .= ' id="' . esc_attr($value['id']) . '"'; 
 			}
-			$output .= '<div' .$id. ' class="widgets-sortables ' . esc_attr( $class ) . '">'."\n";
+			$output .= '<div' .$id. ' class="postbox ' . esc_attr( $class ) . '">'."\n";
 			if( isset($value['name']) && !empty($value['name']) ){
-				$output .= '<div class="sidebar-name"><h3>' . esc_html( $value['name'] ) . '</h3></div>' . "\n";
+				$output .= '<h3>' . esc_html( $value['name'] ) . '</h3>' . "\n";
 			}
 		break;
 
@@ -590,31 +637,31 @@ function optionsframework_fields() {
 
 		// fields generator
 		case "fields_generator":
-			
+
 			if ( ! isset( $value['options']['fields'] ) || ! is_array( $value['options']['fields'] ) ) {
 				break;
 			}
-			
+
 			$del_link = '<div class="submitbox"><a href="#" class="of_fields_gen_del submitdelete">'. _x('Delete', 'backend fields', LANGUAGE_ZONE). '</a></div>';
 			
 			$output .= '<ul class="of_fields_gen_list">';
 
 			// saved elements
 			if ( is_array( $val ) ) {
-				
+
 				$i = 0;
 				// create elements
 				foreach ( $val as $index=>$field ) {
-					
+
 					$block = $b_title = '';
 					// use patterns
 					foreach ( $value['options']['fields'] as $name => $data ) {
-						
+
 						// if only_for list isset and current index not in the list - skip this element
 						if ( isset( $data['only_for'] ) && is_array( $data['only_for'] ) && ! in_array( $index, $data['only_for'] ) ) {
 							continue;
 						}
-						
+
 						// checked если поле присутствует в записи, если нет поля value в шаблоне
 						// или если оно есть и равно значению поля в записи
 						$checked = false;
@@ -623,12 +670,12 @@ function optionsframework_fields() {
 							( isset( $data['value'] ) && $data['value'] == $field[$name] ) ) ) {
 							$checked = true;
 						}
-						
+
 						// get the title
 						if ( isset( $data['class'] ) && 'of_fields_gen_title' == $data['class'] ) {
 							$b_title = $field[$name];
 						}
-						
+
 						$el_args = array(
 							'name'          => sprintf('%s[%s][%d][%s]',
 								$option_name,
@@ -636,67 +683,80 @@ function optionsframework_fields() {
 								$index,
 								$name
 							),
-							'description'   => isset($data['description'])?$data['description']:'',
-							'class'         => isset($data['class'])?$data['class']:'',
-							'value'         => ('checkbox' == $data['type'])?'':$field[$name],
+							'description'   => isset($data['description']) ? $data['description'] : '',
+							'class'         => isset($data['class']) ? $data['class'] : '',
+							'value'         => ('checkbox' == $data['type']) ? '' : $field[$name],
 							'checked'       => $checked
 						);
-						
+
+						if ( 'select' == $data['type'] ) {
+							$el_args['options'] = isset($data['options']) ? $data['options'] : array();
+							$el_args['selected'] = $el_args['value'];
+						}
+
 						if( isset($data['desc_wrap']) ) {
 							$el_args['desc_wrap'] = $data['desc_wrap'];
 						}
-						
+
 						if( isset($data['wrap']) ) {
 							$el_args['wrap'] = $data['wrap'];
 						}
-						
+
 						if( isset($data['style']) ) {
 							$el_args['style'] = $data['style'];
 						}
-						
+
 						// create form elements
 						$element = dt_create_tag( $data['type'], $el_args);
-						
+
 						$block .= $element;
 					}
 					unset($data);
-					
-					$output .= '<li class="nav-menus-php">';
-					
+
+					$output .= '<li class="nav-menus-php nav-menu-index-' . $index . '">';
+
 					$output .= '<div class="of_fields_gen_title menu-item-handle" data-index="' . $index . '"><span class="dt-menu-item-title">' . esc_attr($b_title). '</span>';
-					$output .= '<span class="item-controls"><a title="'. _x('Edit Widgetized Area', 'backend fields', LANGUAGE_ZONE). '" class="item-edit"></a></span></div>';
+					$output .= '<span class="item-controls"><a class="item-edit"></a></span></div>';
 					$output .= '<div class="of_fields_gen_data menu-item-settings description" style="display: none;">' . $block;
-					if( !in_array($index, array_keys($value['std'])) ){
+
+					// if ( isset($value['std'][ $index ], $value['std'][ $index ]['permanent']) && $value['std'][ $index ]['permanent'] ) {
+					// } else {
 						$output .= $del_link;
-					}
+					// }
+
 					$output .= '</div>';
 					$output .= '</li>';
-					
+
 					$i++;
 				}
 				unset($field);
-				
+
 			}
-						
+
 			$output .= '</ul>';
-			
+
 			// control panel
 			$output .= '<div class="of_fields_gen_controls">';
-			
+
 			// use pattern
 			foreach( $value['options']['fields'] as $name => $data ) {
 				if( isset($data['only_for']) ) continue;
-				
+
 				$el_args = array(
 					'name'          => sprintf('%s[%s][%s]',
 						$option_name,
 						$value['id'],
 						$name
 					),
-					'description'   => isset($data['description'])?$data['description']:'',
-					'class'         => isset($data['class'])?$data['class']:'',
-					'checked'       => isset($data['checked'])?$data['checked']:false
+					'description'   => isset($data['description']) ? $data['description'] : '',
+					'class'         => isset($data['class']) ? $data['class'] : '',
+					'checked'       => isset($data['checked']) ? $data['checked'] : false
 				);
+
+				if ( 'select' == $data['type'] ) {
+					$el_args['options'] = isset($data['options']) ? $data['options'] : array();
+					$el_args['selected'] = isset($data['selected']) ? $data['selected'] : false;
+				}
 
 				if( isset($data['desc_wrap']) ) {
 					$el_args['desc_wrap'] = $data['desc_wrap'];
@@ -949,6 +1009,172 @@ function optionsframework_fields() {
 			$output .= '<input type="text" class="of-input dt-square-size" name="' . esc_attr($option_name . '[' . $value['id'] . '][height]') . '" value="' . absint($val['height']) . '" />';
 
 			break;
+
+		// import/export theme options
+		case 'import_export_options':
+			$rows = '8';
+
+			if ( isset( $value['settings']['rows'] ) ) {
+				$custom_rows = $value['settings']['rows'];
+				if ( is_numeric( $custom_rows ) ) {
+					$rows = $custom_rows;
+				}
+			}
+
+			$valid_settings = $settings;
+			$fields_black_list = apply_filters( 'optionsframework_fields_black_list', array() );
+
+			// do not export preserved settings
+			foreach ( $fields_black_list as $black_setting ) {
+				if ( array_key_exists($black_setting, $valid_settings) ) {
+					unset( $valid_settings[ $black_setting ] );
+				}
+			}
+
+			$val = base64_encode( serialize( $valid_settings ) );
+
+			$output .= '<textarea id="' . esc_attr( $value['id'] ) . '" class="of-input of-import-export" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" rows="' . $rows . '" onclick="this.focus();this.select()">' . esc_textarea( $val ) . '</textarea>';
+			break;
+
+		case 'title':
+			$output .= '<div class="of-title"><h4>' . esc_html($value['name']) . '</h4></div>';
+			break;
+
+		case 'divider':
+			$output .= '<div class="divider"></div>';
+			break;
+
+		// Gradient
+		case "gradient":
+			$default_color = '';
+
+			if ( isset($value['std'][0]) ) {
+				if ( $val !=  $value['std'][0] )
+					$default_color_1 = ' data-default-color="' .$value['std'][0] . '" ';
+			}
+
+			if ( isset($value['std'][1]) ) {
+				if ( $val !=  $value['std'][1] )
+					$default_color_2 = ' data-default-color="' .$value['std'][1] . '" ';
+			}
+
+			$output .= '<input name="' . esc_attr( $option_name . '[' . $value['id'] . '][0]' ) . '" id="' . esc_attr( $value['id'] ) . '-0" class="of-color"  type="text" value="' . esc_attr( $val[0] ) . '"' . $default_color_1 .' />';
+
+			$output .= '&nbsp;';
+
+			$output .= '<input name="' . esc_attr( $option_name . '[' . $value['id'] . '][1]' ) . '" id="' . esc_attr( $value['id'] ) . '-1" class="of-color"  type="text" value="' . esc_attr( $val[1] ) . '"' . $default_color_2 .' />';
+
+			break;
+
+		// sortable
+		case 'sortable':
+
+			if ( !empty($value['items']) ) {
+				$sortable_items = $value['items'];
+			} else {
+				$output .= '<p>No items specified. It needs array( id1 => name1, id2 => name2 ).</p>';
+				break;
+			}
+
+			$saved_items = isset($val) ? (array) $val : array();
+
+			if ( !empty( $value['fields'] ) && is_array($value['fields']) ) {
+
+				$fields_count = 0;
+
+				$output .= '<div class="sortable-fields-holder">';
+
+					foreach ( $value['fields'] as $field_id=>$field_settings ) {
+
+						// classes
+						$field_classes = 'connectedSortable content-holder';
+						if ( !empty( $field_settings['class'] ) ) {
+							$field_classes .= ' ' . $field_settings['class'];
+						}
+
+						// items name
+						$item_name = esc_attr( sprintf( '%1$s[%2$s][%3$s][]', $option_name, $value['id'], $field_id ) );
+
+						// saved items
+						$saved_field_items = array_key_exists($field_id, $saved_items) ? $saved_items[ $field_id ] : array();
+
+						// field title
+						if ( !empty($field_settings['title']) ) {
+							$output .= '<div class="sortable-field-title">' . ++$fields_count . '. ' . esc_html($field_settings['title']) . '</div>'; 
+						}
+
+						$output .= '<div class="sortable-field">';
+
+						// output fields
+						$output .= '<ul class="' . esc_attr( $field_classes ) . '" data-sortable-item-name="' . $item_name . '">';
+
+							$output .='<li class="ui-dt-sb-hidden"><input type="hidden" name="' . $item_name . '" value="" /></li>';
+							
+							if ( !empty($saved_field_items) && is_array( $saved_field_items ) ) {
+								
+								foreach ( $saved_field_items as $item_value ) {
+
+									$item_settings = $sortable_items[ $item_value ];
+									$item_title = empty($item_settings['title']) ? 'undefined' : esc_html( $item_settings['title'] );
+									$item_class = empty($item_settings['class']) ? '' : ' ' . esc_attr( $item_settings['class'] );
+
+									$output .= '<li class="ui-state-default' . $item_class . '"><input type="hidden" name="' . $item_name . '" value="' . esc_attr( $item_value ) . '" /><span>' . $item_title . '</span></li>';
+
+									// remove item from palette list
+									unset( $sortable_items[ $item_value ] );
+
+								}
+							}
+
+						$output .= '</ul>';
+
+						$output .= '</div>';
+
+					}
+
+				$output .= '</div>';
+
+			}
+
+			$output .= '<div class="sortable-items-holder">';
+
+				// palette title
+				if ( !empty($value['palette_title']) ) {
+					$output .= '<div class="sortable-palette-title">' . esc_html($value['palette_title']) . '</div>'; 
+				}
+
+				$output .= '<ul class="connectedSortable tools-palette">';
+				
+					foreach ( $sortable_items as $item_value=>$item_settings ) {
+
+						$item_title = empty($item_settings['title']) ? 'undefined' : esc_html( $item_settings['title'] );
+						$item_class = empty($item_settings['class']) ? '' : ' ' . esc_attr( $item_settings['class'] );
+
+						$output .= '<li class="ui-state-default' . $item_class . '"><input type="hidden" value="' . esc_attr( $item_value ) . '" /><span>' . $item_title . '</span></li>';
+					}
+
+				$output .= '</ul>';
+
+			$output .= '</div>';
+
+			break;
+
+			// Select Box
+			case 'pages_list':
+				$html = wp_dropdown_pages( array(
+					'name' => esc_attr( $option_name . '[' . $value['id'] . ']' ),
+					'id' => esc_attr( $value['id'] ),
+					'echo' => 0,
+					'show_option_none' => __( '&mdash; Select &mdash;', LANGUAGE_ZONE ),
+					'option_none_value' => '0',
+					'selected' => $val
+				) );
+
+				$html = str_replace( '<select', '<select class="of-input"', $html );
+
+				$output .= $html;
+				break;
+
 		}
 
 		if ( !in_array( $value['type'], $elements_without_wrap ) ) {

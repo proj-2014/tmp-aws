@@ -367,6 +367,12 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 			$html = apply_filters( "rwmb_{$type}_wrapper_html", "{$begin}{$field_html}{$end}", $field, $meta );
 			$html = apply_filters( "rwmb_{$id}_wrapper_html", $html, $field, $meta );
 
+			// Apply filter to field before
+			$before = apply_filters( "rwmb_field_before_html", $field['before'], $field, $meta );
+
+			// Apply filter to field after
+			$after = apply_filters( "rwmb_field_after_html", $field['after'], $field, $meta );
+
 			// Display label and input in DIV and allow user-defined classes to be appended
 			$classes = array( 'rwmb-field', "rwmb-{$field['type']}-wrapper" );
 			if ( 'hidden' === $field['type'] )
@@ -377,7 +383,7 @@ if ( ! class_exists( 'RW_Meta_Box' ) )
 				$classes[] = $field['class'];
 
 			return sprintf(
-				$field['before'] . '<div class="%s"%s>%s</div>' . $field['after'],
+				$before . '<div class="%s"%s>%s</div>' . $after,
 				implode( ' ', $classes ),
 				$group,
 				$html

@@ -42,22 +42,23 @@
 }
 
 .formError .formErrorContent {
-	width: 100%;
-	background: #ee0101;
-	position:relative;
-	color: #fff;
-	min-width: 120px;
-	font-size: 11px;
-	border: 2px solid #ddd;
-	box-shadow: 0 0 6px #000;
-	-moz-box-shadow: 0 0 6px #000;
-	-webkit-box-shadow: 0 0 6px #000;
-	-o-box-shadow: 0 0 6px #000;
-	padding: 4px 10px 4px 10px;
+	width:100%; 
+	background:#8a0b2c;
+	color:#fff;
+	width:165px;
+	font-family:tahoma;
+	font-size:11px;
+	border:0px solid #ddd;
+	/*
+	box-shadow: 0px 0px 6px #f5f5f5;
+	-moz-box-shadow: 0px 0px 6px #f5f5f5;
+	-webkit-box-shadow: 0px 0px 6px #f5f5f5;
+	*/
+	text-shadow: #f5f5f5;
+	padding:4px 10px 4px 10px;
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
-	-o-border-radius: 6px;
 }
 
 .formError.inline .formErrorContent {
@@ -103,13 +104,13 @@ body.rtl .formError .formErrorArrow {
 .formError .formErrorArrow div {
 	border-left: 2px solid #ddd;
 	border-right: 2px solid #ddd;
-	box-shadow: 0 2px 3px #444;
+	/*box-shadow: 0 2px 3px #444;
 	-moz-box-shadow: 0 2px 3px #444;
 	-webkit-box-shadow: 0 2px 3px #444;
-	-o-box-shadow: 0 2px 3px #444;
+	-o-box-shadow: 0 2px 3px #444;*/
 	font-size: 0px;
 	height: 1px;
-	background: #ee0101;
+	background: #8a0b2c;
 	margin: 0 auto;
 	line-height: 0;
 	font-size: 0;

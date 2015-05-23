@@ -52,7 +52,7 @@ jQuery(document).ready(function($) {
 
 	// !- Fire animation
 	doAnimation();
-	if (!dtGlobals.isMobile && !$("html").hasClass("old-ie")){
+	if (!dtGlobals.isMobile && !$("html").hasClass("old-ie") && !window.vc_iframe){
 		$(window).on("scroll", function () {
 			doAnimation();
 		});

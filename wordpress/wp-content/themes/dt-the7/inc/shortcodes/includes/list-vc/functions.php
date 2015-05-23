@@ -29,9 +29,6 @@ class DT_Shortcode_List_Vc extends DT_Shortcode {
 
 		add_shortcode( 'dt_vc_list_item', array($this, 'shortcode_item') );
 		add_shortcode( 'dt_vc_list', array($this, 'shortcode_list') );
-
-		// add shortcode button
-		// $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false );
 	}
 
 	public function shortcode_list( $atts, $content = null ) {
@@ -49,7 +46,6 @@ class DT_Shortcode_List_Vc extends DT_Shortcode {
 		switch ( $style ) {
 			case '2':
 				$classes[] = 'standard-number-list';
-				// $tag = 'ol';
 				break;
 			case '3':
 				$classes[] = 'image-arrow';
@@ -72,8 +68,8 @@ class DT_Shortcode_List_Vc extends DT_Shortcode {
 			'style'     => $style,
 			'dividers'  => $dividers
 		);
-		
-		$output = sprintf( '<%1$s class="%2$s">%3$s</%1$s>', $tag, esc_attr($classes), do_shortcode($content) );
+
+		$output = sprintf( '<%1$s class="%2$s">%3$s</%1$s>', $tag, esc_attr($classes), do_shortcode( shortcode_unautop( $content ) ) );
 
 		// restore atts
 		self::$atts = $atts_backup;
@@ -99,7 +95,7 @@ class DT_Shortcode_List_Vc extends DT_Shortcode {
 			$content = '<div class="wf-table">' . $content . '</div>';
 		}
 
-		$output = sprintf( '<li>%s</li>', do_shortcode( wpautop( $content ) ) );
+		$output = sprintf( '<li>%s</li>', do_shortcode( shortcode_unautop( wpautop( $content ) ) ) );
 
 		return $output; 
 	}

@@ -42,7 +42,8 @@ class DT_Shortcode_Button extends DT_Shortcode {
 			'target_blank'  => '1',
 			'animation'     => 'none',
 			'icon'			=> '',
-			'icon_align'	=> 'left'
+			'icon_align'	=> 'left',
+			'el_class'		=> ''
 		);
 
 		extract( shortcode_atts( $default_atts, $atts ) );
@@ -70,8 +71,14 @@ class DT_Shortcode_Button extends DT_Shortcode {
 		$target_blank = apply_filters( 'dt_sanitize_flag', $target_blank );
 		$animation = in_array( $animation, array('none', 'scale', 'fade', 'left', 'right', 'bottom', 'top') ) ?  $animation : $default_atts['animation'];
 		$icon_align = in_array( $icon_align, array('left', 'right') ) ? $icon_align : $default_atts['icon_align'];
-		$icon = wp_kses( rawurldecode(base64_decode($icon)), array('i' => array('class' => array())) );
-		// $icon = esc_attr($icon);
+		$el_class = sanitize_html_class( $el_class );
+
+		// if we have base64 code
+		if ( preg_match('/^fa\sfa-(\w)/', $icon) ) {
+			$icon = '<i class="' . esc_attr( $icon ) . '"></i>';
+		} else {
+			$icon = wp_kses( rawurldecode(base64_decode($icon)), array('i' => array('class' => array())) );
+		}
 
 		$classes = array();
 		switch( $size ) {
@@ -104,18 +111,22 @@ class DT_Shortcode_Button extends DT_Shortcode {
 
 		// add icon
 		if ( $icon && 'right' == $icon_align ) {
-			// $content .= '<i class="' . $icon . '"></i>';
 			$content .= $icon;
 			$classes[] = 'ico-right-side';
 		} else if ( $icon ) {
-			// $content = '<i class="' . $icon . '"></i>' . $content;
 			$content = $icon . $content;
+		}
+
+		if ( $el_class ) {
+			$classes[] = $el_class;
 		}
 
 		// ninjaaaa!
 		$classes = implode( ' ', $classes );
 
-		$output = '<a class="' . esc_attr( $classes ) . '" href="' . $link . '"' . ($target_blank ? ' target="_blank"' : '') . '>' . $content . '</a>';
+		// $output = '<a class="' . esc_attr( $classes ) . '" href="' . $link . '"' . ($target_blank ? ' target="_blank"' : '') . '>' . $content . '</a>';
+
+		$output = presscore_get_button_html( array( 'href' => $link, 'title' => $content, 'class' => $classes, 'target' => $target_blank ) );
 
 		return $output;
 	}

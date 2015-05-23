@@ -61,7 +61,7 @@ class DT_Shortcode_AnimatedText extends DT_Shortcode {
 		// ninjaaaa!
 		$classes = implode( ' ', $classes );
 
-		$output = '<div class="' . esc_attr( $classes ) . '">' . do_shortcode($content) . '</div>';
+		$output = '<div class="' . esc_attr( $classes ) . '">' . do_shortcode( $content ) . '</div>';
 
 		return $output;
 	}

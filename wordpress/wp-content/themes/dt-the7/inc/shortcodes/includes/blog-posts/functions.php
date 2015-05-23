@@ -204,6 +204,18 @@ class DT_Shortcode_BlogPosts extends DT_Shortcode {
 			}
 		} // if have posts
 
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+
+			$terms_list = presscore_get_terms_list_by_slug( array( 'slugs' => $attributes['category'], 'taxonomy' => 'category' ) );
+	
+			$output = '
+				<div class="dt_vc-shortcode_dummy dt_vc-blog" style="height: 250px;">
+					<h5>Blog</h5>
+					<p class="text-small"><strong>Display categories:</strong> ' . $terms_list . '</p>
+				</div>
+			';
+		}
+
 		return $output;
 	}
 

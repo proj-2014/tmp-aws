@@ -10,8 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  * Page definition.
  */
 $options[] = array(
-		"page_title"	=> _x( "Image Styling & Hovers", 'theme-options', LANGUAGE_ZONE ),
-		"menu_title"	=> _x( "Image Styling & Hovers", 'theme-options', LANGUAGE_ZONE ),
+		"page_title"	=> _x( "Images Styling &amp; Hovers", 'theme-options', LANGUAGE_ZONE ),
+		"menu_title"	=> _x( "Images Styling &amp; Hovers", 'theme-options', LANGUAGE_ZONE ),
 		"menu_slug"		=> "of-imghoovers-menu",
 		"type"			=> "page"
 );
@@ -19,7 +19,23 @@ $options[] = array(
 /**
  * Heading definition.
  */
-$options[] = array( "name" => _x('Image styling & hovers', 'theme-options', LANGUAGE_ZONE), "type" => "heading" );
+$options[] = array( "name" => _x('Images Styling &amp; Hovers', 'theme-options', LANGUAGE_ZONE), "type" => "heading" );
+
+/**
+ * Styling.
+ */
+$options[] = array(	"name" => _x('Styling', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
+
+	// radio
+	$options[] = array(
+		"name"		=> _x('Styling', 'theme-options', LANGUAGE_ZONE),
+		"id"		=> 'hoover-style',
+		"std"		=> 'none',
+		"type"		=> 'radio',
+		"options"	=> presscore_themeoptions_get_hoover_options()
+	);
+
+$options[] = array(	"type" => "block_end");
 
 /**
  * Hover color.
@@ -28,8 +44,8 @@ $options[] = array(	"name" => _x('Hover color overlay', 'theme-options', LANGUAG
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "hoover-color",
 		"std"	=> "#000000",
 		"type"	=> "color"
@@ -41,32 +57,14 @@ $options[] = array(	"type" => "block_end");
  * Hover opacity.
  */
 $options[] = array(	"name" => _x('Hover opacity', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
-	
-	// TODO: add some helpful info about opacity in ie <= 8
 
 	// slider
 	$options[] = array(
-		"name"		=> '',
-		"desc"		=> _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"		=> '',
+		"name"		=> _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"		=> "hoover-opacity",
 		"std"		=> 100, 
 		"type"		=> "slider",
-	);
-
-$options[] = array(	"type" => "block_end");
-
-/**
- * Style.
- */
-$options[] = array(	"name" => _x('Style', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
-
-	// radio
-	$options[] = array(
-		"desc"		=> _x('Style', 'theme-options', LANGUAGE_ZONE),
-		"id"		=> 'hoover-style',
-		"std"		=> 'none',
-		"type"		=> 'radio',
-		"options"	=> presscore_themeoptions_get_hoover_options()
 	);
 
 $options[] = array(	"type" => "block_end");

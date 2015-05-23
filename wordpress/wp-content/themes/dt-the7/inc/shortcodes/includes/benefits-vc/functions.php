@@ -15,6 +15,7 @@ class DT_Shortcode_Benefits_Vc extends DT_Shortcode {
 
 	static protected $instance;
 	static protected $atts = array();
+	static protected $shortcodes_count = 0;
 
 	protected $shortcode_name = 'dt_benefits_vc';
 	protected $post_type = 'dt_benefits';
@@ -40,20 +41,24 @@ class DT_Shortcode_Benefits_Vc extends DT_Shortcode {
 		}
 
 		$default_atts = array(
-			'category'          => '',
-			'order'             => '',
-			'orderby'           => '',
-			'number'            => '6',
+			'category'          				=> '',
+			'order'             				=> '',
+			'orderby'           				=> '',
+			'number'            				=> '6',
 
-			'target_blank'      => 'true',
-			'header_size'       => 'h4',
-			'content_size'      => 'normal',
+			'target_blank'      				=> 'true',
+			'header_size'       				=> 'h4',
+			'content_size'      				=> 'normal',
 
-			'style'             => '1',
-			'columns'           => '4',
-			'dividers'          => '1',
-			'image_background'  => '1',
-			'animation'         => 'none',
+			'style'             				=> '1',
+			'columns'           				=> '4',
+			'dividers'          				=> '1',
+			'image_background'  				=> '1',
+			'image_background_border' 			=> 'default',
+			'image_background_border_radius' 	=> '',
+			'image_background_paint'			=> 'accent',
+			'image_background_color'			=> '',
+			'animation'         				=> 'none',
 		);
 
 		$attributes = shortcode_atts( $default_atts, $atts );
@@ -75,6 +80,11 @@ class DT_Shortcode_Benefits_Vc extends DT_Shortcode {
 		$attributes['style'] = in_array($attributes['style'], array('1', '2', '3') ) ? $attributes['style'] : $default_atts['style'];
 		$attributes['dividers'] = apply_filters('dt_sanitize_flag', $attributes['dividers']);
 		$attributes['image_background'] = apply_filters('dt_sanitize_flag', $attributes['image_background']);
+
+		$attributes['image_background_border'] = in_array( $attributes['image_background_border'], array('default', 'custom') ) ?  $attributes['image_background_border'] : $default_atts['image_background_border'];
+		$attributes['image_background_border_radius'] = absint( $attributes['image_background_border_radius'] );
+		$attributes['image_background_paint'] = in_array( $attributes['image_background_paint'], array('accent', 'custom') ) ?  $attributes['image_background_paint'] : $default_atts['image_background_paint'];
+		$attributes['image_background_color'] = apply_filters('of_sanitize_color', $attributes['image_background_color']);
 
 		$attributes['header_size'] = in_array($attributes['header_size'], array('h2', 'h3', 'h4', 'h5', 'h6')) ? $attributes['header_size'] : 'h4';
 		$attributes['content_size'] = in_array($attributes['content_size'], array('normal', 'small', 'big')) ? $attributes['content_size'] : 'normal';
@@ -141,7 +151,42 @@ class DT_Shortcode_Benefits_Vc extends DT_Shortcode {
 				$output .= $this->render_benefit( $benefit_attr, $benefit_content );
 			}
 
-			$output = sprintf( '<section class="%s">%s</section>', esc_attr(implode(' ', $classes)), $output );
+			self::$shortcodes_count++;
+			$shortcode_unique_id = 'benefits-grid-' . self::$shortcodes_count;
+
+			if ( 'custom' == $attributes['image_background_border'] || 'custom' == $attributes['image_background_paint'] ) {
+
+				// inline stylesheet
+				$inline_stylesheet = "<style type='text/css'>#{$shortcode_unique_id}.icons-bg .benefits-grid-ico {";
+
+				$inline_stylesheet_content = array();
+				if ( 'custom' == $attributes['image_background_border'] ) {
+
+					$image_background_border = $attributes['image_background_border_radius'];
+
+					$inline_stylesheet_content[] = "-webkit-border-radius: {$image_background_border}px;";
+					$inline_stylesheet_content[] = "-moz-border-radius:    {$image_background_border}px;";
+					$inline_stylesheet_content[] = "-ms-border-radius:     {$image_background_border}px;";
+					$inline_stylesheet_content[] = "-o-border-radius:      {$image_background_border}px;";
+					$inline_stylesheet_content[] = "border-radius:         {$image_background_border}px;";
+
+				}
+
+				if ( 'custom' == $attributes['image_background_paint'] ) {
+
+					$color = $attributes['image_background_color'];
+					$inline_stylesheet_content[] = "background-color: {$color};";
+
+				}
+
+				$inline_stylesheet .= esc_attr( join( '', $inline_stylesheet_content ) );
+
+				$inline_stylesheet .= '}</style>';
+
+				$output = $inline_stylesheet . $output;
+			}
+
+			$output = sprintf( '<section id="%s" class="%s">%s</section>', $shortcode_unique_id, esc_attr(implode(' ', $classes)), $output );
 
 			// restore original $post
 			$post = $post_backup;
@@ -183,6 +228,9 @@ class DT_Shortcode_Benefits_Vc extends DT_Shortcode {
 				if ( empty($image) ) {
 					$image = $default_image;
 				}
+
+				// ssl support
+				$image = dt_make_image_src_ssl_friendly( $image);
 
 				$image_size = '';
 				if ( !empty($attributes['image_size']) ) {

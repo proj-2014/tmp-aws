@@ -661,9 +661,16 @@ var UniteCssEditorRev = new function(){
 			}
 		}
 		
-		jQuery('input[name="css_color"]').trigger('change');
-		jQuery('input[name="css_background-color"]').trigger('change');
-		jQuery('input[name="css_border-color-show"]').trigger('change');
+		if('color' in curActiveStyles) jQuery('input[name="css_color"]').css('background-color', UniteAdminRev.rgb2hex(curActiveStyles['color']));
+		if('background-color' in curActiveStyles) jQuery('input[name="css_background-color"]').css('background-color', UniteAdminRev.rgb2hex(curActiveStyles['background-color']));
+		if('border-color' in curActiveStyles){
+			if(borderColor.split(' ').length > 1){
+				var firstBorderColor = borderColor.split(' ')[0];
+				jQuery('input[name="css_border-color-show"]').css('background-color', UniteAdminRev.rgb2hex(firstBorderColor));
+			}else{
+				jQuery('input[name="css_border-color-show"]').css('background-color', UniteAdminRev.rgb2hex(borderColor));
+			}
+		}
 		
 		if('padding' in curActiveStyles){
 			
@@ -819,7 +826,8 @@ var UniteCssEditorRev = new function(){
 		var rawStyles = jQuery('#css_preview').attr('style').split(';');
 		
 		for(key in rawStyles){
-			var temp = rawStyles[key].split(':');
+			var temp = new String(rawStyles[key]);
+            temp = temp.split(':');
 			if(jQuery.trim(temp[0]) == '' || jQuery.trim(temp[1]) == '') continue;
 			if(temp[0].toLowerCase().indexOf("border") >= 0) continue; //all borders later
 			

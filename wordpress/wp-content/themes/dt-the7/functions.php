@@ -92,6 +92,12 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 		wp_upload_dir();
 
 		/**
+		 * Include AQResizer.
+		 *
+		 */
+		require_once( PRESSCORE_EXTENSIONS_DIR . '/aq_resizer.php' );
+
+		/**
 		 * Include core functions.
 		 *
 		 */
@@ -103,9 +109,6 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 		 */
 		require_once( PRESSCORE_EXTENSIONS_DIR . '/stylesheet-functions.php' );
 
-		$is_backend = is_admin() || dt_is_login_page();
-		$current_page_name = dt_get_current_page_name();
-
 		/**
 		 * Include options framework if it is not installed like plugin.
 		 *
@@ -114,6 +117,12 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 
 			// Base
 			require_once( PRESSCORE_EXTENSIONS_DIR . '/options-framework/options-framework.php' );
+
+			if ( current_user_can( 'edit_theme_options' ) ) {
+
+				// add theme options
+				add_filter( 'options_framework_location', 'presscore_add_theme_options' );
+			}
 		}
 
 		/**
@@ -133,13 +142,29 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 		}
 
 		/**
+		 * Some additional classes ( remove in future ).
+		 *
+		 */
+		require_once( PRESSCORE_CLASSES_DIR . '/tags.class.php' );
+
+		/**
+		 * Include helpers.
+		 *
+		 */
+		require_once( PRESSCORE_DIR . '/helpers.php' );
+
+		$current_page_name = dt_get_current_page_name();
+		$is_backend = is_admin() || dt_is_login_page();
+
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+			$is_backend = false;
+		}
+
+		/**
 		 * Include admin functions.
 		 *
 		 */
-		if ( is_admin() ) {
-
-			// add theme options
-			add_filter( 'options_framework_location', 'presscore_add_theme_options' );
+		if ( $is_backend && is_admin() ) {
 
 			/**
 			 * Include the TGM_Plugin_Activation class.
@@ -156,57 +181,24 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 				require_once( PRESSCORE_EXTENSIONS_DIR . '/envato-wordpress-toolkit-library/class-envato-wordpress-theme-upgrader.php' );
 			}
 
-			// Include the meta box script
-			if ( file_exists( RWMB_DIR . 'meta-box.php' ) ) {
-
-				/**
-				 * Include metaboxes overrides.
-				 *
-				 */
-				require_once( PRESSCORE_EXTENSIONS_DIR . '/custom-meta-boxes/override-fields.php' ); 
-
-				/**
-				 * Include Meta-Box framework.
-				 *
-				 */
-				require_once( RWMB_DIR . 'meta-box.php' );
-
-				/**
-				 * Include custom metaboxes.
-				 *
-				 */
-				require_once( PRESSCORE_EXTENSIONS_DIR . '/custom-meta-boxes/metabox-fields.php' ); 
-
-				/**
-				 * Attach metaboxes.
-				 *
-				 */
-				if ( file_exists( PRESSCORE_ADMIN_DIR . '/metaboxes.php' ) ) {
-					require_once( PRESSCORE_ADMIN_DIR . '/metaboxes.php' );
-				}
+			/**
+			 * Attach metaboxes.
+			 *
+			 */
+			require_once( PRESSCORE_EXTENSIONS_DIR . '/meta-box.php' );
+			if ( $located_file = locate_template( 'inc/admin/metaboxes.php' ) ) {
+				include_once( $located_file );
 			}
 
 			require_once( PRESSCORE_ADMIN_DIR . '/admin-functions.php' );
 
-		} else {
-
-			/**
-			 * Include AQResizer.
-			 *
-			 */
-			require_once( PRESSCORE_EXTENSIONS_DIR . '/aq_resizer.php' );
+		} else if ( !$is_backend ) {
 
 			/**
 			 * Include custom menu.
 			 *
 			 */
 			require_once( PRESSCORE_EXTENSIONS_DIR . '/core-menu.php' );
-
-			/**
-			 * Include helpers.
-			 *
-			 */
-			require_once( PRESSCORE_DIR . '/helpers.php' );
 
 			/**
 			 * Include template actions and filters.
@@ -221,12 +213,6 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 			require_once( PRESSCORE_EXTENSIONS_DIR . '/dt-pagination.php' );
 
 		}
-
-		/**
-		 * Some additional classes ( remove in future ).
-		 *
-		 */
-		require_once( PRESSCORE_CLASSES_DIR . '/tags.class.php' );
 
 		/**
 		 * Include widgets.
@@ -255,10 +241,13 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 		$presscore_widgets = apply_filters( 'presscore_widgets', $presscore_widgets );
 
 		// include widgets only for frontend and widgets admin page
-		if ( $presscore_widgets && ( in_array($current_page_name, array('widgets.php', 'admin-ajax.php')) || !$is_backend ) ) {
+		if ( $presscore_widgets && ( in_array($current_page_name, array('widgets.php', 'admin-ajax.php', 'themes.php')) || !$is_backend ) ) {
 
 			foreach ( $presscore_widgets as $presscore_widget ) {
-				require_once( trailingslashit( PRESSCORE_WIDGETS_DIR ) . $presscore_widget );
+
+				if ( $file_path = locate_template( 'inc/widgets/' . $presscore_widget ) ) {
+					require_once( $file_path );
+				}
 			}
 
 		}
@@ -310,9 +299,12 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 
 			'list-vc',
 			'benefits-vc',
-			'fancy-video-vc'
+			'fancy-video-vc',
+			'fancy-titles-vc',
+			'fancy-separators-vc'
 		);
 		$presscore_shortcodes = apply_filters( 'presscore_shortcodes', $presscore_shortcodes );
+
 
 		// include shortcodes only for frontend and post admin pages
 		if ( $presscore_shortcodes && ( in_array( $current_page_name, array('post.php', 'post-new.php', 'admin-ajax.php') ) || !$is_backend ) ) {
@@ -324,29 +316,24 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 			require_once( PRESSCORE_SHORTCODES_DIR . '/setup.php' );
 
 			foreach ( $presscore_shortcodes as $shortcode_dirname ) {
-
-				$file_path =  trailingslashit( PRESSCORE_SHORTCODES_INCLUDES_DIR ) . $shortcode_dirname . '/functions.php';
-
-				if ( file_exists( $file_path ) ) {
-					require_once( $file_path );
-				}
+				include_once( PRESSCORE_SHORTCODES_INCLUDES_DIR . '/' . $shortcode_dirname . '/functions.php' );
 			}
 		}
 
-		// include only for nav menu page
-		include( PRESSCORE_CLASSES_DIR . '/mega-menu.class.php' );
-		$mega_menu = new Dt_Mega_menu();
-
-		if ( class_exists( 'Woocommerce' ) ) {
-
-			/**
-			 * Add woocommerce support.
-			 *
-			 */
-			require_once( PRESSCORE_DIR . '/mod-woocommerce/mod-woocommerce.php' );
+		if ( apply_filters( 'presscore_enable_theme_mega_menu', true ) ) {
+			include PRESSCORE_CLASSES_DIR . '/mega-menu.class.php';
+			$mega_menu = new Dt_Mega_menu();
 		}
 
-		if ( class_exists('UberMenuStandard') ) {
+		/**
+		 * Add woocommerce support.
+		 *
+		 */
+		if ( class_exists( 'Woocommerce' ) && $file_path = locate_template( 'inc/mod-woocommerce/mod-woocommerce.php' ) ) {
+			require_once( $file_path );
+		}
+
+		if ( class_exists('UberMenu') ) {
 
 			/**
 			 * Add ubermenu support.
@@ -404,6 +391,14 @@ if ( ! function_exists( 'presscore_setup' ) ) :
 			require_once( PRESSCORE_DIR . '/mod-the-events-calendar/mod-the-events-calendar.php' );
 		}
 
+		/////////////
+		// Jetpack //
+		/////////////
+
+		if ( class_exists( 'Jetpack', false ) ) {
+			include_once locate_template( 'inc/mod-jetpack/mod-jetpack.php' );
+		}
+
 	}
 
 endif; // presscore_setup
@@ -430,12 +425,18 @@ if ( ! function_exists( 'presscore_add_presets' ) ) :
 		// noimage - /images/noimage_small.jpg
 
 		$theme_presets = array(
+			'new6'			=> array( 'src' => '/inc/presets/icons/new6.jpg', 'title' => '' ), // iOS minimal
 			'skin1'			=> array( 'src' => '/inc/presets/icons/skin1.jpg', 'title' => '' ), // Light
-			'skin2'			=> array( 'src' => '/inc/presets/icons/skin2.jpg', 'title' => '' ), // Striped
 			'skin3'			=> array( 'src' => '/inc/presets/icons/skin3.jpg', 'title' => '' ), // Dark
-			'skin4'			=> array( 'src' => '/inc/presets/icons/skin4.jpg', 'title' => '' ), // Jeans
 			'skin5'			=> array( 'src' => '/inc/presets/icons/skin5.jpg', 'title' => '' ), // Polygonal
 			'skin6'			=> array( 'src' => '/inc/presets/icons/skin6.jpg', 'title' => '' ), // Sepia
+			'skin4'			=> array( 'src' => '/inc/presets/icons/skin4.jpg', 'title' => '' ), // Jeans
+			'new1'			=> array( 'src' => '/inc/presets/icons/new1.jpg', 'title' => '' ), // Minimal
+			'new3'			=> array( 'src' => '/inc/presets/icons/new3.jpg', 'title' => '' ), // Spring
+			'new2'			=> array( 'src' => '/inc/presets/icons/new2.jpg', 'title' => '' ), // Aquamarine
+			'skin2'			=> array( 'src' => '/inc/presets/icons/skin2.jpg', 'title' => '' ), // Striped
+			'new4'			=> array( 'src' => '/inc/presets/icons/new4.jpg', 'title' => '' ), // Purple-Peak
+			'new5'			=> array( 'src' => '/inc/presets/icons/new5.jpg', 'title' => '' ), // Сobalt
 		);
 
 		return array_merge( $presets, $theme_presets );
@@ -461,12 +462,112 @@ endif; // presscore_set_first_run_skin
 add_filter( 'options_framework_first_run_skin', 'presscore_set_first_run_skin' );
 
 
+function presscore_options_black_list( $fields = array() ) {
+
+	$fields_black_list = array(
+
+		// general
+		'general-hd_images',
+		'general-next_prev_in_blog',
+		'general-next_prev_in_portfolio',
+		'general-show_author_in_blog',
+		'general-tracking_code',
+
+		'general-favicon',
+		'general-favicon_hd',
+
+		'general-handheld_icon-old_iphone',
+		'general-handheld_icon-old_ipad',
+		'general-handheld_icon-retina_iphone',
+		'general-handheld_icon-retina_ipad',
+
+		'general-show_rel_posts',
+		'general-rel_posts_head_title',
+		'general-rel_posts_max',
+		'general-show_rel_projects',
+		'general-rel_projects_head_title',
+		'general-rel_projects_max',
+		'general-rel_projects_meta',
+		'general-rel_projects_title',
+		'general-rel_projects_excerpt',
+		'general-rel_projects_link',
+		'general-rel_projects_details',
+		'general-rel_projects_fullwidth_height',
+		'general-rel_projects_fullwidth_width_style',
+		'general-rel_projects_fullwidth_width',
+		'general-rel_projects_height',
+		'general-rel_projects_width_style',
+		'general-rel_projects_width',
+		'general-blog_meta_on',
+		'general-blog_meta_postformat',
+		'general-blog_meta_date',
+		'general-blog_meta_author',
+		'general-blog_meta_categories',
+		'general-blog_meta_comments',
+		'general-blog_meta_tags',
+		'general-portfolio_meta_on',
+		'general-portfolio_meta_date',
+		'general-portfolio_meta_author',
+		'general-portfolio_meta_categories',
+		'general-portfolio_meta_comments',
+		'general-smooth_scroll',
+		'general-woocommerce_show_mini_cart_in_top_bar',
+
+		'general-title_align',
+		'general-contact_form_send_mail_to',
+		'general-post_type_portfolio_slug',
+
+		// top bar
+		'top_bar-show',
+		'top_bar-contact_show',
+		'top_bar-contact_address',
+		'top_bar-contact_phone',
+		'top_bar-contact_email',
+		'top_bar-contact_skype',
+		'top_bar-contact_clock',
+		'top_bar-contact_info',
+		'top_bar-text',
+		'header-soc_icons',
+
+		// header
+		'header-show_floating_menu',
+		'header-search_show',
+		'header-contentarea',
+		'header-submenu_parent_clickable',
+
+		// bottom bar
+		'bottom_bar-copyrights',
+		'bottom_bar-credits',
+		'bottom_bar-text',
+
+		// Share buttons
+		'social_buttons-post',
+		'social_buttons-portfolio_post',
+		'social_buttons-photo',
+		'social_buttons-page',
+
+		// widgetareas
+		'widgetareas',
+
+		// export & import
+		'import_export',
+
+		// update
+		'theme_update-user_name',
+		'theme_update-api_key'
+
+	);
+
+	return array_unique( array_merge( $fields, $fields_black_list ) );
+}
+add_filter( 'optionsframework_fields_black_list', 'presscore_options_black_list' );
+add_filter( 'optionsframework_validate_preserve_fields', 'presscore_options_black_list', 14 );
+
 if ( ! function_exists( 'presscore_themeoption_preserved_fields' ) ) :
 
 	function presscore_themeoption_preserved_fields( $fields = array() ) {
 
-		$fields = array(
-			'widgetareas',
+		$preserved_fields = array(
 
 			// header logo
 			'header-logo_regular',
@@ -481,47 +582,17 @@ if ( ! function_exists( 'presscore_themeoption_preserved_fields' ) ) :
 			'general-floating_menu_logo_regular',
 			'general-floating_menu_logo_hd',
 
-			// copyrights & credits
-			'bottom_bar-copyrights',
-			'bottom_bar-credits',
-
-			// social buttons
-			'social_buttons-post',
-			'social_buttons-portfolio',
-			'social_buttons-albums',
-			'social_buttons-page',
-
-			// general stuff
-			'general-tracking_code',
-			'general-favicon',
-			'general-wysiwig_visual_columns',
-			'general-woocommerce_show_mini_cart_in_top_bar',
-
 			// page title
-			'general-title_align',
 			'general-show_breadcrumbs',
-
-			// contact fields
-			'top_bar-contact_address',
-			'top_bar-contact_phone',
-			'top_bar-contact_email',
-			'top_bar-contact_skype',
-			'top_bar-contact_clock',
-			'top_bar-contact_info',
 
 			// menu icons dimentions
 			'header-icons_size',
-			'header-color_frame',
 			'header-submenu_icons_size',
 			'header-submenu_next_level_indicator',
-			'header-next_level_indicator'
+			'header-next_level_indicator',
 		);
 
-		foreach ( presscore_get_social_icons_data() as $value=>$title ) {
-			$fields[] = 'top_bar-soc_ico_' . $value;
-		}
-
-		return $fields;
+		return array_unique( array_merge( $fields, $preserved_fields ) );
 	}
 
 endif; // presscore_themeoption_preserved_fields
@@ -540,6 +611,49 @@ function presscore_flush_rewrite_rules() {
 add_action( 'after_switch_theme', 'presscore_flush_rewrite_rules' );
 
 
+if ( ! function_exists( 'presscore_get_dynamic_stylesheets_list' ) ) :
+
+	function presscore_get_dynamic_stylesheets_list() {
+
+		static $dynamic_stylesheets = null;
+
+		if ( null === $dynamic_stylesheets ) {
+
+			$template_uri = get_template_directory_uri();
+			$template_directory = get_template_directory();
+			$theme_version = wp_get_theme()->get( 'Version' );
+
+			$dynamic_stylesheets = array(
+				'dt-custom.less' => array(
+					'path' => $template_directory . '/css/custom.less',
+					'src' => $template_uri . '/css/custom.less',
+					'fallback_src' => $template_uri . '/css/compiled/custom-%preset%.css',
+					'deps' => array(),
+					'ver' => $theme_version,
+					'media' => 'all'
+				)
+			);
+
+			if ( dt_is_woocommerce_enabled() ) {
+
+				$dynamic_stylesheets['wc-dt-custom.less'] = array(
+					'path' => $template_directory . '/css/wc-dt-custom.less',
+					'src' => $template_uri . '/css/wc-dt-custom.less',
+					'fallback_src' => '',
+					'deps' => array(),
+					'ver' => $theme_version,
+					'media' => 'all'
+				);
+
+			}
+
+		}
+
+		return $dynamic_stylesheets;
+	}
+
+endif;
+
 if ( ! function_exists('presscore_generate_less_css_file_after_options_save') ) :
 
 	/**
@@ -547,18 +661,21 @@ if ( ! function_exists('presscore_generate_less_css_file_after_options_save') ) 
 	 *
 	 */
 	function presscore_generate_less_css_file_after_options_save() {
-
-		$cache_name = 'wp_less_stylesheet_data_' . md5( get_template_directory() . '/css/custom.less' );
 		$css_is_writable = get_option( 'presscore_less_css_is_writable' );
 
-		if ( isset($_GET['page']) && 'options-framework' == $_GET['page'] && !$css_is_writable && false === get_option( $cache_name ) ) {
+		if ( isset($_GET['page']) && 'options-framework' == $_GET['page'] && !$css_is_writable ) {
 			return;
 		}
 
 		$set = get_settings_errors('options-framework');
 		if ( !empty( $set ) ) {
 
-			presscore_generate_less_css_file();
+			$dynamic_stylesheets = presscore_get_dynamic_stylesheets_list();
+
+			foreach ( $dynamic_stylesheets as $stylesheet_handle=>$stylesheet ) {
+
+				presscore_generate_less_css_file( $stylesheet_handle, $stylesheet['src'] );
+			}
 
 			if ( $css_is_writable ) {
 				add_settings_error( 'presscore-wp-less', 'save_stylesheet', _x( 'Stylesheet saved.', 'backend', LANGUAGE_ZONE ), 'updated fade' );
@@ -603,7 +720,9 @@ if ( ! function_exists( 'presscore_generate_less_css_file' ) ) :
 		 *
 		 * @since presscore 0.5
 		 */
-		require_once( PRESSCORE_DIR . '/less-vars.php' );
+		if ( $located_file = locate_template( 'inc/less-vars.php' ) ) {
+			include_once( $located_file );
+		}
 
 		// $less = WPLessPlugin::getInstance();
 		$config = $less->getConfiguration();
@@ -627,7 +746,7 @@ if ( ! function_exists( 'presscore_generate_less_css_file' ) ) :
 		WPLessStylesheet::$upload_dir = $config->getUploadDir();
 		WPLessStylesheet::$upload_uri = $config->getUploadUrl();
 
-		$less->processStylesheet( $handler, true );
+		return $less->processStylesheet( $handler, true );
 	}
 
 endif; // presscore_generate_less_css_file
@@ -690,96 +809,88 @@ if ( ! function_exists( 'presscore_enqueue_scripts' ) ) :
 	 * Enqueue scripts and styles.
 	 */
 	function presscore_enqueue_scripts() {
-		$theme = wp_get_theme();
-		$theme_version = $theme->get( 'Version' );
-		$config = Presscore_Config::get_instance();
 
-		$template_uri = get_template_directory_uri();
-		$custom_less_path = '/css/custom.less';
-		$custom_less_path_hash = md5( get_template_directory() . $custom_less_path );
+		///////////////////////////
+		// Enqueue stylesheets //
+		///////////////////////////
 
-		wp_register_style( 'dt-custom.less', $template_uri . $custom_less_path );
+		// enqueue web fonts if needed
+		presscore_enqueue_web_fonts();
 
-		$cache_name = 'wp_less_stylesheet_data_' . $custom_less_path_hash;
-		$compiled_cache = get_option($cache_name);
+		// main.css
+		presscore_enqueue_theme_stylesheet( 'dt-main', 'css/main' );
 
-		if ( ( defined('DT_ALWAYS_REGENERATE_DYNAMIC_CSS') && DT_ALWAYS_REGENERATE_DYNAMIC_CSS ) || ( false !== get_transient('wp_less_compiled_' . $custom_less_path_hash) && empty($compiled_cache['target_uri']) ) ) {
+		// font-awesome
+		presscore_enqueue_theme_stylesheet( 'dt-awsome-fonts', 'css/font-awesome' );
 
-			presscore_generate_less_css_file();
-			$compiled_cache = get_option($cache_name);
+		// compiled less stylesheets
+		presscore_enqueue_dynamic_stylesheets();
+
+		// responsiveness
+		if ( presscore_responsive() ) {
+			presscore_enqueue_theme_stylesheet( 'dt-media', 'css/media' );
 		}
+
+		// RoyalSlider
+		presscore_enqueue_theme_stylesheet( 'dt-royalslider', 'royalslider/royalslider' );
+
+		// theme stylesheet
+		wp_enqueue_style( 'style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+
+		//////////////////
+		// Custom css //
+		//////////////////
+
+		$custom_css = of_get_option( 'general-custom_css', '' );
+		if ( $custom_css ) {
+
+			wp_add_inline_style( 'style', $custom_css );
+		}
+
+		///////////////////////
+		// Enqueue scripts //
+		///////////////////////
+
+		// in header
+		presscore_enqueue_theme_script( 'dt-modernizr', 'js/modernizr', array( 'jquery' ), false, false );
+		presscore_enqueue_theme_script( 'svg-icons', 'js/svg-icons', array( 'jquery' ), false, false );
+
+		// in footer
+		presscore_enqueue_theme_script( 'dt-royalslider', 'royalslider/jquery.royalslider' );
+		// presscore_enqueue_theme_script( 'dt-animate', 'js/animate-elements' );
+		presscore_enqueue_theme_script( 'dt-plugins', 'js/plugins' );
 
 		// detect device type
 		$detect = new Mobile_Detect;
 		$device_type = ($detect->isMobile() ? ($detect->isTablet() ? 'tablet' : 'phone') : 'computer');
 
-		$config->set( 'device_type', $device_type );
-
-		// enqueue web fonts if needed
-		presscore_enqueue_web_fonts();
-
-		wp_enqueue_style( 'dt-normalize', $template_uri . '/css/normalize.css', array(), $theme_version );
-		wp_enqueue_style( 'dt-wireframe', $template_uri . '/css/wireframe.css', array(), $theme_version );
-		wp_enqueue_style( 'dt-main', $template_uri . '/css/main.css', array(), $theme_version );
-
-		if ( presscore_responsive() ) {
-
-			wp_enqueue_style( 'dt-media', $template_uri . '/css/media.css', array(), $theme_version );
-		}
-
-		wp_enqueue_style( 'dt-awsome-fonts', $template_uri . '/css/font-awesome.min.css', array(), $theme_version );
-
-		// less stylesheet
-		if ( get_option( 'presscore_less_css_is_writable' ) && isset($compiled_cache['target_uri']) ) {
-
-			if ( is_ssl() ) {
-				$compiled_cache['target_uri'] = str_replace( 'http://', 'https://', $compiled_cache['target_uri'] );
-			}
-
-			wp_deregister_style( 'dt-custom.less' );
-			wp_enqueue_style( 'dt-custom.less', $compiled_cache['target_uri'], array(), $theme_version );
-
-		// print custom css inline
-		} elseif ( !empty($compiled_cache['compiled']) ) {
-
-			wp_add_inline_style( 'dt-main', $compiled_cache['compiled'] );
-		} else {
-
-			// get current skin name
-			$preset = of_get_option( 'preset', presscore_set_first_run_skin() );
-
-			// load skin precompiled css
-			wp_enqueue_style( 'dt-compiled-custom.less', $template_uri . '/css/compiled/custom-' . esc_attr($preset) . '.css', array(), $theme_version );
-		}
-
-		// RoyalSlider
-		wp_enqueue_style( 'dt-royalslider', $template_uri . '/royalslider/royalslider.css', array(), $theme_version );
-
-		wp_enqueue_style( 'style', get_stylesheet_uri(), array(), $theme_version );
-
-		// in header
-		wp_enqueue_script( 'dt-modernizr', $template_uri . '/js/modernizr.js', array( 'jquery' ), $theme_version );
-		wp_enqueue_script( 'svg-icons', $template_uri . '/js/svg-icons.js',  array( 'jquery' ), $theme_version );
-
-		// in footer
-		wp_enqueue_script( 'dt-royalslider', $template_uri . '/royalslider/jquery.royalslider.js', array( 'jquery' ), $theme_version, true );
-		wp_enqueue_script( 'dt-animate', $template_uri . '/js/animate-elements.js', array( 'jquery' ), $theme_version, true );
-		wp_enqueue_script( 'dt-plugins', $template_uri . '/js/plugins.js', array( 'jquery' ), $theme_version, true );
-
 		// enqueue device specific scripts
 		switch( $device_type ) {
 			case 'tablet':
-				wp_enqueue_script( 'dt-tablet', $template_uri . '/js/desktop-tablet.js', array( 'jquery' ), $theme_version, true );
+				presscore_enqueue_theme_script( 'dt-tablet', 'js/desktop-tablet' );
 				break;
 			case 'phone':
-				wp_enqueue_script( 'dt-phone', $template_uri . '/js/phone.js', array( 'jquery' ), $theme_version, true );
+				presscore_enqueue_theme_script( 'dt-phone', 'js/phone' );
 				break;
 			default:
-				wp_enqueue_script( 'dt-tablet', $template_uri . '/js/desktop-tablet.js', array( 'jquery' ), $theme_version, true );
-				wp_enqueue_script( 'dt-desktop', $template_uri . '/js/desktop.js', array( 'jquery' ), $theme_version, true );
+				presscore_enqueue_theme_script( 'dt-tablet', 'js/desktop-tablet' );
+				presscore_enqueue_theme_script( 'dt-desktop', 'js/desktop' );
 		}
 
-		wp_enqueue_script( 'dt-main', $template_uri . '/js/main.js', array( 'jquery' ), $theme_version, true );
+		// main.js
+		presscore_enqueue_theme_script( 'dt-main', 'js/main' );
+
+		// comments clear script
+		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+			wp_enqueue_script( 'comment-reply' );
+		}
+
+		/////////////////////
+		// Localize data //
+		/////////////////////
+
+		$config = Presscore_Config::get_instance();
+		$config->set( 'device_type', $device_type );
 
 		if ( is_page() ) {
 			$page_data = array(
@@ -803,34 +914,112 @@ if ( ! function_exists( 'presscore_enqueue_scripts' ) ) :
 			$page_data = false;
 		}
 
+		global $post;
+
 		$dt_local = array(
-			'passText'		=> __('To view this protected post, enter the password below:', LANGUAGE_ZONE),
-			'moreButtonAllLoadedText' => __('Everything is loaded', LANGUAGE_ZONE),
-			'postID'		=> get_the_ID(),
-			'ajaxurl'		=> admin_url( 'admin-ajax.php' ),
-			'contactNonce'	=> wp_create_nonce('dt_contact_form'),
-			'ajaxNonce'		=> wp_create_nonce('presscore-posts-ajax'),
-			'pageData'		=> $page_data
+			'passText'					=> __('To view this protected post, enter the password below:', LANGUAGE_ZONE),
+			'moreButtonAllLoadedText'	=> __('Everything is loaded', LANGUAGE_ZONE),
+			'moreButtonText' => array(
+				'loading' => __( 'Loading...', LANGUAGE_ZONE ),
+			),
+			'postID'					=> empty( $post->ID ) ? null : $post->ID,
+			'ajaxurl'					=> admin_url( 'admin-ajax.php' ),
+			'contactNonce'				=> wp_create_nonce('dt_contact_form'),
+			'ajaxNonce'					=> wp_create_nonce('presscore-posts-ajax'),
+			'pageData'					=> $page_data,
+			'themeSettings'				=> array(
+				'smoothScroll' => of_get_option('general-smooth_scroll', 'on'),
+				'lazyLoading' => ( 'lazy_loading' == $config->get( 'load_style' ) )
+			)
 		);
 
-		// add some additional data
 		wp_localize_script( 'dt-plugins', 'dtLocal', $dt_local );
 
-		// comments clear script
-		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-			wp_enqueue_script( 'comment-reply' );
-		}
-
-		$custom_css = of_get_option( 'general-custom_css', '' );
-		if ( $custom_css ) {
-
-			wp_add_inline_style( 'style', $custom_css );
-		}
 	}
 
 endif; // presscore_enqueue_scripts
 
 add_action( 'wp_enqueue_scripts', 'presscore_enqueue_scripts', 15 );
+
+
+if ( ! function_exists( 'presscore_enqueue_dynamic_stylesheets' ) ) :
+
+	/**
+	 * Enqueue *.less files
+	 */
+	function presscore_enqueue_dynamic_stylesheets(){
+
+		$dynamic_stylesheets = presscore_get_dynamic_stylesheets_list();
+
+		foreach ( $dynamic_stylesheets as $stylesheet_handle=>$stylesheet ) {
+
+			$stylesheet_path_hash = md5( $stylesheet['path'] );
+			$stylesheet_cache_name = 'wp_less_stylesheet_data_' . $stylesheet_path_hash;
+			$stylesheet_cache = get_option( $stylesheet_cache_name );
+
+			// regenerate less files if needed
+			if (
+				( defined('DT_ALWAYS_REGENERATE_DYNAMIC_CSS') && DT_ALWAYS_REGENERATE_DYNAMIC_CSS ) 
+				|| ( !$stylesheet['fallback_src'] && !$stylesheet_cache )
+			) {
+
+				presscore_generate_less_css_file( $stylesheet_handle, $stylesheet['src'] );
+				$stylesheet_cache = get_option( $stylesheet_cache_name );
+			}
+
+			// enqueue stylesheets
+			presscore_enqueue_dynamic_style( array( 'handle' => $stylesheet_handle, 'cache' => $stylesheet_cache, 'stylesheet' => $stylesheet ) );
+		}
+
+		do_action( 'presscore_enqueue_dynamic_stylesheets' );
+
+	}
+
+endif;
+
+
+if ( ! function_exists( 'presscore_enqueue_dynamic_style' ) ) :
+
+	function presscore_enqueue_dynamic_style( $args = array() ) {
+
+		$stylesheet = empty( $args['stylesheet'] ) ? array() : $args['stylesheet'];
+		$handle = empty( $args['handle'] ) ? '' : $args['handle'];
+
+		if ( empty( $stylesheet ) || empty( $handle )) {
+			return;
+		}
+
+		$stylesheet_cache = empty( $args['cache'] ) ? array() : $args['cache'];
+
+		// less stylesheet
+		if ( get_option( 'presscore_less_css_is_writable' ) && isset($stylesheet_cache['target_uri']) ) {
+
+			$stylesheet_src = set_url_scheme( $stylesheet_cache['target_uri'], is_ssl() ? 'https' : 'http' );
+			wp_enqueue_style( $handle, $stylesheet_src, $stylesheet['deps'], $stylesheet['ver'], $stylesheet['media'] );
+
+		// print custom css inline
+		} elseif ( !empty($stylesheet_cache['compiled']) ) {
+
+			$inline_stylesheet = $stylesheet_cache['compiled'];
+			if ( is_ssl() ) {
+				$inline_stylesheet = str_replace( site_url('', 'http'), site_url('', 'https'), $inline_stylesheet );
+			}
+
+			wp_add_inline_style( 'dt-main', $inline_stylesheet );
+		} elseif ( !empty($stylesheet['fallback_src']) ) {
+
+			// get current skin name
+			$preset = of_get_option( 'preset', presscore_set_first_run_skin() );
+
+			$fallback_src = str_replace('%preset%', esc_attr( $preset ), $stylesheet['fallback_src']);
+
+			// load skin precompiled css
+			wp_enqueue_style( $handle, $fallback_src, $stylesheet['deps'], $stylesheet['ver'], $stylesheet['media'] );
+		}
+
+	}
+
+endif;
 
 
 if ( ! function_exists( 'presscore_admin_scripts' ) ) :
@@ -982,8 +1171,9 @@ if ( ! function_exists( 'presscore_comment_id_fields_filter' ) ) :
 	 * @since presscore 0.1
 	 */
 	function presscore_comment_id_fields_filter( $result ) {
-		$comment_buttons = '<a class="clear-form" href="javascript: void(0);">' . __( 'clear form', LANGUAGE_ZONE ) . '</a>';
-		$comment_buttons .= '<a class="dt-btn dt-btn-m" href="javascript: void(0);">' . __('Submit', LANGUAGE_ZONE) . '</a>';
+
+		$comment_buttons = presscore_get_button_html( array( 'href' => 'javascript: void(0);', 'title' => __( 'clear form', LANGUAGE_ZONE ), 'class' => 'clear-form' ) );
+		$comment_buttons .= presscore_get_button_html( array( 'href' => 'javascript: void(0);', 'title' => __( 'Submit', LANGUAGE_ZONE ), 'class' => 'dt-btn dt-btn-m' ) );
 
 		return $comment_buttons . $result;
 	}
@@ -1043,7 +1233,7 @@ if ( ! function_exists( 'presscore_comment' ) ) :
 				<?php else : ?>
 					<span class="avatar no-avatar"></span>
 				<?php endif; ?>
-				<?php printf( '<cite class="fn">%s</cite>', get_comment_author_link() ); ?>
+				<?php printf( '<cite class="fn">%s</cite>', str_replace( 'href', 'target="_blank" href', get_comment_author_link() ) ); ?>
 			</div><!-- .comment-author .vcard -->
 
 			<?php if ( $comment->comment_approved == '0' ) : ?>
@@ -1071,6 +1261,7 @@ if ( ! function_exists( 'presscore_body_class' ) ) :
 	 * @since presscore 1.0
 	 */
 	function presscore_body_class( $classes ) {
+		global $post;
 		$config = Presscore_Config::get_instance();
 
 		$desc_on_hoover = ( 'under_image' != $config->get('description') );
@@ -1184,6 +1375,19 @@ if ( ! function_exists( 'presscore_body_class' ) ) :
 			$classes[] = 'justified-grid';
 		}
 
+		// general style
+		if ( 'minimalistic' == of_get_option('general-style') ) {
+			$classes[] = 'style-minimal';
+		}
+
+		// buttons style
+		switch ( of_get_option('buttons-style', 'ios7') ) {
+			case 'flat': $classes[] = 'btn-flat'; break;
+			case '3d': $classes[] = 'btn-3d'; break;
+			case 'ios7':
+			default: $classes[] = 'btn-ios'; break;
+		}
+
 		return array_values( array_unique( $classes ) );
 	}
 
@@ -1205,8 +1409,6 @@ if ( ! function_exists( 'presscore_post_types_author_archives' ) ) :
 			$query->set( 'post_type', array_merge( (array) $post_type, array('dt_portfolio', 'post') ) );
 		}
 
-		// Remove the action after it's run
-		// remove_action( 'pre_get_posts', 'presscore_post_types_author_archives' );
 	}
 
 endif; // presscore_post_types_author_archives
@@ -1350,6 +1552,7 @@ if ( ! function_exists( 'presscore_get_social_icons_data' ) ) :
 			'vk'			=> __('VK', LANGUAGE_ZONE),
 			'foursquare'	=> __('Foursquare', LANGUAGE_ZONE),
 			'xing'			=> __('XING', LANGUAGE_ZONE),
+			'weibo'			=> __('Weibo', LANGUAGE_ZONE),
 		);
 	}
 
@@ -1429,21 +1632,24 @@ if ( ! function_exists( 'presscore_themeoptions_get_buttons_defaults' ) ) :
 				'ff'	=> '',
 				'fs'	=> 12,
 				'uc'	=> 0,
-				'lh'	=> 21
+				'lh'	=> 21,
+				'border_radius' => '4'
 				),
 			'm'	=> array(
 				'desc'	=> _x('Medium buttons', 'theme-options', LANGUAGE_ZONE),
 				'ff'	=> '',
 				'fs'	=> 12,
 				'uc'	=> 0,
-				'lh'	=> 23
+				'lh'	=> 23,
+				'border_radius' => '4'
 				),
 			'l'	=> array(
 				'desc'	=> _x('Big buttons', 'theme-options', LANGUAGE_ZONE),
 				'ff'	=> '',
 				'fs'	=> 14,
 				'uc'	=> 0,
-				'lh'	=> 32
+				'lh'	=> 32,
+				'border_radius' => '4'
 				)
 		);
 	}
@@ -1645,54 +1851,70 @@ function presscore_layerslider_overrides() {
 	$GLOBALS['lsAutoUpdateBox'] = false;
 }
 
+//////////////////////////////////
+// Initialising Visual Composer //
+//////////////////////////////////
 
-// ! Initialising Visual Composer
-if (!class_exists('WPBakeryVisualComposerAbstract')) {
-	$dir = dirname(__FILE__) . '/wpbakery/';
-
-	global $composer_settings, $wpVC_setup;
-	$composer_settings = Array(
-		'APP_ROOT'      => $dir . '/js_composer',
-		'WP_ROOT'       => dirname( dirname( dirname( dirname($dir ) ) ) ). '/',
-		'APP_DIR'       => basename( $dir ) . '/js_composer/',
-		'CONFIG'        => $dir . '/js_composer/config/',
-		'ASSETS_DIR'    => 'assets/',
-		'COMPOSER'      => $dir . '/js_composer/composer/',
-		'COMPOSER_LIB'  => $dir . '/js_composer/composer/lib/',
-		'SHORTCODES_LIB'  => $dir . '/js_composer/composer/lib/shortcodes/',
-		'USER_DIR_NAME'  => 'inc/shortcodes/vc_templates', /* Path relative to your current theme, where VC should look for new shortcode templates */
-
-		//for which content types Visual Composer should be enabled by default
-		'default_post_types' => Array('page', 'post', 'dt_portfolio', 'dt_testimonials', 'dt_team', 'dt_benefits')
-	);
+if ( ! class_exists( 'Vc_Manager', false ) ) {
 
 	require_once locate_template('/wpbakery/js_composer/js_composer.php');
-	$wpVC_setup->init($composer_settings);
+
+	if ( function_exists( 'vc_set_as_theme' ) ) {
+		vc_set_as_theme(true);
+	}
+
+	if ( function_exists( 'vc_set_default_editor_post_types' ) ) {
+		vc_set_default_editor_post_types( array( 'page', 'post', 'dt_portfolio', 'dt_benefits' ) );
+	}
 }
 
-// Initialising Shortcodes
-if (class_exists('WPBakeryVisualComposerAbstract')) {
+if ( class_exists( 'Vc_Manager', false ) ) {
 
 	require_once locate_template('/inc/shortcodes/vc-extensions.php');
 
-	require_once locate_template('/inc/shortcodes/js_composer_bridge.php');
+	add_action( 'init', 'presscore_js_composer_load_bridge', 20 );
+	add_action( 'admin_enqueue_scripts', 'js_composer_bridge_admin', 15 );
+	add_action( 'admin_enqueue_scripts', 'presscore_vc_inline_editor_scripts', 20 );
+
+	if ( !function_exists('presscore_js_composer_load_bridge') ) {
+
+		function presscore_js_composer_load_bridge() {
+			require_once locate_template('/inc/shortcodes/js_composer_bridge.php');
+		}
+
+	}
 
 	if ( ! function_exists( 'js_composer_bridge_admin' ) ) {
+
 		function js_composer_bridge_admin( $hook ) {
 			// presscore stuff
 			wp_enqueue_style( '', get_template_directory_uri() . '/inc/shortcodes/css/js_composer_bridge.css' );
 		}
 	}
 
-	add_action( 'admin_enqueue_scripts', 'js_composer_bridge_admin', 15 );
+	if ( ! function_exists( 'presscore_vc_inline_editor_scripts' ) ) :
+
+		/**
+		 * Visual Composer custom view scripts
+		 * 
+		 * @since 4.1.5
+		 */
+		function presscore_vc_inline_editor_scripts() {
+			if ( ! function_exists('vc_is_inline') || ! vc_is_inline() ) {
+				return;
+			}
+
+			wp_enqueue_script( 'vc-custom-view-by-dt', get_template_directory_uri() . '/inc/shortcodes/js/vc-custom-view.js', array(), false, true );
+		}
+
+	endif;
+
+	if ( function_exists( 'vc_set_shortcodes_templates_dir' ) ) {
+		vc_set_shortcodes_templates_dir( get_template_directory() . '/inc/shortcodes/vc_templates' );
+	}
 }
 
-/**
- * Force Visual Composer to initialize as "built into the theme". This will hide certain tabs under the Settings->Visual Composer page
- */
-if(function_exists('vc_set_as_theme')) vc_set_as_theme(true);
 
-// in development
 if ( !function_exists('dt_make_relative_image_path') ) :
 
 	/**
@@ -1701,52 +1923,20 @@ if ( !function_exists('dt_make_relative_image_path') ) :
 	 */
 	function dt_make_relative_image_path( $content = '' ) {
 
-		$template_uri = get_template_directory_uri();
-
-		$first_rep_str = '../../../..';
-
-		if ( 0 && is_multisite() ) {
-
-			if ( 1 == get_current_blog_id() ) {
-				$first_rep_str .= '/../..';
-			}
-
+		if ( !get_option( 'presscore_less_css_is_writable' ) ) {
+			return $content;
 		}
 
-		$first_pattern = array(
-			$template_uri . '/css/../../..',
-			$first_rep_str
-		);
-
-		$second_pattern = array(
-			$template_uri . '/css/..',
-			str_replace( content_url(), '', $template_uri )
-		);
-
-		$first_brocken_pattern = array(
-			$template_uri . '/css../../..',
-			$first_rep_str
-		);
-
-		$second_brocken_pattern = array(
-			$template_uri . '/css..',
-			str_replace( content_url(), '', $template_uri )
-		);
-
-		$content = str_replace( $first_pattern[0], $first_pattern[1], $content );
-		$content = str_replace( $second_pattern[0], $second_pattern[1], $content );
-
-		$content = str_replace( $first_brocken_pattern[0], $first_brocken_pattern[1], $content );
-		$content = str_replace( $second_brocken_pattern[0], $second_brocken_pattern[1], $content );
+		$content = str_replace( set_url_scheme( content_url(), 'http' ), '../../../..', $content );
+		$content = str_replace( set_url_scheme( content_url(), 'https' ), '../../../..', $content );
 
 		return $content;
 	}
 
-	if ( !is_multisite() ) {
-		add_filter( 'wp-less_stylesheet_save', 'dt_make_relative_image_path', 99 );
-	}
-
 endif;
+
+add_filter( 'wp-less_stylesheet_save', 'dt_make_relative_image_path', 99 );
+
 
 /****************************************************************
 // AJAX PAGINATION
@@ -1803,10 +1993,146 @@ function presscore_ajax_pagination_controller() {
 	// responce output
 	header( "Content-Type: application/json" );
 	echo $responce;
-	// var_dump( $responce );
 
 	// IMPORTANT: don't forget to "exit"
 	exit;
 }
 add_action( 'wp_ajax_nopriv_presscore_template_ajax', 'presscore_ajax_pagination_controller' );
 add_action( 'wp_ajax_presscore_template_ajax', 'presscore_ajax_pagination_controller' );
+
+
+function presscore_theme_options_back_compatibility_check() {
+
+	// top bar social icons
+	if ( null === of_get_option( 'header-soc_icons', null ) ) {
+		$theme_options = optionsframework_get_options();
+
+		if ( $theme_options ) {
+
+			$social_icons = array();
+			$social_icons_data = presscore_get_social_icons_data();
+			$social_icons_list = array_keys($social_icons_data);
+			foreach ( $social_icons_list as $icon ) {
+
+				$icon_option_id = "top_bar-soc_ico_{$icon}";
+				if ( array_key_exists($icon_option_id, $theme_options) && !empty($theme_options[ $icon_option_id ]) ) {
+					$social_icons[] = array(
+						'icon' => $icon,
+						'url' => $theme_options[ $icon_option_id ]
+					);
+				}
+
+			}
+
+			$theme_options['header-soc_icons'] = $social_icons;
+			update_option( optionsframework_get_options_id(), $theme_options );
+		}
+	}
+}
+add_action( 'init', 'presscore_theme_options_back_compatibility_check', 21 );
+
+
+if ( ! function_exists( 'presscore_change_dt_potfolio_post_type_args' ) ) :
+
+	/**
+	 * Change portfolio custom post type slug
+	 *
+	 * @since  4.1.0
+	 * @param  array  $args Custom post type registration arguments
+	 * @return array        Changed arguments
+	 */
+	function presscore_change_dt_potfolio_post_type_args( $args = array() ) {
+
+		if ( array_key_exists('rewrite', $args) && array_key_exists('slug', $args['rewrite']) ) {
+
+			$new_slug = of_get_option( 'general-post_type_portfolio_slug', '' );
+			if ( $new_slug && is_string($new_slug) ) {
+				$args['rewrite']['slug'] = trim( strtolower( $new_slug ) );
+			}
+		}
+
+		return $args;
+	}
+
+endif;
+add_filter( 'presscore_post_type_dt_portfolio_args', 'presscore_change_dt_potfolio_post_type_args' );
+
+
+if ( ! function_exists( 'presscore_flush_rewrite_rules_after_post_type_slug_change' ) ) :
+
+	/**
+	 * Flush rewrite rules on change slug setting in theme options.
+	 *
+	 * @since 4.1.0
+	 * @param  array  $options Sanitized theme options in their way to database
+	 */
+	function presscore_flush_rewrite_rules_after_post_type_slug_change( $options = array() ) {
+
+		$old_portfolio_slug = of_get_option( 'general-post_type_portfolio_slug', 'project' );
+		$new_portfolio_slug = $options['general-post_type_portfolio_slug'];
+
+		// check if new slug really new
+		if ( $old_portfolio_slug != $new_portfolio_slug ) {
+			wp_schedule_single_event( time(), 'presscore_onetime_after_post_type_slug_changing' );
+		}
+	}
+
+endif;
+add_action( 'optionsframework_after_validate', 'presscore_flush_rewrite_rules_after_post_type_slug_change' );
+
+
+if ( ! function_exists( 'presscore_onetime_scheduled_rewrite_rules_flush' ) ) :
+
+	/**
+	 * Run onetime scheduled code
+	 *
+	 * @since 4.1.0
+	 */
+	function presscore_onetime_scheduled_rewrite_rules_flush() {
+		presscore_flush_rewrite_rules();
+	}
+
+endif;
+add_action( 'presscore_onetime_after_post_type_slug_changing', 'presscore_onetime_scheduled_rewrite_rules_flush' );
+
+
+if ( ! function_exists( 'presscore_set_default_contact_form_email' ) ) :
+
+	/**
+	 * Set default email for contact forms if it's not empty
+	 * See theme options General->Advanced
+	 * 
+	 * @since 4.1.0
+	 * @param  string $email Original email
+	 * @return string        Modified email
+	 */
+	function presscore_set_default_contact_form_email( $email = '' ) {
+
+		$default_email = of_get_option( 'general-contact_form_send_mail_to', '' );
+		if ( $default_email ) {
+			$email = $default_email;
+		}
+
+		return $email;
+	}
+
+endif;
+add_filter( 'dt_core_send_mail-to', 'presscore_set_default_contact_form_email' );
+
+if ( ! function_exists( 'presscore_add_compat_header' ) ) {
+
+	add_filter( 'wp_headers', 'presscore_add_compat_header' );
+
+	/**
+	 * [presscore_add_compat_header description]
+	 * 
+	 * @param  array $headers
+	 * @return array
+	 */
+	function presscore_add_compat_header( $headers ) {
+		if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE' ) !== false) {
+			$headers['X-UA-Compatible'] = 'IE=EmulateIE10';
+		}
+		return $headers;
+	}
+}

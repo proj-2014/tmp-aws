@@ -67,14 +67,11 @@ if ( class_exists( 'Theme_Upgrader' ) && ! class_exists( 'Envato_WordPress_Theme
             }
             
             if ( empty($theme_name) ) {
-                $theme_name = function_exists( 'wp_get_theme' ) ? wp_get_theme()->Name : get_current_theme();
+                $theme_name = wp_get_theme()->Name;
             }
             
             $purchased_themes             = $this->filter_purchased_themes_by_name($purchased_themes, $theme_name);
-            if ( function_exists( 'wp_get_themes' ) )
-            	$themes_list = wp_get_themes();
-            else
-            	$themes_list = get_themes();
+        	$themes_list = wp_get_themes();
             $result->updated_themes       = $this->get_updated_themes($themes_list, $purchased_themes);
             $result->updated_themes_count = count($result->updated_themes);
             
@@ -97,7 +94,7 @@ if ( class_exists( 'Theme_Upgrader' ) && ! class_exists( 'Envato_WordPress_Theme
             $result->success = false;
 
             if ( empty($theme_name) ) {
-                $theme_name = get_current_theme();
+                $theme_name = wp_get_theme()->Name;
             }
 
             $installed_theme = $this->is_theme_installed($theme_name);
@@ -179,7 +176,9 @@ if ( class_exists( 'Theme_Upgrader' ) && ! class_exists( 'Envato_WordPress_Theme
          */ 
         protected function constants() 
         {
-            define( 'ETU_MAX_EXECUTION_TIME' , 60 * 5);
+            if ( !defined('ETU_MAX_EXECUTION_TIME') ) {
+                define( 'ETU_MAX_EXECUTION_TIME' , 60 * 5);
+            }
         }
       
         /**
@@ -229,10 +228,7 @@ if ( class_exists( 'Theme_Upgrader' ) && ! class_exists( 'Envato_WordPress_Theme
 
         protected function is_theme_installed($theme_name) 
         {
-        	if ( function_exists( 'wp_get_themes' ) )
-        		$installed_themes = wp_get_themes();
-        	else
-	            $installed_themes = get_themes();
+    		$installed_themes = wp_get_themes();
             foreach($installed_themes as $entry) 
             {
                 if (strcmp($entry['Name'], $theme_name) == 0) {

@@ -8,6 +8,8 @@
 
 	
 	require self::getPathTemplate("sliders");
+	
+	
 ?>
 
 

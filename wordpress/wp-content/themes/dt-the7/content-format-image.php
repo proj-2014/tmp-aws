@@ -58,7 +58,7 @@ if ( 'wide' == $preview_mode ) {
 			'options'	=> $thumb_options,
 			'custom'	=> $custom,
 			'echo'		=> false,
-			'wrap'		=> '<a %HREF% %CLASS% %CUSTOM% title="%RAW_ALT%" data-dt-img-description="%RAW_TITLE%"><img %IMG_CLASS% %SRC% %IMG_TITLE% %ALT% %SIZE% /></a>',
+			'wrap'		=> '<a %HREF% %CLASS% %CUSTOM% %IMG_TITLE% data-dt-img-description="%RAW_TITLE%"><img %IMG_CLASS% %SRC% %IMG_TITLE% %ALT% %SIZE% /></a>',
 		);
 
 		if ( 'list' != $layout ) {

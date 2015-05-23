@@ -109,7 +109,7 @@ jQuery(document).ready(function($) {
 	$.fn.heightHack = function() {
 		return this.each(function() {
 			var $img = $(this);
-			if ($img.hasClass("height-ready") || $img.parents(".testimonial-vcard, .post-rollover").exists()) {
+			if ($img.hasClass("height-ready") || $img.parents(".post-rollover").exists()) {
 				return;
 			}
 
@@ -117,7 +117,7 @@ jQuery(document).ready(function($) {
 				imgHeight = parseInt($img.attr('height')),
 				imgRatio = imgWidth/imgHeight;
 
-			if($img.parents(".dt-format-gallery, .team-container, .shortcode-blog-posts.iso-grid ").exists()) {
+			if($img.parents(".testimonial-vcard, .dt-format-gallery, .team-container, .shortcode-blog-posts.iso-grid ").exists()) {
 				$img.wrap("<div />");
 			};
 
@@ -248,7 +248,6 @@ if ($isoCollection.exists() || $gridCollection.exists() ) {
 	// Collection of masonry instances 
 	$isoCollection.each(function(i) {
 		var $isoContainer = $(this);
-
 		// Hack to make sure that masonry will correctly calculate columns with responsive images height. 
 		$(".preload-me", $isoContainer).heightHack();
 

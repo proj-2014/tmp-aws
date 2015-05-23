@@ -100,6 +100,7 @@ $DT_META_BOXES[] = array(
 				'masonry'	=> array( _x('Masonry', 'backend metabox', LANGUAGE_ZONE), array('admin-masonry.png', 56, 80) ),
 				'grid'		=> array( _x('Grid', 'backend metabox', LANGUAGE_ZONE), array('admin-grid.png', 56, 80) ),
 			),
+			'divider' => 'bottom',
 
 			'after'			=> '</div>'
 		),
@@ -113,7 +114,6 @@ $DT_META_BOXES[] = array(
 			'type'  	=> 'text',
 			'std'   	=> '20',
 			'desc' 		=> _x('Image paddings (e.g. 5 pixel padding will give you 10 pixel gaps between images)', 'backend metabox', LANGUAGE_ZONE),
-			'top_divider'	=> true,
 
 			'after'		=> '</div>'
 		),
@@ -136,7 +136,7 @@ $DT_META_BOXES[] = array(
 			'before'		=> '<div class="rwmb-hidden-field hide-if-js" data-show-on="template-portfolio-masonry.php">',
 
 			'name'			=> _x('Column target width (px):', 'backend metabox', LANGUAGE_ZONE),
-			'desc'			=> _x('Real column width will slightly wary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
+			'desc'			=> _x('Real column width will slightly vary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
 			'id'    		=> "{$prefix}target_width",
 			'type'  		=> 'text',
 			'std'   		=> '370',
@@ -336,6 +336,7 @@ $DT_META_BOXES[] = array(
 			'before'		=> '<div class="rwmb-hidden-field hide-if-js" data-show-on="template-portfolio-jgrid.php">',
 
 			'name'    		=> _x("Hide last row if there's not enough images to fill it:", 'backend metabox', LANGUAGE_ZONE),
+			'desc'			=> _x("do not work with AJAX loading mode", 'backend metabox', LANGUAGE_ZONE),
 			'id'      		=> "{$prefix}hide_last_row",
 			'type'    		=> 'checkbox',
 			'std'			=> 0,
@@ -365,8 +366,7 @@ $DT_META_BOXES[] = array(
 			'name'			=> _x('Images proportions:', 'backend metabox', LANGUAGE_ZONE),
 			'id'    		=> "{$prefix}thumb_proportions",
 			'type'  		=> 'simple_proportions',
-			'std'   		=> array('width' => 1, 'height' => 1),
-			'top_divider'	=> true
+			'std'   		=> array('width' => 1, 'height' => 1)
 		),
 
 		// Number of posts to display on one page
@@ -727,8 +727,8 @@ $DT_META_BOXES[] = array(
 				'wide'		=> _x('wide', 'backend metabox', LANGUAGE_ZONE),
 			),
 			'before'	=> '<p><small>' . sprintf(
-				_x('Related projects can be enabled / disabled from %sTheme Options / General / Related posts settings%s', 'backend metabox', LANGUAGE_ZONE),
-				'<a href="' . add_query_arg( 'page', 'of-general-menu', get_admin_url() . 'admin.php' ) . '" target="_blank">',
+				_x('Related projects can be enabled / disabled from %sTheme Options / Blog &amp; Portfolio%s', 'backend metabox', LANGUAGE_ZONE),
+				'<a href="' . add_query_arg( 'page', 'of-blog-and-portfolio-menu', get_admin_url() . 'admin.php' ) . '" target="_blank">',
 				'</a>'
 			) . '</small></p><div class="dt_hr"></div><p><strong>' . _x('Project Preview Options', 'backend metabox', LANGUAGE_ZONE) . '</strong></p>'
 		),

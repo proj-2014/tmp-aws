@@ -21,66 +21,77 @@ $options[] = array(
  */
 $options[] = array( "name" => _x('Sidebar', 'theme-options', LANGUAGE_ZONE), "type" => "heading" );
 
-// info
-/*
-$options[] = array(
-	"desc"	=> _x( "Please note that  settings from this page are also being used in pagination and categorization.", 'theme-options', LANGUAGE_ZONE ),
-	"class"	=> '',
-	"type"	=> 'info'
-);
-*/
-
 /**
  * Background color.
  */
-$options[] = array(	"name" => _x('Background color', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
+$options[] = array(	"name" => _x('Background under sidebar', 'theme-options', LANGUAGE_ZONE), "type" => "block_begin" );
 
-	// colorpicker
+	// images
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
-		"id"	=> "sidebar-bg_color",
-		"std"	=> "#ffffff",
-		"type"	=> "color"
-	);
-
-	// slider
-	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
-		"id"        => "sidebar-bg_opacity",
-		"std"       => 100, 
-		"type"      => "slider",
-		"options"   => array( 'java_hide_if_not_max' => true )
+		"name"      => '&nbsp;',
+		"id"        => "sidebar-bg_status",
+		"std"       => 'all_bg',
+		"type"      => "images",
+		"show_hide"	=> array( 'all_bg' => true, 'partial_bg' => true ),
+		"options"   => array(
+			'disabled'		=> '/inc/admin/assets/images/bg-disabled.png',
+			'all_bg'		=> '/inc/admin/assets/images/bg-1.png',
+			'partial_bg'	=> '/inc/admin/assets/images/bg-2.png'
+			// /inc/admin/assets/images
+		)
 	);
 
 	// hidden area
-	$options[] = array( 'type' => 'js_hide_begin' );
+	$options[] = array( "type" => "js_hide_begin" );
 
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
-			"id"    => "sidebar-bg_ie_color",
-			"std"   => "#ffffff",
-			"type"  => "color"
+			"desc"	=> '',
+			"name"	=> _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
+			"id"	=> "sidebar-bg_color",
+			"std"	=> "#ffffff",
+			"type"	=> "color"
 		);
 
-	$options[] = array( 'type' => 'js_hide_end' );
+		// slider
+		$options[] = array(
+			"desc"      => '',
+			"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+			"id"        => "sidebar-bg_opacity",
+			"std"       => 100, 
+			"type"      => "slider",
+			"options"   => array( 'java_hide_if_not_max' => true )
+		);
 
-	// background_img
-	$options[] = array(
-		'type' 			=> 'background_img',
-		'id' 			=> 'sidebar-bg_image',
-		'desc' 			=> _x( 'Image uploader', 'theme-options', LANGUAGE_ZONE ),
-		'preset_images' => $backgrounds_sidebar_bg_image,
-		'std' 			=> array(
-			'image'			=> '',
-			'repeat'		=> 'repeat',
-			'position_x'	=> 'center',
-			'position_y'	=> 'center',
-		),
-	);
+		// hidden area
+		$options[] = array( 'type' => 'js_hide_begin' );
+
+			// colorpicker
+			$options[] = array(
+				"desc"  => '',
+				"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+				"id"    => "sidebar-bg_ie_color",
+				"std"   => "#ffffff",
+				"type"  => "color"
+			);
+
+		$options[] = array( 'type' => 'js_hide_end' );
+
+		// background_img
+		$options[] = array(
+			'type' 			=> 'background_img',
+			'id' 			=> 'sidebar-bg_image',
+			"name" 			=> _x( 'Image uploader', 'theme-options', LANGUAGE_ZONE ),
+			'preset_images' => $backgrounds_sidebar_bg_image,
+			'std' 			=> array(
+				'image'			=> '',
+				'repeat'		=> 'repeat',
+				'position_x'	=> 'center',
+				'position_y'	=> 'center',
+			),
+		);
+
+	$options[] = array( "type" => "js_hide_end" );
 
 $options[] = array(	"type" => "block_end");
 
@@ -91,8 +102,8 @@ $options[] = array(	"name" => _x('Dividers &amp; lines', 'theme-options', LANGUA
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "sidebar-dividers_color",
 		"std"	=> "#757575",
 		"type"	=> "color"
@@ -100,8 +111,8 @@ $options[] = array(	"name" => _x('Dividers &amp; lines', 'theme-options', LANGUA
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"      => '',
+		"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "sidebar-dividers_opacity",
 		"std"       => 100, 
 		"type"      => "slider",
@@ -113,8 +124,8 @@ $options[] = array(	"name" => _x('Dividers &amp; lines', 'theme-options', LANGUA
 
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"  => '',
+			"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "sidebar-dividers_ie_color",
 			"std"   => "#ececec",
 			"type"  => "color"
@@ -131,8 +142,8 @@ $options[] = array(	"name" => _x('Text', 'theme-options', LANGUAGE_ZONE), "type"
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Headers color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Headers color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "sidebar-headers_color",
 		"std"	=> "#000000",
 		"type"	=> "color"
@@ -140,8 +151,8 @@ $options[] = array(	"name" => _x('Text', 'theme-options', LANGUAGE_ZONE), "type"
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Text color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Text color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "sidebar-primary_text_color",
 		"std"	=> "#686868",
 		"type"	=> "color"

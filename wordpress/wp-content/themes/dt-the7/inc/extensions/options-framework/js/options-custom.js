@@ -99,7 +99,7 @@ jQuery(document).ready(function($) {
 	$('.of-radio-img-img').show();
 	$('.of-radio-img-radio').hide();
 	
-	/* Web fonts ( BETA )
+	/* Web fonts
 	 * Php source located in options-interface.php 'web_fonts'
 	 */
 
@@ -244,14 +244,14 @@ jQuery(document).ready(function($) {
             .addClass('of_fields_gen_data menu-item-settings description')
 			.append(del_link);
         
-		var title = jQuery('<span class="dt-menu-item-title">').text( jQuery('.of_fields_gen_title', new_block).val() );
-		var div_title = jQuery('<div class="of_fields_gen_title menu-item-handle" data-index="' + size + '"><span class="item-controls"><a class="item-edit" title="Edit Widgetized Area"></a></span></div>');
+		var title = jQuery('<span class="dt-menu-item-title">').text( jQuery('.of_fields_gen_title', layout).val() );
+		var div_title = jQuery('<div class="of_fields_gen_title menu-item-handle" data-index="' + size + '"><span class="item-controls"><a class="item-edit"></a></span></div>');
 		
-        new_block.find('input, textarea').each(function(){
+        new_block.find('input, textarea, select').each(function(){
             var name = jQuery(this).attr('name').toString();
             
             // this line must be awful, simple horror
-            jQuery(this).val(layout.find('input[name="'+name+'"], textarea[name="'+name+'"]').val());
+            jQuery(this).val(layout.find('input[name="'+name+'"], textarea[name="'+name+'"], select[name="'+name+'"]').val());
             
             name = name.replace("][", "]["+ size +"][");
             jQuery(this).attr('name', name);
@@ -479,7 +479,8 @@ jQuery(document).ready(function($) {
     // js_hide
     jQuery('#optionsframework .of-js-hider').each(function() {
         var element = jQuery(this),
-        	target = element.closest('.section').next('.of-js-hide');
+        	target = element.closest('.section').next('.of-js-hide'),
+    		hideThis = jQuery( '.' + element.closest('.section').attr('id').replace('section-', '') );
 
         /* If checkbox */
         if ( element.is('input[type="checkbox"]') ) {
@@ -508,17 +509,29 @@ jQuery(document).ready(function($) {
         	}
         /* If radio */
         } else if ( element.is('input[type="radio"]') ) {
-        	element.on('click', function(){
-        		if ( $(this).hasClass('js-hider-show') ) {
-        			target.show();
-        		} else {
-        			target.hide();
-        		}
-        	});
 
-        	if(element.prop('checked')) {
-        		element.click();
+        	if ( element.attr('data-js-target') ) {
+        		target = jQuery( '.' + element.attr('data-js-target') );
         	}
+
+        	if ( target.length > 0 ) {
+	         	element.on('click', function(){
+
+	         		if ( hideThis.length > 0 ) {
+	        			hideThis.hide();
+	        		}
+
+	        		if ( $(this).hasClass('js-hider-show') ) {
+	        			target.show();
+	        		} else {
+	        			target.hide();
+	        		}
+	        	});
+
+	        	if(element.prop('checked')) {
+	        		element.click();
+	        	}
+	        }
         }
         
     });
@@ -553,6 +566,32 @@ jQuery(document).ready(function($) {
     	$input.removeAttr('name');
     });
 
+    // *********************************************************************************************************************
+    // sortable start
+    // *********************************************************************************************************************
+
+    jQuery( "#optionsframework .section-sortable .connectedSortable" ).sortable({
+      connectWith: ".connectedSortable",
+      placeholder: "of-socbuttons-highlight",
+      cancel: "li.ui-dt-sb-hidden"
+    }).disableSelection();
+
+    jQuery('#optionsframework .section-sortable .content-holder.connectedSortable').on('sortupdate', function(e, ui) {
+    	var $input = ui.item.find('input[type="hidden"]'),
+    		$this = jQuery(this);
+
+    	$input.attr('name', $this.attr('data-sortable-item-name'));
+    });
+
+    jQuery('#optionsframework .section-sortable .tools-palette.connectedSortable').on('sortupdate', function( e, ui) {
+    	var $input = ui.item.find('input[type="hidden"]');
+    	$input.removeAttr('name');
+    });
+
+    // *********************************************************************************************************************
+    // sortable end
+    // *********************************************************************************************************************
+
     /* Theme scripts */
 
     // headers layout
@@ -572,60 +611,6 @@ jQuery(document).ready(function($) {
 
 });
 
-/* Web fonts (beta) */
-// Refresh
-function dtWebfontsRefresh ( id, nonce ) {
-	var $fontsList = jQuery( '#' + id ),
-		$ajaxLoader = $fontsList.siblings( '#' + id + '-ajax-loading' );
-	
-	// lunch ajax loader
-	$ajaxLoader.show();
-	
-	if( ajaxurl ) {
-		jQuery.ajax({
-			type: "POST",
-			url: ajaxurl,
-			data: { action: "dt_refresh_web_fonts", nonce: nonce }
-		}).done(function( msg ) {
-			
-			if ( msg ) {
-				
-				// get fonts list and selected option
-				var $errorsContainer = $fontsList.siblings( '.dt-web-fonts-error-block' ),
-					$selectedOption = jQuery( 'option[value="' + $fontsList.val() + '"]', $fontsList ),
-					$msg = jQuery( msg.toString() );
-				
-				if ( $msg.length > 0 ) {
-					// replace old options with new one
-					$fontsList.html( jQuery( $msg[0] ).find( 'select' ).html() );
-				}
-				
-				if ( $msg.length > 1 ) {
-					var errors = jQuery( $msg[1] ).find( '.dt-web-fonts-error-block' ).html();
-					if ( errors ) {
-						// add errors
-						$errorsContainer.html( errors );
-					} else {
-						// clear errors
-						$errorsContainer.html( '' );
-					}
-				}
-
-				// if there was selected font - make it so again
-				jQuery( 'option[value="' + $selectedOption.val() + '"]', $fontsList ).attr( 'selected', 'selected' );
-				
-				// trigger change to renew prewiev
-				$fontsList.trigger( 'change' );
-				
-				// stop ajax loader
-				$ajaxLoader.hide();
-			}
-		});
-	}
-	
-	return false;
-}
-
 function dtRadioImagesSetCheckbox( target ) {
 	document.getElementById(target).checked=true;
 	jQuery('#'+target).trigger('click');
@@ -638,16 +623,128 @@ jQuery(function($){
 	$('.section-background_img .of-radio-img-img').on('click', function() {
 		var selector = $(this).parents('.section-background_img'),
 			attachment = $(this).attr('data-full-src'),
-			preview = $(this).attr('src');
+			preview = $(this).attr('src'),
+			uploadButton = selector.find('.upload-button'),
+			screenshot = selector.find('.screenshot');
 
 		selector.find('.upload').val(attachment);
 		selector.find('.upload-id').val(0);
-		
-		selector.find('.screenshot').empty().hide().append('<img src="' + attachment + '"><a class="remove-image">Remove</a>').slideDown('fast');
-		
-		selector.find('.upload-button').unbind().addClass('remove-file').removeClass('upload-button').val(optionsframework_l10n.remove);
+
+		if ( screenshot.find('img').length > 0 ) {
+			// screenshot.hide();
+			screenshot.find('img').attr('src', attachment);
+			screenshot.show();
+		} else {
+			screenshot.empty().append('<img src="' + attachment + '"><a class="remove-image">Remove</a>').slideDown('fast');
+		}
+		// screenshot.empty().hide().append('<img src="' + attachment + '"><a class="remove-image">Remove</a>').slideDown('fast');
+
+		if ( uploadButton.length > 0 ) {
+			uploadButton.unbind().addClass('remove-file').removeClass('upload-button').val(optionsframework_l10n.remove);
+			optionsframework_file_bindings(selector);
+		}
+
 		selector.find('.of-background-properties').slideDown();
-		
-		optionsframework_file_bindings(selector);
+
+	});
+});
+
+
+/*
+ * Viewport - jQuery selectors for finding elements in viewport
+ *
+ * Copyright (c) 2008-2009 Mika Tuupola
+ *
+ * Licensed under the MIT license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *
+ * Project home:
+ *  http://www.appelsiini.net/projects/viewport
+ *
+ */
+(function($) {
+    
+    $.belowthefold = function(element, settings) {
+        var fold = $(window).height() + $(window).scrollTop();
+        return fold <= $(element).offset().top - settings.threshold;
+    };
+
+    $.abovethetop = function(element, settings) {
+        var top = $(window).scrollTop();
+        return top >= $(element).offset().top + $(element).height() - settings.threshold;
+    };
+    
+    $.rightofscreen = function(element, settings) {
+        var fold = $(window).width() + $(window).scrollLeft();
+        return fold <= $(element).offset().left - settings.threshold;
+    };
+    
+    $.leftofscreen = function(element, settings) {
+        var left = $(window).scrollLeft();
+        return left >= $(element).offset().left + $(element).width() - settings.threshold;
+    };
+    
+    $.inviewport = function(element, settings) {
+        return !$.rightofscreen(element, settings) && !$.leftofscreen(element, settings) && !$.belowthefold(element, settings) && !$.abovethetop(element, settings);
+    };
+    
+    $.extend($.expr[':'], {
+        "below-the-fold": function(a, i, m) {
+            return $.belowthefold(a, {threshold : 0});
+        },
+        "above-the-top": function(a, i, m) {
+            return $.abovethetop(a, {threshold : 0});
+        },
+        "left-of-screen": function(a, i, m) {
+            return $.leftofscreen(a, {threshold : 0});
+        },
+        "right-of-screen": function(a, i, m) {
+            return $.rightofscreen(a, {threshold : 0});
+        },
+        "in-viewport": function(a, i, m) {
+            return $.inviewport(a, {threshold : 0});
+        }
+    });
+
+    
+})(jQuery);
+
+jQuery(function($){
+	var $wrap = $("#optionsframework"),
+		$controls = $("#submit-wrap"),
+		$footer = $("#wpfooter");
+
+	function setSize() {
+		$controls.css({
+			"width" : $wrap.width()
+		});
+	};
+
+	function setFlow() {
+		var wrapBottom = $wrap.offset().top + $wrap.outerHeight(),
+			viewportBottom = $(window).scrollTop() + $(window).height();
+
+		if (viewportBottom <= wrapBottom) {
+			$controls.addClass("flow");
+		}
+		else {
+			$controls.removeClass("flow");
+		};
+	};
+
+
+	$wrap.css({
+		"padding-bottom" : $controls.height()
+	});
+
+	setSize();
+	setFlow();
+
+	$(window).on("scroll", function() {
+		setFlow();
+	});
+
+	$(window).on("resize", function() {
+		setSize();
 	});
 });

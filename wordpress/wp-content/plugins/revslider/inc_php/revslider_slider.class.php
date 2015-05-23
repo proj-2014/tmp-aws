@@ -213,7 +213,7 @@
 		 * 
 		 * check if alias exists in DB
 		 */
-		private function isAliasExistsInDB($alias){
+		public function isAliasExistsInDB($alias){
 			$alias = $this->db->escape($alias);
 			
 			$where = "alias='$alias'";
@@ -225,6 +225,19 @@
 			
 		}
 		
+        
+		/**
+		 * 
+		 * check if alias exists in DB
+		 */
+		public static function isAliasExists($alias){
+            global $wpdb;
+            
+            $response = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".GlobalsRevSlider::$table_sliders." WHERE alias = %s", $alias));
+                                     
+			return(!empty($response));
+		}
+        
 		
 		/**
 		 * 
@@ -575,7 +588,10 @@
 				//$zip->addFromString("custom_animations.txt", $strExportAnim); //add custom animations
 				//$zip->addFile(GlobalsRevSlider::$filepath_dynamic_captions,'dynamic-captions.css'); //add dynamic styles
 				
-				$zip->addFile(GlobalsRevSlider::$filepath_static_captions,'static-captions.css'); //add static styles
+				
+				$static_css = RevOperations::getStaticCss();
+				$zip->addFromString("static-captions.css", $static_css); //add slider settings
+				//$zip->addFile(GlobalsRevSlider::$filepath_static_captions,'static-captions.css'); //add static styles
 				$zip->close();
 				
 				header("Content-type: application/zip");

@@ -28,8 +28,8 @@ $options[] = array(	"name" => _x('Background color', 'theme-options', LANGUAGE_Z
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "footer-bg_color",
 		"std"	=> "#1B1B1B",
 		"type"	=> "color"
@@ -37,8 +37,8 @@ $options[] = array(	"name" => _x('Background color', 'theme-options', LANGUAGE_Z
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"      => '',
+		"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "footer-bg_opacity",
 		"std"       => 100, 
 		"type"      => "slider",
@@ -50,8 +50,8 @@ $options[] = array(	"name" => _x('Background color', 'theme-options', LANGUAGE_Z
 
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"  => '',
+			"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "footer-bg_ie_color",
 			"std"   => "#1B1B1B",
 			"type"  => "color"
@@ -62,7 +62,7 @@ $options[] = array(	"name" => _x('Background color', 'theme-options', LANGUAGE_Z
 	// background_img
 	$options[] = array(
 		'type' 			=> 'background_img',
-		'desc'			=> _x( 'Image uploader', 'theme-options', LANGUAGE_ZONE ),
+		'name'			=> _x( 'Image uploader', 'theme-options', LANGUAGE_ZONE ),
 		'id'			=> 'footer-bg_image',
 		'preset_images' => $backgrounds_footer_bg_image,
 		'std' 			=> array(
@@ -82,8 +82,8 @@ $options[] = array(	"name" => _x('Dividers &amp; lines', 'theme-options', LANGUA
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "footer-dividers_color",
 		"std"	=> "#828282",
 		"type"	=> "color"
@@ -91,8 +91,8 @@ $options[] = array(	"name" => _x('Dividers &amp; lines', 'theme-options', LANGUA
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"      => '',
+		"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "footer-dividers_opacity",
 		"std"       => 100, 
 		"type"      => "slider",
@@ -104,8 +104,8 @@ $options[] = array(	"name" => _x('Dividers &amp; lines', 'theme-options', LANGUA
 	
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"  => '',
+			"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "footer-dividers_ie_color",
 			"std"   => "#828282",
 			"type"  => "color"
@@ -122,8 +122,8 @@ $options[] = array(	"name" => _x('Text', 'theme-options', LANGUAGE_ZONE), "type"
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Headers color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Headers color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "footer-headers_color",
 		"std"	=> "#ffffff",
 		"type"	=> "color"
@@ -131,8 +131,8 @@ $options[] = array(	"name" => _x('Text', 'theme-options', LANGUAGE_ZONE), "type"
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Text color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Text color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "footer-primary_text_color",
 		"std"	=> "#828282",
 		"type"	=> "color"

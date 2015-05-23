@@ -136,7 +136,7 @@ get_header(); ?>
 
 					<?php endif; ?>
 
-					<?php if ( 'ajax_more' == $load_style ) : ?>
+					<?php if ( presscore_is_load_more_pagination() ) : ?>
 
 						<?php
 						echo dt_get_next_page_button( $media_query->max_num_pages, 'paginator paginator-more-button with-ajax' );

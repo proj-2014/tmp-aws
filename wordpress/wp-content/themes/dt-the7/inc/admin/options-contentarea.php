@@ -28,8 +28,8 @@ $options[] = array(	"name" => _x('Text', 'theme-options', LANGUAGE_ZONE), "type"
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Headers color', 'theme-options', LANGUAGE_ZONE ),
+		"desc" => '',
+		"name"	=> _x( 'Headers color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "content-headers_color",
 		"std"	=> "#252525",
 		"type"	=> "color"
@@ -37,8 +37,8 @@ $options[] = array(	"name" => _x('Text', 'theme-options', LANGUAGE_ZONE), "type"
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Text color', 'theme-options', LANGUAGE_ZONE ),
+		"desc" => '',
+		"name"	=> _x( 'Text color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "content-primary_text_color",
 		"std"	=> "#686868",
 		"type"	=> "color"
@@ -53,8 +53,8 @@ $options[] = array(	"name" => _x('Dividers &amp; lines', 'theme-options', LANGUA
 	
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
+		"desc" => '',
+		"name"	=> _x( 'Color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "content-dividers_color",
 		"std"	=> "#ffffff",
 		"type"	=> "color"
@@ -62,8 +62,8 @@ $options[] = array(	"name" => _x('Dividers &amp; lines', 'theme-options', LANGUA
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc" => '',
+		"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "content-dividers_opacity",
 		"std"       => 100, 
 		"type"      => "slider",
@@ -75,8 +75,8 @@ $options[] = array(	"name" => _x('Dividers &amp; lines', 'theme-options', LANGUA
 
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc" => '',
+			"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "content-dividers_ie_color",
 			"std"   => "#ffffff",
 			"type"  => "color"

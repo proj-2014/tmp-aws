@@ -111,43 +111,6 @@ function dt_get_resized_img( $img, $opts ) {
 		$img_w *= 2;
 	}
 
-	// var_dump( $img, array( $img_w, $img_h ) );
-/*
-	if ( 0 && 1 == $opts['zc'] ) {
-
-		$p = $w / $h;
-		$img_wp = absint( floor( $img[2] * $p ) );
-		$img_hp = absint( floor( $img[1] / $p ) );
-
-
-		if ( $img[1] >= $img_w && $img[2] >= $img_h ) {
-
-			// do nothing
-
-		} else if ( ($img[1] < $img_w && $img[2] < $img_h) || ($img[1] > $img_w || $img[2] > $img_h) ) {
-
-			if ( $img[1] > $img[2] ) {
-				$img_h = $img[2];
-				$img_w = $img_wp;
-			} else {
-				$img_w = $img[1];
-				$img_h = $img_hp;
-			}
-
-		} else if ( $img[1] <= $img_w && $img[2] <= $img_h ) {
-
-			if ( $img[1] == $img_w ) {
-				$img_h = $img[2];
-				$img_w = $img_wp;
-			} else {
-				$img_w = $img[1];
-				$img_h = $img_hp;
-			}
-
-		}
-
-	}
-*/
 	if ( 1 == $opts['zc'] ) {
 
 		if ( $img[1] >= $img_w && $img[2] >= $img_h ) {
@@ -190,7 +153,7 @@ function dt_get_resized_img( $img, $opts ) {
 	}
 
 	return array(
-		esc_url( $file_url ),
+		$file_url,
 		$w,
 		$h,
 		image_hwstring( $w, $h )
@@ -304,6 +267,9 @@ function dt_get_thumb_img( $opts = array() ) {
 	} else {
 		$size = $resized_image[3];
 	}
+
+	// $src = dt_make_image_src_ssl_friendly( $src );
+	$src = str_replace( array(' '), array('%20'), $src );
 
 	$output = str_replace(
 		array(
@@ -896,7 +862,7 @@ HERED;
 				} else {
 					$args['tax_query'] = array( array(
 						'taxonomy'	=> $opts['taxonomy'],
-						'field'		=> 'id',
+						'field'		=> 'term_id',
 						'terms'		=> $terms_arr,
 						'operator '	=> 'IN',
 					) );
@@ -910,7 +876,7 @@ HERED;
 					$args['tax_query'] = array(
 						array(
 							'taxonomy'	=> $opts['taxonomy'],
-							'field'		=> 'id',
+							'field'		=> 'term_id',
 							'terms'		=> $terms_all_arr,
 							'operator' 	=> 'NOT IN'
 						)
@@ -919,7 +885,7 @@ HERED;
 						$args['tax_query']['relation']	= 'OR';
 						$args['tax_query'][] = array(
 							'taxonomy'	=> $opts['taxonomy'],
-							'field'		=> 'id',
+							'field'		=> 'term_id',
 							'terms'		=> $terms_diff_arr,
 							'operator' 	=> 'IN'
 						);
@@ -957,7 +923,7 @@ HERED;
 			'tax_query'			=> array(
 				array(
 					'taxonomy'	=> $opts['taxonomy'],
-					'field'		=> 'id',
+					'field'		=> 'term_id',
 					'terms'		=> $terms_all_arr,
 					'operator' 	=> 'NOT IN'
 				)
@@ -1154,18 +1120,15 @@ function areCookiesEnabled(){var a=!1;createCookie("testing","Hello",1);null!=re
  * @since presscore 1.0
  */
 function dt_core_send_mail() {
-//    $place = isset( $_POST['send_contacts'] ) ? trim( $_POST['send_contacts'] ) : '';
 	$honey_msg = isset( $_POST['send_message'] ) ? trim( $_POST['send_message'] ) : '';
 	$fields = empty( $_POST['fields'] ) ? array() : $_POST['fields'];
 
-//    $captcha = isset( $_POST['cptch_number'] ) ? trim( strip_tags( $_POST['cptch_number'] ) ) : '';
 	$pid = isset( $_POST['pid'] ) ? intval( $_POST['pid'] ) : false;
 
 	$send = false;
 
 	$errors = '';
-//    $check = Dt_Captcha::check( $captcha, $place );
-	
+
 	// check passed
 	$check = 1;
 
@@ -1243,15 +1206,11 @@ function dt_core_send_mail() {
 	} elseif( $honey_msg ) {
 		$errors = _x( 'Sorry, we suspect that you are bot', 'feedback', LANGUAGE_ZONE );
 	}
-	
-//    $c_form = new Dt_Captcha( array( 'whoami' => $place, 'rewrite' => false ) );
-//    $captcha = $c_form->get_captcha();
 
 	$response = json_encode(
 		array(
 			'success'		=> $send ,
 			'errors'        => $errors,
-//           'captcha'       => $captcha,
 			'nonce'         => $nonce
 		)
 	);
@@ -1382,7 +1341,7 @@ function dt_validate_gravatar($id_or_email) {
  * @return boolean
  */
 function dt_retina_on () {
-	return apply_filters('dt_retina_on', false);
+	return apply_filters( 'dt_retina_on', (bool) absint( of_get_option( 'general-hd_images', 1 ) ) );
 }
 
 /**
@@ -1571,4 +1530,16 @@ function dt_get_next_posts_url( $max_page = 0 ) {
 	}
 
 	return false;
+}
+
+function dt_is_woocommerce_enabled() {
+	return class_exists( 'Woocommerce' );
+}
+
+function dt_make_image_src_ssl_friendly( $src ) {
+	$ssl_friendly_src = (string) $src;
+	if ( is_ssl() ) {
+		$ssl_friendly_src = str_replace('http:', 'https:', $ssl_friendly_src);
+	}
+	return $ssl_friendly_src;
 }

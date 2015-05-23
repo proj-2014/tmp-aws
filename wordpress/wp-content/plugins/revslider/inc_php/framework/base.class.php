@@ -266,7 +266,6 @@
 			$urlImages = UniteFunctionsWPRev::getUrlContent();
 			
 			try{
-				
 				$imageView = new UniteImageViewRev(self::$path_cache,$pathImages,$urlImages);
 				$imageView->showImageFromGet();
 				

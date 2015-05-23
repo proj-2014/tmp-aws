@@ -3483,7 +3483,7 @@
 						if(!obj.thumbnail) {
 							obj.thumbnail = '';
 						} else {
-							obj.thumbnail = '<img src="'+obj.thumbnail+'"/>';
+							obj.thumbnail = '<img src="'+obj.thumbnail+'" width="150" height="150" />';
 						}
 					} else {
 						obj.thumbnail = $(document.createElement('div')).append(obj.thumbnail).html();

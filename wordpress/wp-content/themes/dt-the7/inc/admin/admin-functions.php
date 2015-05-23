@@ -72,13 +72,16 @@ function presscore_check_for_update() {
 					add_settings_error( 'theme-update', 'update_errors', _x('Error:<br />', 'backend', LANGUAGE_ZONE) . implode( '<br \>', $responce->errors ), 'error' );
 				} else if ( $update_needed ) {
 
-					$message = _x('New version of theme is available!', 'backend', LANGUAGE_ZONE);
+					// changelog link
+					$message = sprintf( _x('New version (<a href="%s" target="_blank">see changelog</a>) of theme is available!', 'backend', LANGUAGE_ZONE), 'http://the7.dream-demo.com/changelog.txt' );
+
+					// update link
 					$message .= '&nbsp;<a href="' . add_query_arg('theme-updater', 'update') . '">' . _x('Please, click here to update.', 'backend', LANGUAGE_ZONE) . '</a>';
 
 					add_settings_error( 'theme-update', 'update_nedded', $message, 'updated' );
 				} else {
 
-					add_settings_error( 'theme-update', 'theme-uptodate', _x("You're have most recent version of theme!", 'backend', LANGUAGE_ZONE), 'updated salat' );
+					add_settings_error( 'theme-update', 'theme-uptodate', _x("You have the most recent version of the theme!", 'backend', LANGUAGE_ZONE), 'updated salat' );
 				}
 
 				$update_result = get_transient( 'presscore_update_result' );
@@ -103,27 +106,121 @@ function presscore_check_for_update() {
 add_action( 'admin_head', 'presscore_check_for_update' );
 
 /**
- * Description here.
+ * Update theme.
  *
  */
 function presscore_theme_update() {
 
 	if ( isset($_GET['theme-updater']) && 'update' == $_GET['theme-updater'] ) {
 
+		// global timestamp
+		global $dt_lang_backup_dir_timestamp;
+
 		$user = of_get_option( 'theme_update-user_name', '' );
 		$api_key = of_get_option( 'theme_update-api_key', '' );
+
+		$dt_lang_backup_dir_timestamp = time();
+
+		// backup lang files
+		add_filter( 'upgrader_pre_install', 'presscore_before_theme_update', 10, 2 );
+
+		// restore lang files
+		add_filter( 'upgrader_post_install', 'presscore_after_theme_update', 10, 3 );
 
 		$upgrader = new Envato_WordPress_Theme_Upgrader( $user, $api_key );
 
 		$responce = $upgrader->upgrade_theme();
 
+		remove_filter( 'upgrader_pre_install', 'presscore_before_theme_update', 10, 2 );
+		remove_filter( 'upgrader_post_install', 'presscore_after_theme_update', 10, 3 );
+
+		unset($dt_lang_backup_dir_timestamp);
+
 		set_transient( 'presscore_update_result', $responce, 10 );
 
-		wp_safe_redirect( remove_query_arg('theme-updater') );
+		if ( $responce ) {
+			wp_safe_redirect( add_query_arg( 'theme-updater', 'updated', remove_query_arg('theme-updater') ) );
+
+		} else {
+			wp_safe_redirect( remove_query_arg('theme-updater') );
+
+		}
+
+	// regenrate stylesheets after succesful update
+	} else if ( isset($_GET['theme-updater']) && 'updated' == $_GET['theme-updater'] && get_transient( 'presscore_update_result' ) ) {
+		add_settings_error( 'options-framework', 'theme_updated', _x( 'Stylesheets regenerated.', 'backend', LANGUAGE_ZONE ), 'updated fade' );
+
 	}
 
 }
 add_action( 'admin_init', 'presscore_theme_update' );
+
+/**
+ * Backup files from language dir to temporary folder in uploads.
+ *
+ */
+function presscore_before_theme_update( $res = true, $hook_extra = array() ) {
+	global $wp_filesystem, $dt_lang_backup_dir_timestamp;
+
+	if ( !is_wp_error($res) && !empty($dt_lang_backup_dir_timestamp) ) {
+
+		$upload_dir = wp_upload_dir();
+		$copy_folder = PRESSCORE_THEME_DIR . '/languages/';
+		$dest_folder = $upload_dir['basedir'] . '/dt-language-cache/t' . str_replace( array('\\', '/'), '', $dt_lang_backup_dir_timestamp ) . '/';
+
+		// create dest dir if it's not exist
+		if ( wp_mkdir_p( $dest_folder ) ) {
+
+			$files = array_keys( $wp_filesystem->dirlist( $copy_folder ) );
+			$files = array_diff( $files, array( 'en_US.po' ) );
+
+			// backup files
+			foreach ( $files as $file_name ) {
+				$wp_filesystem->copy( $copy_folder . $file_name, $dest_folder . $file_name, true, FS_CHMOD_FILE );
+			}
+
+		}
+
+	}
+
+	return $res;
+}
+
+/**
+ * Restore stored language files.
+ *
+ */
+function presscore_after_theme_update( $res = true, $hook_extra = array(), $result = array() ) {
+	global $wp_filesystem, $dt_lang_backup_dir_timestamp;
+
+	if ( !is_wp_error($res) && !empty($dt_lang_backup_dir_timestamp) ) {
+
+		$upload_dir = wp_upload_dir();
+		$dest_folder = PRESSCORE_THEME_DIR . '/languages/';
+		$copy_base = $upload_dir['basedir'] . '/dt-language-cache/';
+		$copy_folder = $copy_base . 't' . str_replace( array('\\', '/'), '', $dt_lang_backup_dir_timestamp ) . '/';
+
+		// proceed only if both copy and destination folders exists
+		if ( $wp_filesystem->exists( $copy_folder ) && $wp_filesystem->exists( $dest_folder ) ) {
+
+			$files = array_keys( $wp_filesystem->dirlist( $copy_folder ) );
+
+			// restore files
+			foreach ( $files as $file_name ) {
+				$wp_filesystem->copy( $copy_folder . $file_name, $dest_folder . $file_name, false, FS_CHMOD_FILE );
+			}
+
+			// remove backup folder
+			if ( !is_wp_error($result) ) {
+				$wp_filesystem->delete( $copy_base, true );
+			}
+
+		}
+
+	}
+
+	return $res;
+}
 
 /**
  * Remove save notice if update credentials saved.
@@ -350,6 +447,7 @@ function presscore_add_sidebar_and_footer_columns_in_admin( $defaults ){
 	return $defaults;
 }
 add_filter('manage_edit-page_columns', 'presscore_add_sidebar_and_footer_columns_in_admin');
+add_filter('manage_edit-post_columns', 'presscore_add_sidebar_and_footer_columns_in_admin');
 add_filter('manage_edit-dt_portfolio_columns', 'presscore_add_sidebar_and_footer_columns_in_admin');
 
 /**
@@ -436,8 +534,13 @@ add_action( 'manage_media_custom_column', 'presscore_display_title_status_for_me
  *
  */
 function presscore_add_bulk_edit_fields( $col, $type ) {
+
+	// display for one column
+	if ( !in_array( $col, array( 'presscore-sidebar' ) ) ) return;
+
 	if ( !in_array( $type, array( 'page', 'post', 'dt_portfolio' ) ) ) return; ?>
-		<fieldset class="inline-edit-col-right">
+	<div class="inline-edit-col-right" style="display: inline-block; float: left;">
+		<fieldset>
 			<div class="inline-edit-col">
 
 				<div class="inline-edit-group">
@@ -503,9 +606,8 @@ function presscore_add_bulk_edit_fields( $col, $type ) {
 
 			</div>
 		</fieldset>
+	</div>
 <?php
-	// remove itself
-	remove_action( 'bulk_edit_custom_box', 'presscore_add_bulk_edit_fields', 10, 2 );
 }
 add_action( 'bulk_edit_custom_box', 'presscore_add_bulk_edit_fields', 10, 2 );
 
@@ -597,7 +699,7 @@ function presscore_media_bulk_actions_handler() {
 	if ( $post_type == '') {
 
 		// get the action
-		$wp_list_table = _get_list_table('WP_Posts_List_Table');  // depending on your resource type this could be WP_Users_List_Table, WP_Comments_List_Table, etc
+		$wp_list_table = _get_list_table('WP_Media_List_Table');  // depending on your resource type this could be WP_Users_List_Table, WP_Comments_List_Table, etc
 		$action = $wp_list_table->current_action();
 
 		$allowed_actions = array("dt_hide_title", "dt_show_title");
@@ -630,10 +732,6 @@ function presscore_media_bulk_actions_handler() {
 		switch ( $action ) {
 			case 'dt_hide_title':
 
-				if ( !current_user_can('edit_post') ) {
-					wp_die( $error_msg );
-				}
-
 				foreach( $post_ids as $post_id ) {
 
 					update_post_meta( $post_id, 'dt-img-hide-title', 1 );
@@ -643,10 +741,6 @@ function presscore_media_bulk_actions_handler() {
 			break;
 
 			case 'dt_show_title':
-
-				if ( !current_user_can('edit_post') ) {
-					wp_die( $error_msg );
-				}
 
 				foreach( $post_ids as $post_id ) {
 
@@ -694,7 +788,7 @@ function presscore_register_required_plugins() {
 			'slug' => 'revslider',
 			'source' => '/revslider.zip',
 			'required' => false,
-			'version' => '4.1.4',
+			'version' => '4.6.0',
 			'force_activation' => false,
 			'force_deactivation' => false
 		),
@@ -705,7 +799,7 @@ function presscore_register_required_plugins() {
 			'slug' => 'LayerSlider',
 			'source' => '/layerslider.zip',
 			'required' => false,
-			'version' => '5.0.2',
+			'version' => '5.2.0',
 			'force_activation' => false,
 			'force_deactivation' => false
 		),
@@ -716,7 +810,7 @@ function presscore_register_required_plugins() {
 			'slug' => 'go_pricing',
 			'source' => '/go_pricing.zip',
 			'required' => false,
-			'version' => '2.2',
+			'version' => '2.4.3',
 			'force_activation' => false,
 			'force_deactivation' => false
 		),

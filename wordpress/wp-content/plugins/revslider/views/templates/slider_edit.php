@@ -26,7 +26,7 @@
 				<div class="settings_panel_left">
 					
 					<div id="main_dlier_settings_wrapper" class="postbox unite-postbox ">
-					  <h3 class="box-closed"><span><?php _e("Main Slider Settings",REVSLIDER_TEXTDOMAIN) ?></span></h3>
+					  <h3 class="box-closed"><i style="float:left;margin-top:4px;font-size:14px;" class="eg-icon-cog"></i><span><?php _e("Main Slider Settings",REVSLIDER_TEXTDOMAIN) ?></span></h3>
 					  <div class="p10">
 
 

@@ -1,0 +1,1496 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Text in function
+#: rt-framework/admin/options/rt_social_options.php:1
+msgid " icon link"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "#1 - Free Tab Content"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "#1 - Free Tab Name "
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "#2 - Free Tab Content"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "#2 - Free Tab Name"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "#3 - Free Tab Content"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "#3 - Free Tab Name"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "3rd Party Contact Form Plugin"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "ATTACHED DOCUMENTS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Add New Box"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Add New Portfolio Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Add New Product Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Add New Product Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Add New Slide"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Add New portfolio item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Address"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:121
+msgid "Address:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "All Portfolio Categories"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "All Product Categories"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Amount of portfolio item per page"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "Amount of products per page"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Analytics Code"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "Are you sure that you want to reset all the theme settings?"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_blog_options.php:1
+msgid "Author info box under posts."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "BACKGROUND OPTIONS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "BREADCRUMB MENU"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Background Image"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Body Font Color"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Body Font Size (px)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Breadcrumb Menu Text"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Breadcrumb Menus"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "CONTACT DETAILS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "CONTACT FORM"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "CUFON FONTS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Category Slug"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "Change the slug for product categories"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "Changelog"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Chart File Url"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "Check this box if you don't want to show products when clicked your products page on navigation bar."
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Common Sidebar"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/contact_info.php:119
+msgid "Contact Details"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/contact_info.php:152
+msgid "Contact Form"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Contact Form Email"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:151
+msgid "Contact Form Link Text:"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:148
+msgid "Contact Form Link:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/contact_info.php:1
+msgid "Contact Info"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar.php:1
+msgid "Create New Sidebar"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_blog_options.php:1
+msgid "Crop Featured Images."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Crop Portfolio Images."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "Crop Product Images"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Cufon Fonts"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Custom Active Menu Item Font Color "
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Custom Favicon"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Custom Heading Color"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Custom Menu Font Color"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Custom Menu Font Color (:hover states)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Custom Order Button Text"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Custom Theme Main Color"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Default value: order enquiry form →"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar.php:1
+msgid "Delete Sidebar"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Designates the ascending or descending order of the ORDERBY parameter"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/latest_posts_2.php:118
+#: rt-framework/widgets/latest_posts.php:124
+#: rt-framework/widgets/popular_posts.php:128
+msgid "Display Excerpt"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/flickr.php:1
+msgid "Displays your Flickr feeds"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/twitter.php:1
+msgid "Displays your Twitter feeds"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "Do you want to delete this sidebar."
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/latest_posts.php:121
+#: rt-framework/widgets/popular_posts.php:125
+msgid "Don\\'t display post thumbnails"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Edit Content"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Edit Portfolio Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Edit Portfolio Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Edit Product Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Edit Product Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Edit Slide"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Email"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:136
+msgid "Email 1:"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:139
+msgid "Email 2:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Excel File Url"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_blog_options.php:1
+msgid "FEATURED IMAGE"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "FONT SIZES"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "FOOTER RELATED FIELDS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "FREE TABS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Fax"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:130
+msgid "Fax 1:"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:133
+msgid "Fax 2:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_blog_options.php:1
+msgid "Featured Image Heght"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_blog_options.php:1
+msgid "Featured Image Width"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/contact_info.php:158
+msgid "Find us on map"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/flickr.php:1
+msgid "Flickr"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/flickr.php:52
+msgid "Flickr Username:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Footer Copyright Text"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/testimonials.php:71
+msgid "From:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "GOOGLE ANALYTICS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "GOOGLE FONTS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "GOOGLE MAP"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Google Fonts"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Heading Font Size (H1)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Heading Font Size (H2)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Heading Font Size (H3)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Heading Font Size (H4)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Heading Font Size (H5)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Heading Font Size (H6)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Home Page Box Title Font Size (px)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "How many item do you want to display per page?"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "How many products do you want to display per page?"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "IMPORTANT! Bring your cursor over the help icon to read the detailed instructions "
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "If you don't select a category the product start page will display all products."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_blog_options.php:1
+msgid "If you don't select any category the blog start page will display all categories."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "If you turn on the crop feature, the image will be cropped as the width and the height values."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "If you would like to remove curvs from the theme design you can turn on this option."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Layout"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Leave blank if you want to use default colors."
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Left Sidebar For Home Page"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/latest_posts_2.php:120
+#: rt-framework/widgets/latest_posts.php:126
+#: rt-framework/widgets/popular_posts.php:130
+#: rt-framework/widgets/recent_posts_gallery.php:153
+msgid "Limit excerpt characters: "
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Logo"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Map Code"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:157
+msgid "Map Link Text:"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:154
+msgid "Map Link:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Map code width must be 640px and recommended height is 200px. You can generate your own map code from <a href=\"http://maps.google.com\">http://maps.google.com</a> Click the link icon top of the Google Maps page then click \"Customize and preview embedded map\" link on the pop-up page."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "Maximum Image Heght"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Menu Font Size (px)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "New Content"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "New Genre Portfolio Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "New Genre Product Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "New Portfolio Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "New Product Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "New Slide"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "No Product Item Iound"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "No portfolio item found"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "No portfolio item found in Trash"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "No product item found in trash"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "No result found"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "No result found in Trash"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "No slide found"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "No slide found in Trash"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/flickr.php:55
+msgid "Number of Photo to Display:"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/latest_posts_2.php:114
+#: rt-framework/widgets/latest_posts.php:117
+#: rt-framework/widgets/popular_posts.php:121
+#: rt-framework/widgets/recent_posts_gallery.php:150
+msgid "Number of posts to show:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "OPTIONS JUST FOR THE CYCLE SLIDER"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "Options saved successfully"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Order"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Order Button"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Order Button Link"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "OrderBy Parameter"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Other images for this product"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "PERMALINKS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "PRODUCT IMAGES"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Parent Portfolio Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Parent Portfolio Category:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Parent Product Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Parent Product Category:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Paste your google analytics code"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Pdf File Url"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Phone"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:124
+msgid "Phone 1:"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:127
+msgid "Phone 2:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Please choose a font for headings."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Please choose a style for your theme."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "Please choose an effect for main page slider"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Please choose an image file or write url of an image you want use as a background image. Go to <a href=\"themes.php?page=custom-background\">WordPress Background</a> page for more background options."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Please choose an image file or write url of your logo."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "Please select a slider script for your home page."
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/popular_posts.php:1
+msgid "Popular Posts"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Portfolio Items on Start Page"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Product Image Url"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "Products on Start Page"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/loading.php:1
+msgid "RT Theme Footer Navigation"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/loading.php:1
+msgid "RT Theme Main Navigation"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Randomized Background Images"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/latest_posts_2.php:1
+msgid "Recent Posts"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/latest_posts.php:1
+msgid "Recent Posts #2 "
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/recent_posts_gallery.php:1
+msgid "Recent Posts Gallery"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar.php:1
+msgid "Regular Posts, Products, Portfolio"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Related Products"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Remove Curvs"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "STANDART FONTS"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "SUB PAGE TOP BAR"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "Save Options"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Search Content"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Search Portfolio Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Search Portfolio Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Search Product Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Search Product Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Search Slide"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/latest_posts_2.php:93
+#: rt-framework/admin/options/rt_blog_options.php:1
+#: rt-framework/classes/metaboxes.php:79
+#: rt-framework/classes/admin.php:1
+#: rt-framework/widgets/latest_posts.php:96
+#: rt-framework/widgets/popular_posts.php:100
+#: rt-framework/widgets/recent_posts_gallery.php:129
+msgid "Select"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_blog_options.php:1
+msgid "Select Blog Categories"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Select Body Font Family"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar.php:1
+msgid "Select Categories"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/latest_posts_2.php:91
+#: rt-framework/widgets/latest_posts.php:94
+#: rt-framework/widgets/popular_posts.php:98
+#: rt-framework/widgets/recent_posts_gallery.php:127
+msgid "Select Categories:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Select Cufon Fonts  (Menu)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Select Cufon Fonts (Headings)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Select Font"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Select Heading Font"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "Select Home Page Slider"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Select Menu Font"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar.php:1
+msgid "Select Pages"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Select Portfolio Start Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar.php:1
+msgid "Select Posts"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar.php:1
+msgid "Select Product Categories"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "Select Product Page Start Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Select Related Products"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_blog_options.php:1
+msgid "Select Your Blog Page"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Select Your Contact Page"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Select Your Portfolio Page"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "Select Your Product List Page"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Select a category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Select a font family for body texts"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Select a google font for headings"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "Select a google font for menu"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+#: rt-framework/admin/options/rt_contact_us.php:1
+#: rt-framework/admin/options/rt_blog_options.php:1
+msgid "Select a page"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Select a page to use as a contact page."
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "Select contents for the sidebar."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Select products"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Select the layout of widgetized home page content area."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Short Description"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Short description for product listing pages. If you want to show price info in the listing pages, you can use  this code in this field."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Show Flags"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Show Search"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Show WPML plugin's language flags under the logo."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "Show search form field on top of the sub pages."
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Sidebar For Blog"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Sidebar For Blog Categories"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Sidebar For Blog Single Post"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Sidebar For Pages"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Sidebar For Portfolio"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Sidebar For Product Categories"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Sidebar For Products"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Sidebar For Single Portfolio Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Sidebar For Single Product Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar.php:1
+msgid "Sidebar Name"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "Sidebar names cannot be empty."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Single Portflio Slug"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "Single Product Slug"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "Slider Buttons"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "Slider Height (px)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Support Email"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:142
+msgid "Support Email 1:"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:145
+msgid "Support Email 2:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "THEME OPTIONS"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/testimonials.php:66
+msgid "Testimonial:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/testimonials.php:1
+#: rt-framework/widgets/testimonials.php:64
+msgid "Testimonials"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Text"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "The copyright text area on right-sider footer"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/popular_posts.php:1
+msgid "The most popular posts on your site "
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/latest_posts_2.php:1
+msgid "The most recent posts on your site "
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/latest_posts.php:1
+msgid "The most recent posts on your site with post thumbnails."
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/recent_posts_gallery.php:1
+msgid "The most recent posts thumbnails with post data in a gallery plugin"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "The text before the breadcrumb menu"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_styling_options.php:1
+msgid "Theme Style"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/recent_posts_gallery.php:120
+msgid "This plugin only displays posts which has featured images."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Title for contact details column"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Title for contact form column"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/contact_info.php:118
+#: rt-framework/widgets/twitter.php:50
+#: rt-framework/widgets/latest_posts_2.php:87
+#: rt-framework/widgets/flickr.php:49
+#: rt-framework/widgets/testimonials.php:63
+#: rt-framework/widgets/latest_posts.php:90
+#: rt-framework/widgets/popular_posts.php:94
+#: rt-framework/widgets/recent_posts_gallery.php:123
+msgid "Title:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "To activate the random background images enter image urls line by line"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "Transition Effect"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "Transition Timeout (seconds)"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "Turn Off this option if you don't want to show portfolio items on your portfolio start page."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "Turn On/Off Slider"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Turn on/off the Contact Details Column"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "Turn on/off the Contact Form"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/twitter.php:56
+msgid "Tweet Number:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/twitter.php:1
+msgid "Twitter"
+msgstr ""
+
+#. Text in echo
+#: rt-framework/widgets/twitter.php:53
+msgid "Twitter Username:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Update Portfolio Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "Update Product Category"
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/contact_info.php:1
+msgid "Use this widget to display your contact details with icons."
+msgstr ""
+
+#. Text in function
+#: rt-framework/widgets/testimonials.php:1
+msgid "Use this widget to display your testimonials."
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "Version"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "View Content"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "View Portfolio Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "View Product Item"
+msgstr ""
+
+#. Text in function
+#: rt-framework/functions/custom_posts.php:1
+msgid "View Slide"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "WIDGETIZED PART OF HOME PAGE"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "WPML PLUGIN"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar.php:1
+msgid "Widget Caller Shortcode"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/sidebar_creator.php:1
+msgid "Widgetized Home Page Area"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "Word File Url"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "Write a sidebar name for the new sidebar."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "You are free to use 3rd party contact form plugins on the contact page. There are some great contact form plugins on the <a href=\"http://wordpress.org/extend/plugins/\">WordPress plugins page</a> like <a href=\"http://wordpress.org/extend/plugins/contact-form-7/\">Contact Form 7</a>. Paste the plugin shortcode in the box below to use it instead of the default form."
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "You are here:"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/product_custom_fields.php:1
+msgid "You can put unlimited image for this product. Please put all the image urls line by line. All these images will be resize automaticly. Leave blank if you don't need to additional product images. "
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "You can put url of a ico image that will represent your website's favicon (16px x 16px) "
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_general_options.php:1
+msgid "You can turn on/off bredcrumb menus"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "You can turn on/off cufon font replacement plugin"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_typography_options.php:1
+msgid "You can turn on/off google font replacement plugin"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "You can turn on/off the home page slider"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_slider_options.php:1
+msgid "You can turn on/off the paging buttons of the slider"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "You can use this option if the \"Crop Product Images\" feature is on"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "or"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/admin.php:1
+msgid "reset settings"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_product_options.php:1
+msgid "sort the products by this parameter"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_portfolio_options.php:1
+msgid "sort your portfolio by this parameter"
+msgstr ""
+
+#. Text in function
+#: rt-framework/admin/options/rt_contact_us.php:1
+msgid "the contact form will be submited this email"
+msgstr ""
+
+#. Text in function
+#: rt-framework/classes/loading.php:1
+msgid "theme options has been resetted."
+msgstr ""

@@ -28,12 +28,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 <html class="no-js" <?php language_attributes(); ?>>
 <!--<![endif]-->
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10">
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<?php if ( presscore_responsive() ) : ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<?php else : ?>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<?php endif; // is responsive?>
 	<?php if ( dt_retina_on() ) { dt_core_detect_retina_script(); } ?>
 	<title><?php echo presscore_blog_title(); ?></title>
@@ -44,14 +41,18 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 	<![endif]-->
 	<style type="text/css" id="static-stylesheet"></style>
 	<?php
-	echo dt_get_favicon( of_get_option('general-favicon', '') );
-
-	// tracking code
 	if ( ! is_preview() ) {
+
+		presscore_favicon();
+
 		echo of_get_option('general-tracking_code', '');
+
+		presscore_icons_for_handhelded_devices();
+
 	}
+
+	wp_head();
 	?>
-	<?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?>>
@@ -60,142 +61,17 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 <div id="page"<?php if ( 'boxed' == of_get_option('general-layout', 'wide') ) echo ' class="boxed"'; ?>>
 
-<?php /* Top Bar */ ?>
 <?php if ( of_get_option('top_bar-show', 1) ) : ?>
 
-	<!-- !Top-bar -->
-	<div id="top-bar" role="complementary">
-		<div class="wf-wrap">
-			<div class="wf-table wf-mobile-collapsed">
+	<?php get_template_part( 'templates/header/top-bar', of_get_option('top_bar-content_alignment', 'side') ); ?>
 
-				<div class="wf-td">
+<?php endif; // show top bar ?>
 
-					<?php if ( of_get_option('top_bar-contact_show', 1) ) : ?>
-						<div class="mini-contacts wf-float-left">
-							<ul>
-								<?php presscore_top_bar_contacts_list(); ?>
-							</ul>
-						</div>
-					<?php endif; ?>
+<?php if ( apply_filters( 'presscore_show_header', true ) ) : ?>
 
-					<?php presscore_nav_menu_list('top', 'left'); ?>
+	<?php get_template_part( 'templates/header/header', of_get_option( 'header-layout', 'left' ) ); ?>
 
-					<?php $top_text = of_get_option('top_bar-text', '');
-					if ( $top_text ) :
-					?>
-
-						<div class="wf-float-left">
-							<?php echo wpautop($top_text); ?>
-						</div>
-
-					<?php endif; ?>
-
-				</div>
-
-				<?php if ( defined('ICL_SITEPRESS_VERSION') ): ?>
-					<div class="wf-td">
-
-						<?php presscore_language_selector_flags(); ?>
-
-					</div>
-				<?php endif; ?>
-
-				<div class="wf-td right-block">
-					<?php
-					// Woocommerce cart here
-					if ( class_exists( 'Woocommerce' ) && of_get_option( 'general-woocommerce_show_mini_cart_in_top_bar', true ) ) :
-
-						get_template_part('inc/mod-woocommerce/mod-woocommerce', 'mini-cart');
-					endif; ?>
-
-					<?php
-					$topbar_soc_icons = presscore_get_topbar_social_icons();
-
-					if ( $topbar_soc_icons ) :
-					?>
-
-					<?php echo $topbar_soc_icons; ?>
-
-					<?php endif; ?>
-				</div>
-
-			</div><!-- .wf-table -->
-		</div><!-- .wf-wrap -->
-	</div><!-- #top-bar -->
-
-<?php endif; ?>
-
-<?php
-if ( apply_filters( 'presscore_show_header', true ) ) :
-
-$config = Presscore_Config::get_instance();
-$logo_align = of_get_option( 'header-layout', 'left' );
-$header_classes = apply_filters( 'presscore_header_classes', array( 'logo-' . $logo_align ) );
-?><!-- left, center, classical, classic-centered -->
-	<!-- !Header -->
-	<header id="header" class="<?php echo esc_attr(implode(' ', $header_classes )); ?>" role="banner"><!-- class="overlap"; class="logo-left", class="logo-center", class="logo-classic" -->
-		<div class="wf-wrap">
-			<div class="wf-table">
-
-<?php if ( 'center' == $logo_align ) : ?>
-				<div class="wf-td">
-<?php endif; ?>
-
-				<!-- !- Branding -->
-				<div id="branding"<?php if ( 'center' != $logo_align ) echo ' class="wf-td"'; ?>>
-					<?php
-					$logo = presscore_get_logo_image( presscore_get_header_logos_meta() );
-
-					if ( $logo ) :
-
-						if ( 'microsite' == $config->get('template') ) {
-							$logo_target_link = get_post_meta( $post->ID, '_dt_microsite_logo_link', true );
-
-							if ( $logo_target_link ) {
-								echo sprintf('<a href="%s">%s</a>', esc_url( $logo_target_link ), $logo);
-							} else {
-								echo $logo;
-							}
-
-						} else {
-							echo sprintf('<a href="%s">%s</a>', esc_url( home_url( '/' ) ), $logo);
-
-						}
-
-					endif;
-					?>
-
-					<div id="site-title" class="assistive-text"><?php bloginfo( 'name' ); ?></div>
-					<div id="site-description" class="assistive-text"><?php bloginfo( 'description' ); ?></div>
-				</div>
-
-<?php if ( 'classic' == $logo_align ) : ?>
-			<?php $info = of_get_option('header-contentarea', false);
-			if ( $info ) : ?>
-				<div class="wf-td assistive-info" role="complementary"><?php echo $info; ?></div>
-			<?php endif; ?>
-			</div>
-		</div>
-		<div class="navigation-holder">
-			<div>
-<?php elseif ( in_array($logo_align, array('classic-centered', 'center')) ) : ?>
-			</div>
-		</div>
-		<div class="navigation-holder">
-			<div>
-<?php endif; ?>
-
-				<?php do_action( 'presscore_primary_navigation' ); ?>
-
-<?php if ( 'center' == $logo_align ) : ?>
-			</div>
-<?php endif; ?>
-
-			</div><!-- .wf-table -->
-		</div><!-- .wf-wrap -->
-	</header><!-- #masthead -->
-
-<?php endif; // presscore_show_header ?>
+<?php endif; // show header ?>
 
 	<?php do_action( 'presscore_before_main_container' ); ?>
 

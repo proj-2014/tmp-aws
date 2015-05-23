@@ -83,7 +83,9 @@ class DT_Shortcode_BlogPostsSmall extends DT_Shortcode {
             }
         }
 
-        $posts_list = presscore_get_posts_small_list( $attachments_data );
+        $list_args = array( 'show_images' => $featured_images );
+
+        $posts_list = presscore_get_posts_small_list( $attachments_data, $list_args );
 
         switch ( $columns ) {
             case 2: $column_class = 'wf-1-2'; break;
@@ -101,6 +103,18 @@ class DT_Shortcode_BlogPostsSmall extends DT_Shortcode {
 
             $output = '<section class="items-grid wf-container">' . $output . '</section>';
         }
+
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+
+			$terms_list = presscore_get_terms_list_by_slug( array( 'slugs' => $category, 'taxonomy' => 'category' ) );
+	
+			$output = '
+				<div class="dt_vc-shortcode_dummy dt_vc-mini_blog" style="height: 250px;">
+					<h5>Mini blog</h4>
+					<p class="text-small"><strong>Display categories:</strong> ' . $terms_list . '</p>
+				</div>
+			';
+		}
 
         return $output;
     }

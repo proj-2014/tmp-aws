@@ -28,8 +28,8 @@ $options[] = array(	"name" => _x('Header background', 'theme-options', LANGUAGE_
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "header-bg_color",
 		"std"	=> "#40FF40",
 		"type"	=> "color"
@@ -39,7 +39,7 @@ $options[] = array(	"name" => _x('Header background', 'theme-options', LANGUAGE_
 	$options[] = array(
 		'type' 			=> 'background_img',
 		'id' 			=> 'header-bg_image',
-		'desc' 			=> _x( 'Choose / upload background image', 'theme-options', LANGUAGE_ZONE ),
+		"name" 			=> _x( 'Choose / upload background image', 'theme-options', LANGUAGE_ZONE ),
 		'preset_images' => $backgrounds_header_bg_image,
 		'std' 			=> array(
 			'image'			=> '',
@@ -58,8 +58,8 @@ $options[] = array(	"name" => _x('Transparent header', 'theme-options', LANGUAGE
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Background color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "header-transparent_bg_color",
 		"std"	=> "#000000",
 		"type"	=> "color"
@@ -67,8 +67,8 @@ $options[] = array(	"name" => _x('Transparent header', 'theme-options', LANGUAGE
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"      => '',
+		"name"      => _x( 'Opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "header-transparent_bg_opacity",
 		"std"       => 50,
 		"type"      => "slider",
@@ -80,8 +80,8 @@ $options[] = array(	"name" => _x('Transparent header', 'theme-options', LANGUAGE
 	
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"  => '',
+			"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "header-transparent_bg_ie_color",
 			"std"   => "#000000",
 			"type"  => "color"
@@ -93,7 +93,7 @@ $options[] = array(	"name" => _x('Transparent header', 'theme-options', LANGUAGE
 	$options[] = array(
 		'type' 			=> 'background_img',
 		'id' 			=> 'header-transparent_bg_image',
-		'desc' 			=> _x( 'Choose / upload background image', 'theme-options', LANGUAGE_ZONE ),
+		"name" 			=> _x( 'Choose / upload background image', 'theme-options', LANGUAGE_ZONE ),
 		'preset_images' => $backgrounds_header_transparent_bg_image,
 		'std' 			=> array(
 			'image'			=> '',
@@ -112,7 +112,7 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 	// input
 	$options[] = array(
-		"desc"		=> _x( 'Background height (px)', 'theme-options', LANGUAGE_ZONE ),
+		"name"		=> _x( 'Background height (px)', 'theme-options', LANGUAGE_ZONE ),
 		"id"		=> 'header-bg_height',
 		"std"		=> 90,
 		"type"		=> 'text',
@@ -122,8 +122,8 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 	// images
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x('Header layout', 'theme-options', LANGUAGE_ZONE),
+		"desc"      => '',
+		"name"      => _x('Header layout', 'theme-options', LANGUAGE_ZONE),
 		"id"        => "header-layout",
 		"std"       => 'left',
 		"type"      => "images",
@@ -141,8 +141,8 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 		// textarea
 		$options[] = array(
-			"name"		=> '',
-			"desc"		=> _x('Content area', 'theme-options', LANGUAGE_ZONE),
+			"desc"		=> '',
+			"name"		=> _x('Content area', 'theme-options', LANGUAGE_ZONE),
 			"id"		=> "header-contentarea",
 			"std"		=> false,
 			"type"		=> 'textarea'
@@ -150,7 +150,7 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 		// colorpicker
 		$options[] = array(
-			"desc"	=> _x( 'Content area text color', 'theme-options', LANGUAGE_ZONE ),
+			"name"	=> _x( 'Content area text color', 'theme-options', LANGUAGE_ZONE ),
 			"id"	=> "header-contentarea_color",
 			"std"	=> "#ffffff",
 			"type"	=> "color"
@@ -160,7 +160,7 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 	// select
 	$options[] = array(
-		"desc"      => _x( 'Font', 'theme-options', LANGUAGE_ZONE ),
+		"name"      => _x( 'Font', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "header-font_family",
 		"std"       => "Open Sans",
 		"type"      => "web_fonts",
@@ -169,7 +169,7 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 	// slider
 	$options[] = array(
-		"desc"      => _x( 'Font size', 'theme-options', LANGUAGE_ZONE ),
+		"name"      => _x( 'Font size', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "header-font_size",
 		"std"       => 16, 
 		"type"      => "slider",
@@ -179,37 +179,56 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 	// checkbox
 	$options[] = array(
-		"desc"      => _x( 'Uppercase ', 'theme-options', LANGUAGE_ZONE ),
+		"name"      => _x( 'Uppercase ', 'theme-options', LANGUAGE_ZONE ),
 		"id"    	=> "header-font_uppercase",
 		"type"  	=> 'checkbox',
 		'std'   	=> 0
 	);
 
-	// slider
-	$options[] = array(
-		"name"		=> '',
-		"desc"		=> _x( 'Line height', 'theme-options', LANGUAGE_ZONE ),
-		"id"		=> "header-font_line_height",
-		"std"		=> 30, 
-		"type"		=> "slider",
-	);
-
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Font color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Font color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "header-font_color",
 		"std"	=> "#ffffff",
 		"type"	=> "color"
 	);
+
+	// radio
+	$options[] = array(
+		"name"		=> _x('Hover color', 'theme-options', LANGUAGE_ZONE),
+		"id"		=> 'header-hover',
+		"std"		=> 'default',
+		"type"		=> 'radio',
+		"options"	=> array(
+			'default' => _x('accent color', 'theme-options', LANGUAGE_ZONE),
+			'custom' => _x('custom color', 'theme-options', LANGUAGE_ZONE),
+		),
+		'show_hide' => array(
+			'custom' => true
+		)
+	);
+
+	// hidden area
+	$options[] = array( 'type' => 'js_hide_begin' );
+
+		// colorpicker
+		$options[] = array(
+			"name" => '&nbsp;',
+			"id" => "header-hover_color",
+			"std" => "#2a83ed",
+			"type" => "color"
+		);
+
+	$options[] = array( 'type' => 'js_hide_end' );
 
 	// hidden area
 	$options[] = array( 'type' => 'js_hide_begin', 'class' => 'header-layout header-layout-classic header-layout-classic-centered' );
 
 		// colorpicker
 		$options[] = array(
-			"name"	=> '',
-			"desc"	=> _x( 'Lines &amp; dividers color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"	=> _x( 'Visible in 3 &amp; 4 header layouts', 'theme-options', LANGUAGE_ZONE ),
+			"name"	=> _x( 'Line above menu color', 'theme-options', LANGUAGE_ZONE ),
 			"id"	=> "header-menu_bg_color",
 			"std"	=> "#000000",
 			"type"	=> "color"
@@ -217,8 +236,8 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 		// slider
 		$options[] = array(
-			"name"      => '',
-			"desc"      => _x( 'Lines &amp; dividers opacity', 'theme-options', LANGUAGE_ZONE ),
+			"desc"		=> _x( 'Visible in 3 &amp; 4 header layouts', 'theme-options', LANGUAGE_ZONE ),
+			"name"      => _x( 'Line above menu opacity', 'theme-options', LANGUAGE_ZONE ),
 			"id"        => "header-menu_bg_opacity",
 			"std"       => 100,
 			"type"      => "slider",
@@ -227,11 +246,11 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 		// hidden area
 		$options[] = array( 'type' => 'js_hide_begin' );
-		
+
 			// colorpicker
 			$options[] = array(
-				"name"  => '',
-				"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+				"desc"  => '',
+				"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 				"id"    => "header-menu_bg_ie_color",
 				"std"   => "#000000",
 				"type"  => "color"
@@ -243,15 +262,36 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 	// checkbox
 	$options[] = array(
-		"desc"      => _x( 'Show color frame for menu hovers & colour background for active item', 'theme-options', LANGUAGE_ZONE ),
-		"id"    	=> "header-color_frame",
-		"type"  	=> 'checkbox',
-		'std'   	=> 1
+		"name"      => _x( 'Hover style', 'theme-options', LANGUAGE_ZONE ),
+		"id"    	=> "header-hover_style",
+		"type"  	=> 'radio',
+		'std'   	=> 'frame',
+		'show_hide'	=> array( 'frame' => true ),
+		'options'	=> array(
+			'none' => _x( 'none', 'theme-options', LANGUAGE_ZONE ),
+			'frame' => _x( 'frame', 'theme-options', LANGUAGE_ZONE ),
+			'underline' => _x( 'underline', 'theme-options', LANGUAGE_ZONE )
+		)
 	);
+
+	// hidden area
+	$options[] = array( "type" => "js_hide_begin" );
+
+		// input
+		$options[] = array(
+			"name"		=> _x( "Border radius (px)", "theme-options", LANGUAGE_ZONE ),
+			"id"		=> "header-hover_frame_border_radius",
+			"std"		=> "4",
+			"type"		=> "text",
+			"class"		=> "mini",
+			"sanitize"	=> "dimensions"
+		);
+
+	$options[] = array( "type" => "js_hide_end" );
 
 	// checkbox
 	$options[] = array(
-		"desc"      => _x( 'Show next level indicator arrows', 'theme-options', LANGUAGE_ZONE ),
+		"name"      => _x( 'Show next level indicator arrows', 'theme-options', LANGUAGE_ZONE ),
 		"id"    	=> "header-next_level_indicator",
 		"type"  	=> 'checkbox',
 		'std'   	=> 1
@@ -259,10 +299,20 @@ $options[] = array(	"name" => _x('Header layout', 'theme-options', LANGUAGE_ZONE
 
 	// square size
 	$options[] = array(
-		"desc"      => _x( 'Icons size', 'theme-options', LANGUAGE_ZONE ),
+		"name"      => _x( 'Icons size', 'theme-options', LANGUAGE_ZONE ),
 		"id"    	=> "header-icons_size",
 		"type"  	=> 'square_size',
 		'std'   	=> array('width' => 14, 'height' => 14)
+	);
+
+	// text
+	$options[] = array(
+		"name"		=> _x( 'Distance between menu items', 'theme-options', LANGUAGE_ZONE ),
+		"id"		=> "menu-items_distance",
+		"class"		=> 'mini',
+		"std"		=> '10', 
+		"type"		=> "text",
+		"sanitize"	=> 'dimensions'
 	);
 
 $options[] = array(	"type" => "block_end");
@@ -274,7 +324,7 @@ $options[] = array(	"name" => _x('Submenu', 'theme-options', LANGUAGE_ZONE), "ty
 
 	// checkbox
 	$options[] = array(
-		"desc"      => _x( 'Make parent menu items clickable', 'theme-options', LANGUAGE_ZONE ),
+		"name"      => _x( 'Make parent menu items clickable', 'theme-options', LANGUAGE_ZONE ),
 		"id"    	=> 'header-submenu_parent_clickable',
 		"type"  	=> 'checkbox',
 		'std'   	=> 1
@@ -282,8 +332,8 @@ $options[] = array(	"name" => _x('Submenu', 'theme-options', LANGUAGE_ZONE), "ty
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Font color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Font color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "header-submenu_color",
 		"std"	=> "#3e3e3e",
 		"type"	=> "color"
@@ -291,8 +341,8 @@ $options[] = array(	"name" => _x('Submenu', 'theme-options', LANGUAGE_ZONE), "ty
 
 	// colorpicker
 	$options[] = array(
-		"name"	=> '',
-		"desc"	=> _x( 'Submenu background color', 'theme-options', LANGUAGE_ZONE ),
+		"desc"	=> '',
+		"name"	=> _x( 'Submenu background color', 'theme-options', LANGUAGE_ZONE ),
 		"id"	=> "header-submenu_bg_color",
 		"std"	=> "#ffffff",
 		"type"	=> "color"
@@ -300,8 +350,8 @@ $options[] = array(	"name" => _x('Submenu', 'theme-options', LANGUAGE_ZONE), "ty
 
 	// slider
 	$options[] = array(
-		"name"      => '',
-		"desc"      => _x( 'Submenu background opacity', 'theme-options', LANGUAGE_ZONE ),
+		"desc"      => '',
+		"name"      => _x( 'Submenu background opacity', 'theme-options', LANGUAGE_ZONE ),
 		"id"        => "header-submenu_bg_opacity",
 		"std"       => 100, 
 		"type"      => "slider",
@@ -313,8 +363,8 @@ $options[] = array(	"name" => _x('Submenu', 'theme-options', LANGUAGE_ZONE), "ty
 
 		// colorpicker
 		$options[] = array(
-			"name"  => '',
-			"desc"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
+			"desc"  => '',
+			"name"  => _x( 'Internet Explorer color', 'theme-options', LANGUAGE_ZONE ),
 			"id"    => "header-submenu_bg_ie_color",
 			"std"   => "#ffffff",
 			"type"  => "color"
@@ -324,7 +374,7 @@ $options[] = array(	"name" => _x('Submenu', 'theme-options', LANGUAGE_ZONE), "ty
 
 	// checkbox
 	$options[] = array(
-		"desc"      => _x( 'Show next level indicator arrows', 'theme-options', LANGUAGE_ZONE ),
+		"name"      => _x( 'Show next level indicator arrows', 'theme-options', LANGUAGE_ZONE ),
 		"id"    	=> "header-submenu_next_level_indicator",
 		"type"  	=> 'checkbox',
 		'std'   	=> 1
@@ -332,7 +382,7 @@ $options[] = array(	"name" => _x('Submenu', 'theme-options', LANGUAGE_ZONE), "ty
 
 	// square size
 	$options[] = array(
-		"desc"      => _x( 'Icons size', 'theme-options', LANGUAGE_ZONE ),
+		"name"      => _x( 'Icons size', 'theme-options', LANGUAGE_ZONE ),
 		"id"    	=> "header-submenu_icons_size",
 		"type"  	=> 'square_size',
 		'std'   	=> array('width' => 12, 'height' => 12)
@@ -347,7 +397,7 @@ $options[] = array(	"name" => _x('Floating menu', 'theme-options', 'presscore'),
 
 	// radio
 	$options[] = array(
-		"desc"		=> _x('Floating menu', 'theme-options', 'presscore'),
+		"name"		=> _x('Floating menu', 'theme-options', 'presscore'),
 		"id"		=> 'header-show_floating_menu',
 		"std"		=> '1',
 		"type"		=> 'radio',
@@ -366,7 +416,7 @@ $options[] = array(	"name" => _x('Search', 'theme-options', LANGUAGE_ZONE), "typ
 
 	// radio
 	$options[] = array(
-		"desc"      => _x( 'Show search', 'theme-options', LANGUAGE_ZONE ),
+		"name"      => _x( 'Show search', 'theme-options', LANGUAGE_ZONE ),
 		"id"    	=> 'header-search_show',
 		"std"		=> '1',
 		"type"		=> 'radio',

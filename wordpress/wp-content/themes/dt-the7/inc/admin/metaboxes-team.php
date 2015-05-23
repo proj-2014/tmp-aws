@@ -96,7 +96,7 @@ $DT_META_BOXES[] = array(
 		// Column target width (px)
 		array(
 			'name'			=> _x('Column target width (px):', 'backend metabox', LANGUAGE_ZONE),
-			'desc'			=> _x('Real column width will slightly wary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
+			'desc'			=> _x('Real column width will slightly vary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
 			'id'    		=> "{$prefix}target_width",
 			'type'  		=> 'text',
 			'std'   		=> '370',

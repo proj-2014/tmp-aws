@@ -48,7 +48,7 @@ class DT_Shortcode_Accordion extends DT_Shortcode {
         
         $output = sprintf( '<li><a class="text-primary" href="#">%s</a><div class="st-content">%s</div></li>',
             $attributes['title'],
-            do_shortcode(wpautop($content))
+            do_shortcode( shortcode_unautop( wpautop( $content ) ) )
         );
 
         return $output; 

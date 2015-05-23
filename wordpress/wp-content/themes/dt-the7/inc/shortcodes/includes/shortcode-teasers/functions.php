@@ -39,6 +39,9 @@ class DT_Shortcode_Teaser extends DT_Shortcode {
 			'style' => '1',
 			'image' => '',
 			'image_alt' => '',
+			'image_id' => '',
+			'image_width' => '',
+			'image_height' => '',
 			'misc_link' => '',
 			'target' => 'blank',
 			'media' => '',
@@ -51,17 +54,23 @@ class DT_Shortcode_Teaser extends DT_Shortcode {
 
 		$attributes = shortcode_atts( $default_atts, $atts );
 
-		$attributes['type'] = in_array( $attributes['type'], array('image', 'video') ) ?  $attributes['type'] : $default_atts['type'];
+		$attributes['type'] = in_array( $attributes['type'], array('image', 'video', 'uploaded_image') ) ?  $attributes['type'] : $default_atts['type'];
+
+		$attributes['image_id'] = absint($attributes['image_id']);
+		$attributes['image_alt'] = esc_attr($attributes['image_alt']);
+		$attributes['image_width'] = absint($attributes['image_width']);
+		$attributes['image_height'] = absint($attributes['image_height']);
+		$attributes['misc_link'] = esc_url($attributes['misc_link']);
+		$attributes['lightbox'] = apply_filters('dt_sanitize_flag', $attributes['lightbox']);
+		$attributes['target'] = in_array($attributes['target'], array('blank', 'self') ) ? $attributes['target'] : $default_atts['target'];
+
+		$attributes['media'] = esc_url($attributes['media']);
+
 		$attributes['animation'] = in_array( $attributes['animation'], array('none', 'scale', 'fade', 'left', 'right', 'bottom', 'top') ) ?  $attributes['animation'] : $default_atts['animation'];
 		$attributes['style'] = in_array($attributes['style'], array('1', '2') ) ? $attributes['style'] : $default_atts['style'];
 		$attributes['background'] = in_array($attributes['background'], array('no', 'plain', 'fancy') ) ? $attributes['background'] : $default_atts['background'];
-		$attributes['target'] = in_array($attributes['target'], array('blank', 'self') ) ? $attributes['target'] : $default_atts['target'];
-		$attributes['image_alt'] = esc_attr($attributes['image_alt']);
-		$attributes['misc_link'] = esc_url($attributes['misc_link']);
-		$attributes['media'] = esc_url($attributes['media']);
 		$attributes['content_size'] = in_array($attributes['content_size'], array('normal', 'small', 'big')) ? $attributes['content_size'] : $default_atts['content_size'];
 		$attributes['text_align'] = in_array($attributes['text_align'], array('left', 'center', 'centre')) ? $attributes['text_align'] : $default_atts['text_align'];
-		$attributes['lightbox'] = apply_filters('dt_sanitize_flag', $attributes['lightbox']);
 
 		$container_classes = array( 'shortcode-teaser' );
 		$content_classes = array( 'shortcode-teaser-content' );
@@ -99,12 +108,19 @@ class DT_Shortcode_Teaser extends DT_Shortcode {
 			}
 
 			$container_classes[] = 'animate-element';
+
 		}
 
-		if ( 'image' == $attributes['type'] ) {
+		if ( 'uploaded_image' == $attributes['type'] ) {
+			$attributes['image'] = $attributes['image_id'];
 			$attributes['media'] = '';
-		} elseif ( 'video' == $attributes['type'] ) {
+
+		} else if ( 'image' == $attributes['type'] ) {
+			$attributes['media'] = '';
+
+		} else if ( 'video' == $attributes['type'] ) {
 			$attributes['image'] = '';
+
 		}
 
 		// if media url is set - do some stuff
@@ -117,28 +133,38 @@ class DT_Shortcode_Teaser extends DT_Shortcode {
 		} elseif ( $attributes['image'] ) {
 
 			if ( is_numeric($attributes['image']) ) {
-
 				$image_id = absint($attributes['image']);
 				$image_info = wp_get_attachment_image_src( $image_id, 'full' );
 
+				// get image src
 				if ( !$image_info ) {
-
 					$image_info = presscore_get_default_image();
 				}
 
 				$image_src = $image_info[0];
 
+				// get image alt
 				if ( empty($attributes['image_alt']) ) {
-
 					$attributes['image_alt'] = esc_attr( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) );
 				}
 
-			} else {
+				// get image dimensions
+				$attributes['image_width'] = $image_info[1];
+				$attributes['image_height'] = $image_info[2];
 
+			} else {
 				$image_src = esc_url($attributes['image']);
+
 			}
 
-			$media = sprintf( '<img src="%s" alt="%s" />', $image_src, $attributes['image_alt'] );
+			// format image dimesions
+			$image_dimension_attrs = '';
+			if ( $attributes['image_width'] > 0 && $attributes['image_height'] > 0 ) {
+				$image_dimension_attrs .= ' width="' . $attributes['image_width'] . '"';
+				$image_dimension_attrs .= ' height="' . $attributes['image_height'] . '"';
+			}
+
+			$media = sprintf( '<img src="%s" alt="%s"%s />', $image_src, $attributes['image_alt'], $image_dimension_attrs );
 
 			if ( $attributes['lightbox'] ) {
 				$media = sprintf(
@@ -148,6 +174,7 @@ class DT_Shortcode_Teaser extends DT_Shortcode {
 					'',
 					$media
 				);
+
 			} else if ( $attributes['misc_link'] ) {
 				$media = sprintf(
 					'<a class="rollover rollover-zoom" href="%s"%s>%s</a>',
@@ -155,6 +182,7 @@ class DT_Shortcode_Teaser extends DT_Shortcode {
 					('blank' == $attributes['target']) ? ' target="_blank"' : '',
 					$media
 				);
+
 			}
 
 			$media = sprintf( '<div class="shortcode-teaser-img">%s</div>', $media );
@@ -166,6 +194,21 @@ class DT_Shortcode_Teaser extends DT_Shortcode {
 			esc_attr(implode(' ', $content_classes)),
 			do_shortcode($content)
 		);
+
+/*
+		if ( function_exists('vc_is_inline') && vc_is_inline() ) {
+			$output = '<div style="height: 200px; width: 100%; background: red;">WTF!?</div>';
+
+
+			$output = sprintf('<section class="%s">%s<div class="%s" style="height: 200px; width: 100%; background: red;">%s</div></section>',
+				"",
+				"",
+				"",
+				""
+			);
+
+		}
+*/
 
 		return $output; 
 	}

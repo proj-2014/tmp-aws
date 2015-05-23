@@ -34,10 +34,10 @@ if ( class_exists('W3_Config') ) {
  *
  */
 function presscore_total_cache_remove_scripts() {
-	wp_dequeue_script( 'dt-tablet', $template_uri . '/js/new-js/desktop-tablet.js', array( 'jquery' ), false, true );
-	wp_dequeue_script( 'dt-phone', $template_uri . '/js/new-js/phone.js', array( 'jquery' ), false, true );
-	wp_dequeue_script( 'dt-desktop', $template_uri . '/js/new-js/desktop.js', array( 'jquery' ), false, true );
-	wp_dequeue_script( 'dt-main', $template_uri . '/js/new-js/main.js', array( 'jquery' ), false, true );
+	wp_dequeue_script( 'dt-tablet', $template_uri . '/js/desktop-tablet.js', array( 'jquery' ), false, true );
+	wp_dequeue_script( 'dt-phone', $template_uri . '/js/phone.js', array( 'jquery' ), false, true );
+	wp_dequeue_script( 'dt-desktop', $template_uri . '/js/desktop.js', array( 'jquery' ), false, true );
+	wp_dequeue_script( 'dt-main', $template_uri . '/js/main.js', array( 'jquery' ), false, true );
 }
 
 /**
@@ -58,17 +58,17 @@ function presscore_total_cache_footer_scripts() {
 	// enqueue device specific scripts
 	switch( $device_type ) {
 		case 'tablet':
-			echo '<script type="text/javascript" src="' . $stylesheet . '/js/new-js/desktop-tablet.js"></script>';
+			echo '<script type="text/javascript" src="' . $stylesheet . '/js/desktop-tablet.js"></script>';
 			break;
 		case 'phone':
-			echo '<script type="text/javascript" src="' . $stylesheet . '/js/new-js/phone.js"></script>';
+			echo '<script type="text/javascript" src="' . $stylesheet . '/js/phone.js"></script>';
 			break;
 		default:
-			echo '<script type="text/javascript" src="' . $stylesheet . '/js/new-js/desktop-tablet.js"></script>';
-			echo '<script type="text/javascript" src="' . $stylesheet . '/js/new-js/desktop.js"></script>';
+			echo '<script type="text/javascript" src="' . $stylesheet . '/js/desktop-tablet.js"></script>';
+			echo '<script type="text/javascript" src="' . $stylesheet . '/js/desktop.js"></script>';
 	}
 
-	echo '<script type="text/javascript" src="' . $stylesheet . '/js/new-js/main.js"></script>';
+	echo '<script type="text/javascript" src="' . $stylesheet . '/js/main.js"></script>';
 
 <!-- /mfunc <?php echo W3TC_DYNAMIC_SECURITY; ?> -->
 <?php

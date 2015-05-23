@@ -201,22 +201,24 @@
 		 */
 		public static function addCommonScripts(){
 
+            $prefix = (is_ssl()) ? 'https://' : 'http://';
+                
 			//include jquery ui
 			if(GlobalsRevSlider::$isNewVersion){	//load new jquery ui library
-				$urlJqueryUI = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js";
+				$urlJqueryUI = $prefix."ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js";
 				self::addScriptAbsoluteUrl($urlJqueryUI,"jquery-ui");
 				//self::addStyle("jquery-ui-1.10.3.custom.min","jui-smoothness","css/jui/new");
-				wp_enqueue_style('jui-smoothness', esc_url_raw('http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/jquery-ui.css'), array(), null);
+				wp_enqueue_style('jui-smoothness', esc_url_raw($prefix.'ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/jquery-ui.css'), array(), null);
 				
 				if(function_exists("wp_enqueue_media"))
 					wp_enqueue_media();
 				
 			}else{	//load old jquery ui library
 				
-				$urlJqueryUI = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js";
+				$urlJqueryUI = $prefix."ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js";
 				self::addScriptAbsoluteUrl($urlJqueryUI,"jquery-ui");
 				//self::addStyle("jquery-ui-1.8.18.custom","jui-smoothness","css/jui/old");
-				wp_enqueue_style('jui-smoothness', esc_url_raw('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css'), array(), null);
+				wp_enqueue_style('jui-smoothness', esc_url_raw($prefix.'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css'), array(), null);
 				
 			}
 			
@@ -393,7 +395,7 @@
 			foreach(self::$arrMenuPages as $menu){
 				$title = $menu["title"];
 				$pageFunctionName = $menu["pageFunction"];
-				add_menu_page( $title, $title, $role, self::$dir_plugin, array(self::$t, $pageFunctionName) );
+				add_menu_page( $title, $title, $role, self::$dir_plugin, array(self::$t, $pageFunctionName), 'dashicons-update' );
 			}
 			
 		}

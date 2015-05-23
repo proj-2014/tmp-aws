@@ -1,14 +1,14 @@
-<?php 
+<?php
 /*
 Plugin Name: Revolution Slider
 Plugin URI: http://www.themepunch.com/codecanyon/revolution_wp/
 Description: Revolution Slider - Premium responsive slider
 Author: ThemePunch
-Version: 4.1.4
+Version: 4.2.3
 Author URI: http://themepunch.com
 */
 
-$revSliderVersion = "4.1.4";
+$revSliderVersion = "4.2.3";
 $currentFile = __FILE__;
 $currentFolder = dirname($currentFile);
 
@@ -34,20 +34,22 @@ require_once $currentFolder . '/inc_php/revslider_params.class.php';
 require_once $currentFolder . '/inc_php/revslider_tinybox.class.php';
 
 try{
-	
-	//register the revolution slider widget	
+
+	//register the revolution slider widget
 	UniteFunctionsWPRev::registerWidget("RevSlider_Widget");
-	
+
 	//add shortcode
 	function rev_slider_shortcode($args){
-				
-		$sliderAlias = UniteFunctionsRev::getVal($args,0);
+
+        extract(shortcode_atts(array('alias' => ''), $args, 'rev_slider'));
+        $sliderAlias = ($alias != '') ? $alias : UniteFunctionsRev::getVal($args,0);
+
 		ob_start();
 		$slider = RevSliderOutput::putSlider($sliderAlias);
 		$content = ob_get_contents();
 		ob_clean();
 		ob_end_clean();
-		
+
 		//handle slider output types
 		if(!empty($slider)){
 			$outputType = $slider->getParam("output_type","");
@@ -66,35 +68,37 @@ try{
 			}
 		}else
 			return($content);		//normal output
-			
+
 	}
-	
+
 	add_shortcode( 'rev_slider', 'rev_slider_shortcode' );
-	
+
 	//add tiny box dropdown menu
 	$tinybox = new RevSlider_TinyBox();
-	
-	
-	
+
+
+
 	if(is_admin()){		//load admin part
-		require_once $currentFolder."/revslider_admin.php";		
-		
+		require_once $currentFolder . '/inc_php/framework/update.class.php';
+
+		require_once $currentFolder."/revslider_admin.php";
+
 		$productAdmin = new RevSliderAdmin($currentFile);
-		
+
 	}else{		//load front part
-		
+
 		/**
-		 * 
+		 *
 		 * put rev slider on the page.
 		 * the data can be slider ID or slider alias.
-		 */		
+		 */
 		function putRevSlider($data,$putIn = ""){
 			$operations = new RevOperations();
 			$arrValues = $operations->getGeneralSettingsValues();
 			$includesGlobally = UniteFunctionsRev::getVal($arrValues, "includes_globally","on");
 			$strPutIn = UniteFunctionsRev::getVal($arrValues, "pages_for_includes");
 			$isPutIn = RevSliderOutput::isPutIn($strPutIn,true);
-			
+
 			if($isPutIn == false && $includesGlobally == "off"){
 				$output = new RevSliderOutput();
 				$option1Name = "Include RevSlider libraries globally (all pages/posts)";
@@ -102,15 +106,26 @@ try{
 				$output->putErrorMessage(__("If you want to use the PHP function \"putRevSlider\" in your code please make sure to check \" ",REVSLIDER_TEXTDOMAIN).$option1Name.__(" \" in the backend's \"General Settings\" (top right panel). <br> <br> Or add the current page to the \"",REVSLIDER_TEXTDOMAIN).$option2Name.__("\" option box."));
 				return(false);
 			}
-			
+
 			RevSliderOutput::putSlider($data,$putIn);
 		}
-		
+
+
+		/**
+		 *
+		 * put rev slider on the page.
+		 * the data can be slider ID or slider alias.
+		 */
+		function checkRevSliderExists($alias){
+            $rev = new RevSlider();
+            return $rev->isAliasExists($alias);
+		}
+
 		require_once $currentFolder."/revslider_front.php";
 		$productFront = new RevSliderFront($currentFile);
 	}
 
-	
+
 }catch(Exception $e){
 	$message = $e->getMessage();
 	$trace = $e->getTraceAsString();

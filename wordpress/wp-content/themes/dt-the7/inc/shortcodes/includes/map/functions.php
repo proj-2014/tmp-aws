@@ -26,7 +26,7 @@ class DT_Shortcode_Map extends DT_Shortcode {
 		add_shortcode( $this->shortcode_name, array($this, 'shortcode') );
 
 		// add shortcode button
-		$tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false, 4 );
+		// $tinymce_button = new DT_ADD_MCE_BUTTON( $this->plugin_name, basename(dirname(__FILE__)), false, 4 );
 	}
 
 	public function shortcode( $atts, $content = null ) {

@@ -1,3 +1,20 @@
+
+/*!
+ * VERSION: beta 0.2.3
+ * DATE: 2013-07-10
+ * UPDATES AND DOCS AT: http://www.greensock.com
+ *
+ * @license Copyright (c) 2008-2013, GreenSock. All rights reserved.
+ * SplitText is a Club GreenSock membership benefit; You must have a valid membership to use
+ * this code without violating the terms of use. Visit http://www.greensock.com/club/ to sign up or get more details.
+ * This work is subject to the software agreement that was issued with your membership.
+ *
+ * @author: Jack Doyle, jack@greensock.com
+ */
+(function(t){"use strict";var e=t.GreenSockGlobals||t,i=function(t){var i,s=t.split("."),r=e;for(i=0;s.length>i;i++)r[s[i]]=r=r[s[i]]||{};return r},s=i("com.greensock.utils"),r=function(t){var e=t.nodeType,i="";if(1===e||9===e||11===e){if("string"==typeof t.textContent)return t.textContent;for(t=t.firstChild;t;t=t.nextSibling)i+=r(t)}else if(3===e||4===e)return t.nodeValue;return i},n=document,a=n.defaultView?n.defaultView.getComputedStyle:function(){},o=/([A-Z])/g,h=function(t,e,i,s){var r;return(i=i||a(t,null))?(t=i.getPropertyValue(e.replace(o,"-$1").toLowerCase()),r=t||i.length?t:i[e]):t.currentStyle&&(i=t.currentStyle,r=i[e]),s?r:parseInt(r,10)||0},l=function(t){return t.length&&t[0]&&(t[0].nodeType&&t[0].style&&!t.nodeType||t[0].length&&t[0][0])?!0:!1},_=function(t){var e,i,s,r=[],n=t.length;for(e=0;n>e;e++)if(i=t[e],l(i))for(s=i.length,s=0;i.length>s;s++)r.push(i[s]);else r.push(i);return r},u=")eefec303079ad17405c",c=/(?:<br>|<br\/>|<br \/>)/gi,p=n.all&&!n.addEventListener,f="<div style='position:relative;display:inline-block;"+(p?"*display:inline;*zoom:1;'":"'"),m=function(t){t=t||"";var e=-1!==t.indexOf("++"),i=1;return e&&(t=t.split("++").join("")),function(){return f+(t?" class='"+t+(e?i++:"")+"'>":">")}},d=s.SplitText=e.SplitText=function(t,e){if("string"==typeof t&&(t=d.selector(t)),!t)throw"cannot split a null element.";this.elements=l(t)?_(t):[t],this.chars=[],this.words=[],this.lines=[],this._originals=[],this.vars=e||{},this.split(e)},g=function(t,e,i,s,o){c.test(t.innerHTML)&&(t.innerHTML=t.innerHTML.replace(c,u));var l,_,p,f,d,g,v,y,T,w,b,x,P,S=r(t),C=e.type||e.split||"chars,words,lines",k=-1!==C.indexOf("lines")?[]:null,R=-1!==C.indexOf("words"),A=-1!==C.indexOf("chars"),D="absolute"===e.position||e.absolute===!0,O=D?"&#173; ":" ",M=-999,L=a(t),I=h(t,"paddingLeft",L),E=h(t,"borderBottomWidth",L)+h(t,"borderTopWidth",L),N=h(t,"borderLeftWidth",L)+h(t,"borderRightWidth",L),F=h(t,"paddingTop",L)+h(t,"paddingBottom",L),U=h(t,"paddingLeft",L)+h(t,"paddingRight",L),X=h(t,"textAlign",L,!0),z=t.clientHeight,B=t.clientWidth,j=S.length,Y="</div>",q=m(e.wordsClass),V=m(e.charsClass),Q=-1!==(e.linesClass||"").indexOf("++"),G=e.linesClass;for(Q&&(G=G.split("++").join("")),p=q(),f=0;j>f;f++)g=S.charAt(f),")"===g&&S.substr(f,20)===u?(p+=Y+"<BR/>",f!==j-1&&(p+=" "+q()),f+=19):" "===g&&" "!==S.charAt(f-1)&&f!==j-1?(p+=Y,f!==j-1&&(p+=O+q())):p+=A&&" "!==g?V()+g+"</div>":g;for(t.innerHTML=p+Y,d=t.getElementsByTagName("*"),j=d.length,v=[],f=0;j>f;f++)v[f]=d[f];if(k||D)for(f=0;j>f;f++)y=v[f],_=y.parentNode===t,(_||D||A&&!R)&&(T=y.offsetTop,k&&_&&T!==M&&"BR"!==y.nodeName&&(l=[],k.push(l),M=T),D&&(y._x=y.offsetLeft,y._y=T,y._w=y.offsetWidth,y._h=y.offsetHeight),k&&(R!==_&&A||(l.push(y),y._x-=I),_&&f&&(v[f-1]._wordEnd=!0)));for(f=0;j>f;f++)y=v[f],_=y.parentNode===t,"BR"!==y.nodeName?(D&&(b=y.style,R||_||(y._x+=y.parentNode._x,y._y+=y.parentNode._y),b.left=y._x+"px",b.top=y._y+"px",b.position="absolute",b.display="block",b.width=y._w+1+"px",b.height=y._h+"px"),R?_?s.push(y):A&&i.push(y):_?(t.removeChild(y),v.splice(f--,1),j--):!_&&A&&(T=!k&&!D&&y.nextSibling,t.appendChild(y),T||t.appendChild(n.createTextNode(" ")),i.push(y))):k||D?(t.removeChild(y),v.splice(f--,1),j--):R||t.appendChild(y);if(k){for(D&&(w=n.createElement("div"),t.appendChild(w),x=w.offsetWidth+"px",T=w.offsetParent===t?0:t.offsetLeft,t.removeChild(w)),b=t.style.cssText,t.style.cssText="display:none;";t.firstChild;)t.removeChild(t.firstChild);for(P=!D||!R&&!A,f=0;k.length>f;f++){for(l=k[f],w=n.createElement("div"),w.style.cssText="display:block;text-align:"+X+";position:"+(D?"absolute;":"relative;"),G&&(w.className=G+(Q?f+1:"")),o.push(w),j=l.length,d=0;j>d;d++)"BR"!==l[d].nodeName&&(y=l[d],w.appendChild(y),P&&(y._wordEnd||R)&&w.appendChild(n.createTextNode(" ")),D&&(0===d&&(w.style.top=y._y+"px",w.style.left=I+T+"px"),y.style.top="0px",T&&(y.style.left=y._x-T+"px")));R||A||(w.innerHTML=r(w).split(String.fromCharCode(160)).join(" ")),D&&(w.style.width=x,w.style.height=y._h+"px"),t.appendChild(w)}t.style.cssText=b}D&&(z>t.clientHeight&&(t.style.height=z-F+"px",z>t.clientHeight&&(t.style.height=z+E+"px")),B>t.clientWidth&&(t.style.width=B-U+"px",B>t.clientWidth&&(t.style.width=B+N+"px")))},v=d.prototype;v.split=function(t){this.isSplit&&this.revert(),this.vars=t||this.vars,this._originals.length=this.chars.length=this.words.length=this.lines.length=0;for(var e=0;this.elements.length>e;e++)this._originals[e]=this.elements[e].innerHTML,g(this.elements[e],this.vars,this.chars,this.words,this.lines);return this.isSplit=!0,this},v.revert=function(){if(!this._originals)throw"revert() call wasn't scoped properly.";for(var t=this._originals.length;--t>-1;)this.elements[t].innerHTML=this._originals[t];return this.chars=[],this.words=[],this.lines=[],this.isSplit=!1,this},d.selector=t.$||t.jQuery||function(e){return t.$?(d.selector=t.$,t.$(e)):n?n.getElementById("#"===e.charAt(0)?e.substr(1):e):e}})(window||{});
+
+
+
 //ver 3.2
 
 var UniteLayersRev = new function(){
@@ -230,10 +247,138 @@ var UniteLayersRev = new function(){
 						
 					  var nextcaption = jQuery('#caption_custon_anim_preview');
 					  var cic = jQuery('#caption-inout-controll');
+					 
 					  
 					  var transx = jQuery('input[name="movex"]').val();
 					  var transy = jQuery('input[name="movey"]').val();
 					  var transz = jQuery('input[name="movez"]').val();					  					  
+
+					  var rotatex = jQuery('input[name="rotationx"]').val();
+					  var rotatey = jQuery('input[name="rotationy"]').val();
+					  var rotatez = jQuery('input[name="rotationz"]').val();					  					  
+
+					  var scalex = jQuery('input[name="scalex"]').val()/100;
+					  var scaley = jQuery('input[name="scaley"]').val()/100;
+
+					  var skewx = jQuery('input[name="skewx"]').val();
+					  var skewy = jQuery('input[name="skewy"]').val();
+					  var opac = jQuery('input[name="captionopacity"]').val()/100;  
+
+					  var tper = jQuery('input[name="captionperspective"]').val();  					  
+					  //var tper = 600;  					  
+					  
+					  var originx = jQuery('input[name="originx"]').val()+"%"; 
+					  var originy = jQuery('input[name="originy"]').val()+"%";
+					  var origin = originx+" "+originy; 				  					  
+					  
+					  var speed = parseInt(jQuery('input[name="captionspeed"]').val(),0);
+					  if (speed<100) speed=100;
+
+					  var easedata = jQuery('#caption-easing-demo').val();
+					  speed=speed/1000;
+					  
+
+					  var mdelay = (jQuery('input[name="captionsplitdelay"]').val()/100);
+					  var $split = jQuery('#caption-split-demo').val();
+					  					  
+					  var animobject = nextcaption;
+					  if (nextcaption.data('mySplitText') != undefined)
+						if ($split !="none") nextcaption.data('mySplitText').revert();
+	
+						if ($split == "chars" || $split == "words" || $split == "lines") {
+							if (nextcaption.find('a').length>0)
+								nextcaption.data('mySplitText',new SplitText(nextcaption.find('a'),{type:"lines,words,chars"}));
+							 else
+								nextcaption.data('mySplitText',new SplitText(nextcaption,{type:"lines,words,chars"}));
+						}
+	
+						if ($split == "chars") {
+							animobject = nextcaption.data('mySplitText').chars;
+							
+						}
+	
+						if ($split == "words") {
+							animobject = nextcaption.data('mySplitText').words;
+							
+						}
+	
+						if ($split == "lines") {
+							animobject = nextcaption.data('mySplitText').lines;
+							
+						}
+							
+							
+					  var timedelay=((animobject.length*mdelay) + speed)*1000;
+					  
+					  
+					  TweenLite.killTweensOf(animobject,false);
+					 
+					  if (animobject != nextcaption)
+							 TweenLite.set(nextcaption, { opacity:1,scaleX:1,scaleY:1,rotationX:0,rotationY:0,rotationZ:0,skewX:0,skewY:0,z:0,x:0,y:0,visibility:'visible',opacity:1,overwrite:"all"});
+										
+					  var tl=new TimelineLite();
+					  
+					  tl.staggerFromTo(animobject,speed,
+										{ scaleX:scalex,
+										  scaleY:scaley,
+										  rotationX:rotatex,
+										  rotationY:rotatey,
+										  rotationZ:rotatez,
+										  x:transx,
+										  y:transy,
+										  z:transz+1,
+										  skewX:skewx,
+										  skewY:skewy,
+										  opacity:opac,
+										  transformPerspective:tper,
+										  transformOrigin:origin,
+										  visibility:'hidden'},
+
+										{
+										  x:0,
+										  y:0,
+										  scaleX:1,
+										  scaleY:1,
+										  rotationX:0,
+										  rotationY:0,
+										  rotationZ:0,
+										  skewX:0,
+										  skewY:0,
+										  z:1,
+										  visibility:'visible',
+										  opacity:1,
+										  ease:easedata,
+										  overwrite:"all",
+										  
+										},mdelay);
+							
+							
+
+					setTimeout(function() {
+						if (cic.data('direction')==0) 
+							animateCreatorIn();			
+						else 
+						
+						if (cic.data('direction')==1 || cic.data('direction')==2) 
+							animateCreatorOut()
+						
+					},(timedelay)+500)					
+				
+
+   }
+   
+   
+   function animateCreatorOut() {
+	  				
+						
+					  var nextcaption = jQuery('#caption_custon_anim_preview');
+					  var cic = jQuery('#caption-inout-controll');
+					  
+					  var transx = jQuery('input[name="movex"]').val();
+					  var transy = jQuery('input[name="movey"]').val();
+					  var transz = jQuery('input[name="movez"]').val();	
+					  
+					   var $split = jQuery('#caption-split-demo').val();		  					  
 
 					  var rotatex = jQuery('input[name="rotationx"]').val();
 					  var rotatey = jQuery('input[name="rotationy"]').val();
@@ -261,96 +406,46 @@ var UniteLayersRev = new function(){
 					  
 					  var xx = 258, yy=58;
 					  
-					  TweenLite.killTweensOf(nextcaption,false);
-					  TweenLite.fromTo(nextcaption,speed,
-										{ scaleX:scalex,
-										  scaleY:scaley,
-										  rotationX:rotatex,
-										  rotationY:rotatey,
-										  rotationZ:rotatez,
-										  x:transx,
-										  y:transy,
-										  z:transz+1,
-										  skewX:skewx,
-										  skewY:skewy,
-										  left:xx,
-										  top:yy,
-										  opacity:opac,
-										  transformPerspective:tper,
-										  transformOrigin:origin,
-										  visibility:'hidden'},
-
-										{
-										  left:xx,
-										  top:yy,
-										  x:0,
-										  y:0,
-										  scaleX:1,
-										  scaleY:1,
-										  rotationX:0,
-										  rotationY:0,
-										  rotationZ:0,
-										  skewX:0,
-										  skewY:0,
-										  z:1,
-										  visibility:'visible',
-										  opacity:1,
-										  ease:easedata,
-										  overwrite:"all",
-										  onComplete:function() {
-										  	 	if (cic.data('direction')==0) {
-													setTimeout(function() {animateCreatorIn()},700);			
-												} else 
-												
-												if (cic.data('direction')==1 || cic.data('direction')==2) {
-													setTimeout(function() {animateCreatorOut()},700);								
-												} 
-										  }
-										});
-
-   }
-   
-   
-   function animateCreatorOut() {
-	  				
-						
-					  var nextcaption = jQuery('#caption_custon_anim_preview');
-					  var cic = jQuery('#caption-inout-controll');
+					   var mdelay = (jQuery('input[name="captionsplitdelay"]').val()/100);
+					    
+					   var animobject = nextcaption;
+					  if (nextcaption.data('mySplitText') != undefined)
+						if ($split !="none") nextcaption.data('mySplitText').revert();
+	
+						if ($split == "chars" || $split == "words" || $split == "lines") {
+							if (nextcaption.find('a').length>0)
+								nextcaption.data('mySplitText',new SplitText(nextcaption.find('a'),{type:"lines,words,chars"}));
+							 else
+								nextcaption.data('mySplitText',new SplitText(nextcaption,{type:"lines,words,chars"}));
+						}
+	
+						if ($split == "chars")
+							animobject = nextcaption.data('mySplitText').chars;
+	
+	
+						if ($split == "words")
+							animobject = nextcaption.data('mySplitText').words;
+	
+	
+						if ($split == "lines")
+							animobject = nextcaption.data('mySplitText').lines;
+							
+					  var timedelay=((animobject.length*mdelay) + speed)*1000;
 					  
-					  var transx = jQuery('input[name="movex"]').val();
-					  var transy = jQuery('input[name="movey"]').val();
-					  var transz = jQuery('input[name="movez"]').val();					  					  
-
-					  var rotatex = jQuery('input[name="rotationx"]').val();
-					  var rotatey = jQuery('input[name="rotationy"]').val();
-					  var rotatez = jQuery('input[name="rotationz"]').val();					  					  
-
-					  var scalex = jQuery('input[name="scalex"]').val()/100;
-					  var scaley = jQuery('input[name="scaley"]').val()/100;
-
-					  var skewx = jQuery('input[name="skewx"]').val();
-					  var skewy = jQuery('input[name="skewy"]').val();
-					  var opac = jQuery('input[name="captionopacity"]').val()/100;  
-
-					  var tper = jQuery('input[name="captionperspective"]').val();  					  
-					  //var tper = 600;  					  
+					  TweenLite.killTweensOf(animobject,false);
+					 
+					  if (animobject != nextcaption)
+							 TweenLite.set(nextcaption, { opacity:1,scaleX:1,scaleY:1,rotationX:0,rotationY:0,rotationZ:0,skewX:0,skewY:0,z:0,x:0,y:0,visibility:'visible',opacity:1,overwrite:"all"});
+										
+					  var tl=new TimelineLite();
 					  
-					  var originx = jQuery('input[name="originx"]').val()+"%"; 
-					  var originy = jQuery('input[name="originy"]').val()+"%";
-					  var origin = originx+" "+originy; 				  					  
+					 
 					  
-					  var speed = parseInt(jQuery('input[name="captionspeed"]').val(),0);
-					  if (speed<100) speed=100;
+					  
+					  TweenLite.killTweensOf(animobject,false);
+					  tl.staggerFromTo(animobject,speed,
+										{ 
 
-					  var easedata = jQuery('#caption-easing-demo').val();
-					  speed=speed/1000;
-					  
-					    var xx = 258, yy=58;
-					  
-					  TweenLite.killTweensOf(nextcaption,false);
-					  TweenLite.fromTo(nextcaption,speed,
-										{ left:xx,
-										  top:yy,
 										  x:0,
 										  y:0,
 										  scaleX:1,
@@ -377,28 +472,29 @@ var UniteLayersRev = new function(){
 										  z:transz+1,
 										  skewX:skewx,
 										  skewY:skewy,
-										  left:xx,
-										  top:yy,
 										  opacity:opac,
 										  transformPerspective:tper,
 										  transformOrigin:origin,
 										  ease:easedata,
 										  overwrite:"all",
 										  delay:0.3,
-										  onComplete:function() {
-										  	 	if (cic.data('direction')==0) {
-													setTimeout(function() {animateCreatorIn()},500);
-												} else 
-												
-												if (cic.data('direction')==2) {
-													setTimeout(function() {animateCreatorIn()},500);
-												} 
-												if (cic.data('direction')==1 ) {
-													setTimeout(function() {animateCreatorOut()},500);
-												} 
-												
-										  }
-										});
+										  
+										},mdelay);
+										
+					setTimeout(function() {
+						if (cic.data('direction')==0) 
+							animateCreatorIn();
+						else 
+						
+						if (cic.data('direction')==2) 
+							animateCreatorIn();
+							
+						else 						
+						
+						if (cic.data('direction')==1 ) 
+							animateCreatorOut();
+						
+					},(timedelay)+500)
 
    }
 	
@@ -479,8 +575,51 @@ var UniteLayersRev = new function(){
 		var anim = startanim.val();
 		var speed = startspeed.val()/1000;
 		var easedata = startease.val();
+		
 
-		TweenLite.killTweensOf(nextcaption,false);
+		  var mdelay = (jQuery('input[name="layer_splitdelay"]').val()/100);
+		  var $split = jQuery('#layer_split').val();
+		  					  
+		  var animobject = nextcaption;
+		  if (nextcaption.data('mySplitText') != undefined)
+			if ($split !="none") nextcaption.data('mySplitText').revert();
+
+			if ($split == "chars" || $split == "words" || $split == "lines") {
+				if (nextcaption.find('a').length>0)
+					nextcaption.data('mySplitText',new SplitText(nextcaption.find('a'),{type:"lines,words,chars"}));
+				 else
+					nextcaption.data('mySplitText',new SplitText(nextcaption,{type:"lines,words,chars"}));
+			}
+
+			if ($split == "chars") {
+				animobject = nextcaption.data('mySplitText').chars;
+				
+			}
+
+			if ($split == "words") {
+				animobject = nextcaption.data('mySplitText').words;
+				
+			}
+
+			if ($split == "lines") {
+				animobject = nextcaption.data('mySplitText').lines;
+				
+			}
+				
+				
+		  var timedelay=((animobject.length*mdelay) + speed)*1000;
+		  
+		  TweenLite.killTweensOf(nextcaption,false);		  
+		  TweenLite.killTweensOf(animobject,false);
+		  TweenLite.set(nextcaption,{clearProps:"transform"});		  
+		  TweenLite.set(animobject,{clearProps:"transform"});
+		 
+		  if (animobject != nextcaption)
+				 TweenLite.set(nextcaption, { opacity:1,scaleX:1,scaleY:1,rotationX:0,rotationY:0,rotationZ:0,skewX:0,skewY:0,z:0,x:0,y:0,visibility:'visible',opacity:1,overwrite:"all"});
+							
+		  var tl=new TimelineLite();		  	
+		  
+		  
 		if (nextcaption.data("timer")) clearTimeout(nextcaption.data('timer'));
 		if (nextcaption.data("timera")) clearTimeout(nextcaption.data('timera'));
 		var tlop = 0,
@@ -504,17 +643,17 @@ var UniteLayersRev = new function(){
 
 							sc = Math.random()*3+1;
 							ro = Math.round(Math.random()*200-100);
-							tlxx = calcx + Math.round(Math.random()*200-100);
-							tlyy = calcy + Math.round(Math.random()*200-100);
+							transx = Math.round(Math.random()*200-100);
+							transy = Math.round(Math.random()*200-100);
 				}
-		if (anim == ('lfr') || anim==('skewfromright')) tlxx = 560;
-		if (anim==('lfl') || anim==('skewfromleft')) tlxx = -100;
-		if (anim==('sfl') | anim==('skewfromleftshort')) tlxx = calcx-50;
-		if (anim==('sfr') | anim==('skewfromrightshort')) tlxx = calcx+50;
-		if (anim==('lft')) tlyy = -50;
-		if (anim==('lfb')) tlyy = 250;
-		if (anim==('sft')) tlyy = calcy-50;
-		if (anim==('sfb')) tlyy = calcy+50;
+		if (anim == ('lfr') || anim==('skewfromright')) transx = 560;
+		if (anim==('lfl') || anim==('skewfromleft')) transx = -100;
+		if (anim==('sfl') | anim==('skewfromleftshort')) transx = -50;
+		if (anim==('sfr') | anim==('skewfromrightshort')) transx = 50;
+		if (anim==('lft')) transy = -50;
+		if (anim==('lfb')) transy = 250;
+		if (anim==('sft')) transy = -50;
+		if (anim==('sfb')) transy = 50;
 		if (anim==('skewfromright') || anim==('skewfromrightshort')) skwX = -85;
 		if (anim==('skewfromleft') || anim==('skewfromleftshort')) skwX =  85;
 		
@@ -538,9 +677,12 @@ var UniteLayersRev = new function(){
 			//var tper = 600;
 			var originx = params.originx+"%";
 			var originy = params.originy+"%";
-			var origin = originx+" "+originy; 				  					  
+			var origin = originx+" "+originy; 		
+			
+			
+							  
 			  
-			 nextcaption.data('newanim',TweenLite.fromTo(nextcaption,speed,
+			 nextcaption.data('newanim',tl.staggerFromTo(animobject,speed,
 										{ scaleX:scalex,
 										  scaleY:scaley,
 										  rotationX:rotatex,
@@ -551,17 +693,12 @@ var UniteLayersRev = new function(){
 										  z:transz+1,
 										  skewX:skewx,
 										  skewY:skewy,
-										  left:calcx,
-										  top:calcy,
 										  opacity:opac,
 										  transformPerspective:tper,
 										  transformOrigin:origin,
 										  visibility:'hidden'},
 
-										{
-										  left:calcx,
-										  top:calcy,
-										  x:0,
+										{ x:0,
 										  y:0,
 										  scaleX:1,
 										  scaleY:1,
@@ -574,26 +711,23 @@ var UniteLayersRev = new function(){
 										  visibility:'visible',
 										  opacity:1,
 										  ease:easedata,
-										  overwrite:"all",
-										  onComplete:function() {
-								  	nextcaption.data('timera',setTimeout(function() {
-								  		if (!jQuery('#preview_looper').hasClass("deactivated") && jQuery('#preview_looper').data('loop')!=2) setOutAnimOfPreview();
-								  	},500));
-								  }
-								}));
+										  overwrite:"all",										  								  
+								  
+								},mdelay));
 					
+				nextcaption.data('timera',setTimeout(function() {
+			  		if (!jQuery('#preview_looper').hasClass("deactivated") && jQuery('#preview_looper').data('loop')!=2) setOutAnimOfPreview();
+			  	},(timedelay)+500));
 		} else {
 
-				nextcaption.data('newanim',TweenLite.fromTo(nextcaption,speed,
+				nextcaption.data('newanim',tl.staggerFromTo(animobject,speed,
 								{ scale:sc,
 								  rotation:ro,
 								  rotationX:0,
 								  rotationY:0,
 								  rotationZ:0,
-								  x:0,
-								  y:0,
-								  left:tlxx+'px',
-								  top:tlyy+"px",
+								  x:transx,
+								  y:transy,
 								  opacity:0,
 								  z:1,
 								  skewX:skwX,
@@ -603,9 +737,7 @@ var UniteLayersRev = new function(){
 								  visibility:'visible'
 								 },
 
-								{ left:calcx+'px',
-								  top:calcy+"px",
-								  scale:1,
+								{ scale:1,
 								  skewX:0,
 								  rotation:0,
 								  z:1,
@@ -615,12 +747,11 @@ var UniteLayersRev = new function(){
 								  opacity:1,
 								  ease:easedata,
 								  overwrite:"all",
-								  onComplete:function() {
-								  	nextcaption.data('timera',setTimeout(function() {
-								  		if (!jQuery('#preview_looper').hasClass("deactivated") && jQuery('#preview_looper').data('loop')!=2) setOutAnimOfPreview();
-								  	},500));
-								  }
-								}));
+								 
+								},mdelay));
+				nextcaption.data('timera',setTimeout(function() {
+			  		if (!jQuery('#preview_looper').hasClass("deactivated") && jQuery('#preview_looper').data('loop')!=2) setOutAnimOfPreview();
+			  	},(timedelay)+500));
 		}
 
 	}
@@ -650,9 +781,51 @@ var UniteLayersRev = new function(){
 		var anim = endanim.val();	
 		var speed = endspeed.val()/1000;
 		var easedata = endease.val();
-		var xx = 198;
-		var yy = 82;
+		var xx = 0;
+		var yy = 0;
 		skwX = 0;
+		
+		
+		var mdelay = (jQuery('input[name="layer_endsplitdelay"]').val()/100);
+		  var $split = jQuery('#layer_endsplit').val();
+		  					  
+		  var animobject = nextcaption;
+		  if (nextcaption.data('mySplitText') != undefined)
+			if ($split !="none") nextcaption.data('mySplitText').revert();
+
+			if ($split == "chars" || $split == "words" || $split == "lines") {
+				if (nextcaption.find('a').length>0)
+					nextcaption.data('mySplitText',new SplitText(nextcaption.find('a'),{type:"lines,words,chars"}));
+				 else
+					nextcaption.data('mySplitText',new SplitText(nextcaption,{type:"lines,words,chars"}));
+			}
+
+			if ($split == "chars") {
+				animobject = nextcaption.data('mySplitText').chars;
+				
+			}
+
+			if ($split == "words") {
+				animobject = nextcaption.data('mySplitText').words;
+				
+			}
+
+			if ($split == "lines") {
+				animobject = nextcaption.data('mySplitText').lines;
+				
+			}
+				
+				
+		  var timedelay=((animobject.length*mdelay) + speed)*1000;
+		  
+		  
+		  TweenLite.killTweensOf(animobject,false);
+		 
+		  if (animobject != nextcaption)
+				 TweenLite.set(nextcaption, { opacity:1,scaleX:1,scaleY:1,rotationX:0,rotationY:0,rotationZ:0,skewX:0,skewY:0,z:0,x:0,y:0,visibility:'visible',opacity:1,overwrite:"all"});
+							
+		  var tl=new TimelineLite();
+		  
 		
 		if (anim == null) anim = "auto";
 		
@@ -688,13 +861,13 @@ var UniteLayersRev = new function(){
 				else if (anim==('ltb'))
 					yy=250;
 				else if (anim==('str') || anim==('skewtorightshort')) {
-					xx=xx+50;oo=0;
+					xx=50;oo=0;
 				} else if (anim==('stl') || anim==('skewtoleftshort')) {
-					xx=xx-50;oo=0;
+					xx=-50;oo=0;
 				} else if (anim==('stt')) {
-					yy=yy-50;oo=0;
+					yy=-50;oo=0;
 				} else if (anim==('stb')) {
-					yy=yy+50;oo=0;
+					yy=50;oo=0;
 				}
 
 				if (anim==('skewtorightshort'))
@@ -703,23 +876,21 @@ var UniteLayersRev = new function(){
 				if (anim==('skewtoleftshort'))
 					xx =  0
 
-				nextcaption.data('newanim',TweenLite.to(nextcaption,speed,
-							{ left:xx,
-							  top:yy,
-							  scale:1,
+				nextcaption.data('newanim',tl.staggerTo(animobject,speed,
+							{ scale:1,
 							  rotation:0,
 							  skewX:skwX,
 							  opacity:0,
+							  x:xx,
+							  y:yy,
 							  z:2,
 							  overwrite:"auto",
-							  ease:easedata,
-							  onComplete:function() {
-											  	nextcaption.data('timera',setTimeout(function() {
-											  		if (jQuery('#preview_looper').hasClass("deactivated")) 				jQuery('#preview_looper').data('loop',2);
-											  		setInAnimOfPreview();
-											  	},500));
-										}
-							 }));
+							  ease:easedata,							  
+							 },mdelay));
+				nextcaption.data('timera',setTimeout(function() {
+			  		if (jQuery('#preview_looper').hasClass("deactivated")) 				jQuery('#preview_looper').data('loop',2);
+			  		setInAnimOfPreview();
+			  	},(timedelay)+500));
 		} else 
 		
 		if (anim.split('custom').length>1) {
@@ -744,10 +915,8 @@ var UniteLayersRev = new function(){
 			var originy = params.originy+"%";
 			var origin = originx+" "+originy; 				  					  
 			  
-			 nextcaption.data('newanim',TweenLite.fromTo(nextcaption,speed,
-										{ left:xx,
-										  top:yy,
-										  x:0,
+			 nextcaption.data('newanim',tl.staggerFromTo(animobject,speed,
+										{ x:0,
 										  y:0,
 										  scaleX:1,
 										  scaleY:1,
@@ -774,19 +943,16 @@ var UniteLayersRev = new function(){
 										  z:transz+1,
 										  skewX:skewx,
 										  skewY:skewy,
-										  left:xx,
-										  top:yy,
 										  opacity:opac,
 										  transformPerspective:tper,
 										  transformOrigin:origin,										  
 										  ease:easedata,
-										   onComplete:function() {
-											  	nextcaption.data('timera',setTimeout(function() {
+										   
+							 },mdelay));
+			  nextcaption.data('timera',setTimeout(function() {
 											  		if (jQuery('#preview_looper').hasClass("deactivated")) 				jQuery('#preview_looper').data('loop',2);
 											  		setInAnimOfPreview();
-											  	},500));
-										}
-							 }));
+			  	},(timedelay)+500));
 					
 		} else {
 			nextcaption.data('newanim').reverse();
@@ -2146,6 +2312,27 @@ var UniteLayersRev = new function(){
 		if(objLayer.easing == undefined)
 			objLayer.easing = jQuery("#layer_easing").val();
 		
+		if(objLayer.split == undefined)
+			objLayer.split = jQuery("#layer_split").val();
+		
+		if(objLayer.endsplit == undefined)
+			objLayer.endsplit = jQuery("#layer_endsplit").val();
+		
+		if(objLayer.splitdelay == undefined)
+			objLayer.splitdelay = jQuery("#layer_splitdelay").val();
+			
+		if(objLayer.endsplitdelay == undefined)
+			objLayer.endsplitdelay = jQuery("#layer_endsplitdelay").val();
+		
+		if(objLayer.max_height == undefined)
+			objLayer.max_height = jQuery("#layer_max_height").val();
+		
+		if(objLayer.max_width == undefined)
+			objLayer.max_width = jQuery("#layer_max_width").val();
+		
+		if(objLayer.whitespace == undefined)
+			objLayer.whitespace = jQuery("#layer_whitespace option:selected").val();
+		
 		//set speed:
 		if(objLayer.speed == undefined)			
 			objLayer.speed = initSpeed;
@@ -2621,7 +2808,12 @@ var UniteLayersRev = new function(){
 		objUpdate.style = jQuery("#layer_caption").val();
 		objUpdate.text = jQuery("#layer_text").val();
 		objUpdate.top = Number(jQuery("#layer_top").val());
-		objUpdate.left = Number(jQuery("#layer_left").val());				
+		objUpdate.left = Number(jQuery("#layer_left").val());
+		
+		objUpdate.max_height = jQuery("#layer_max_height").val();
+		objUpdate.max_width = jQuery("#layer_max_width").val();
+		objUpdate.whitespace = jQuery("#layer_whitespace option:selected").val();
+
 		objUpdate.animation = jQuery("#layer_animation").val();		
 		objUpdate.speed = jQuery("#layer_speed").val();
 		objUpdate.align_hor = jQuery("#layer_align_hor").val();
@@ -2629,6 +2821,10 @@ var UniteLayersRev = new function(){
 		objUpdate.hiddenunder = jQuery("#layer_hidden").is(":checked");
 		objUpdate.resizeme = jQuery("#layer_resizeme").is(":checked");		
 		objUpdate.easing = jQuery("#layer_easing").val();
+		objUpdate.split = jQuery("#layer_split").val();
+		objUpdate.endsplit = jQuery("#layer_endsplit").val();
+		objUpdate.splitdelay = jQuery("#layer_splitdelay").val();
+		objUpdate.endsplitdelay = jQuery("#layer_endsplitdelay").val();
 		objUpdate.link_slide = jQuery("#layer_slide_link").val();
 		objUpdate.scrollunder_offset = jQuery("#layer_scrolloffset").val();		
 		objUpdate.alt = jQuery("#layer_alt").val();	
@@ -2701,6 +2897,10 @@ var UniteLayersRev = new function(){
 		jQuery("#layer_scaleX").val(objLayer.scaleX);
 		jQuery("#layer_scaleY").val(objLayer.scaleY);
 		
+		jQuery("#layer_max_height").val(objLayer.max_height);
+		jQuery("#layer_max_width").val(objLayer.max_width);
+		jQuery("#layer_whitespace option[value='"+objLayer.whitespace+"']").attr('selected', 'selected');
+		
 		if(objLayer.scaleProportional == "true" || objLayer.scaleProportional == true)
 			jQuery("#layer_proportional_scale").prop("checked",true);
 		else
@@ -2710,6 +2910,12 @@ var UniteLayersRev = new function(){
 		jQuery("#layer_animation").val(objLayer.animation);
 		
 		jQuery("#layer_easing").val(objLayer.easing);
+		
+		jQuery("#layer_split").val(objLayer.split);
+		jQuery("#layer_endsplit").val(objLayer.endsplit);
+		jQuery("#layer_splitdelay").val(objLayer.splitdelay);
+		jQuery("#layer_endsplitdelay").val(objLayer.endsplitdelay);
+		
 		jQuery("#layer_slide_link").val(objLayer.link_slide);
 		jQuery("#layer_scrolloffset").val(objLayer.scrollunder_offset);
 		
@@ -2780,6 +2986,9 @@ var UniteLayersRev = new function(){
 		//reset elements
 		jQuery("#layer_alt_row").hide();
 		jQuery("#layer_scale_title_row").hide();
+		jQuery("#layer_max_width_row").hide();
+		jQuery("#layer_max_height_row").hide();
+		jQuery("#layer_whitespace_row").hide();
 		jQuery("#layer_scaleX_row").hide();
 		jQuery("#layer_scaleY_row").hide();
 		jQuery("#layer_proportional_scale_row").hide();
@@ -2857,6 +3066,9 @@ var UniteLayersRev = new function(){
 			break;
 			default:  //set layer text to default height
 				jQuery("#layer_text").css("height","80px");
+				jQuery("#layer_max_width_row").show();
+				jQuery("#layer_max_height_row").show();
+				jQuery("#layer_whitespace_row").show();
 			break;
 		}
 		
@@ -2882,10 +3094,16 @@ var UniteLayersRev = new function(){
 			jQuery("#layer_cornerleft_row").show();
 			jQuery("#layer_cornerright_row").show();
 			jQuery("#layer_resizeme_row").show();
+			jQuery("#layer_max_width_row").show();
+			jQuery("#layer_max_height_row").show();
+			jQuery("#layer_whitespace_row").show();
 		}else{
 			jQuery("#layer_cornerleft_row").hide();
 			jQuery("#layer_cornerright_row").hide();
 			jQuery("#layer_resizeme_row").hide();
+			jQuery("#layer_max_width_row").hide();
+			jQuery("#layer_max_height_row").hide();
+			jQuery("#layer_whitespace_row").hide();
 		}
 						
 			

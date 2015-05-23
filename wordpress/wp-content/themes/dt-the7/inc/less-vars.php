@@ -13,6 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  */
 function presscore_themeoptions_to_less( $options_inteface = array() ) {
 
+	if ( !is_array($options_inteface) ) {
+		$options_inteface = array();
+	}
+
 	$image_defaults = array(
 		'image'			=> '',
 		'repeat'		=> 'repeat',
@@ -23,441 +27,433 @@ function presscore_themeoptions_to_less( $options_inteface = array() ) {
 	$font_family_falloff = ', Helvetica, Arial, Verdana, sans-serif';
 	$font_family_defaults = array('family' => 'Open Sans');
 
-	$options_inteface = array_merge($options_inteface, array(
-
-		/* Top Bar */
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array('top-bg-color', 'top-bg-color-ie'),
-			'php_vars'	=> array(
-				'color' 	=> array('top_bar-bg_color', '#ffffff'),
-				'opacity'	=> array('top_bar-bg_opacity', 100),
-				'ie_color'	=> array('top_bar-bg_ie_color', '#ffffff'),
-			),
+	/* Top Bar */
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array('top-bg-color', 'top-bg-color-ie'),
+		'php_vars'	=> array(
+			'color' 	=> array('top_bar-bg_color', '#ffffff'),
+			'opacity'	=> array('top_bar-bg_opacity', 100),
+			'ie_color'	=> array('top_bar-bg_ie_color', '#ffffff'),
 		),
+	);
 
-		array(
-			'type'		=> 'image',
-			'less_vars'	=> array('top-bg-image', 'top-bg-repeat', 'top-bg-position-x', 'top-bg-position-y'),
-			'php_vars'	=> array( 'image' => array('top_bar-bg_image', $image_defaults) ),
+	$options_inteface[] = array(
+		'type'		=> 'image',
+		'less_vars'	=> array('top-bg-image', 'top-bg-repeat', 'top-bg-position-x', 'top-bg-position-y'),
+		'php_vars'	=> array( 'image' => array('top_bar-bg_image', $image_defaults) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array('top-color'),
+		'php_vars'	=> array( 'color' => array('top_bar-text_color', '#686868') ),
+	);
+
+	// soc icons color
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array('top-icons-color'),
+		'php_vars'	=> array( 'color' => array('top_bar-soc_icon_color', '#686868') ),
+	);
+
+	// Lines & dividers
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array('top-divider-bg', 'top-divider-bg-ie'),
+		'php_vars'	=> array(
+			'color' 	=> array('top_bar-dividers_color', '#ffffff'),
+			'opacity'	=> array('top_bar-dividers_opacity', 100),
+			'ie_color'	=> array('top_bar-dividers_ie_color', '#ffffff'),
 		),
+	);
 
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array('top-color'),
-			'php_vars'	=> array( 'color' => array('top_bar-text_color', '#686868') ),
+	/* Bootom Bar */
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array('bottom-color'),
+		'php_vars'	=> array( 'color' => array('bottom_bar-color', '#757575') )
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'rgba_color',
+		'less_vars'	=> array('bottom-bg-color', 'bottom-bg-color-ie'),
+		'php_vars'	=> array(
+			'color' 	=> array('bottom_bar-bg_color', '#ffffff'),
+			'opacity'	=> array('bottom_bar-bg_opacity', 100),
+			'ie_color'	=> array('bottom_bar-bg_ie_color', '#ffffff'),
 		),
+	);
 
-		// soc icons color
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array('top-icons-color'),
-			'php_vars'	=> array( 'color' => array('top_bar-soc_icon_color', '#686868') ),
+	$options_inteface[] = array(
+		'type'		=> 'image',
+		'less_vars'	=> array('bottom-bg-image', 'bottom-bg-repeat', 'bottom-bg-position-x', 'bottom-bg-position-y'),
+		'php_vars'	=> array( 'image' => array('bottom_bar-bg_image', $image_defaults) ),
+	);
+
+	// Lines & dividers
+	$options_inteface[] = array(
+		'type'		=> 'rgba_color',
+		'less_vars'	=> array('bottom-divider-bg-color', 'bottom-divider-bg-color-ie'),
+		'php_vars'	=> array(
+			'color' 	=> array('bottom_bar-dividers_color', '#ffffff'),
+			'opacity'	=> array('bottom_bar-dividers_opacity', 100),
+			'ie_color'	=> array('bottom_bar-dividers_ie_color', '#ffffff'),
 		),
+	);
 
-		// Lines & dividers
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array('top-divider-bg', 'top-divider-bg-ie'),
-			'php_vars'	=> array(
-				'color' 	=> array('top_bar-dividers_color', '#ffffff'),
-				'opacity'	=> array('top_bar-dividers_opacity', 100),
-				'ie_color'	=> array('top_bar-dividers_ie_color', '#ffffff'),
-			),
+	/* Fonts */
+	$options_inteface[] = array(
+		'type'		=> 'font',
+		'wrap'		=> array('"', '"' . $font_family_falloff),
+		'less_vars'	=> array('base-font-family', 'base-font-weight', 'base-font-style'),
+		'php_vars'	=> array( 'font' => array('fonts-font_family', $font_family_defaults) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'number',
+		'wrap'		=> array('', 'px'),
+		'less_vars'	=> array('base-line-height'),
+		'php_vars'	=> array( 'number' => array('fonts-line_height', 20) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'number',
+		'wrap'		=> array('', 'px'),
+		'less_vars'	=> array('base-font-size'),
+		'php_vars'	=> array( 'number' => array('fonts-normal_size', 13) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'number',
+		'wrap'		=> array('', 'px'),
+		'less_vars'	=> array('text-small'),
+		'php_vars'	=> array( 'number' => array('fonts-small_size', 11) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'number',
+		'wrap'		=> array('', 'px'),
+		'less_vars'	=> array('text-big'),
+		'php_vars'	=> array( 'number' => array('fonts-big_size', 15) ),
+	);
+
+	/* Content Area */
+
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array( 'base-color' ),
+		'php_vars'	=> array( 'color' => array('content-primary_text_color', '#686868') )
+	);
+
+	// divider color
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'divider-bg-color', 'divider-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('content-dividers_color', '#ffffff'),
+			'opacity'	=> array('content-dividers_opacity', 100),
+			'ie_color'	=> array('content-dividers_ie_color', '#ffffff'),
 		),
+	);
 
-		/* Bootom Bar */
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array('bottom-color'),
-			'php_vars'	=> array( 'color' => array('bottom_bar-color', '#757575') )
+	/* Sidebar */
+
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'widget-sidebar-bg-color', 'widget-sidebar-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('sidebar-bg_color', '#ffffff'),
+			'opacity'	=> array('sidebar-bg_opacity', 100),
+			'ie_color'	=> array('sidebar-bg_ie_color', '#ffffff'),
 		),
+	);
 
-		array(
-			'type'		=> 'rgba_color',
-			'less_vars'	=> array('bottom-bg-color', 'bottom-bg-color-ie'),
-			'php_vars'	=> array(
-				'color' 	=> array('bottom_bar-bg_color', '#ffffff'),
-				'opacity'	=> array('bottom_bar-bg_opacity', 100),
-				'ie_color'	=> array('bottom_bar-bg_ie_color', '#ffffff'),
-			),
+	$options_inteface[] = array(
+		'type'		=> 'image',
+		'less_vars'	=> array( 'widget-sidebar-bg-image', 'widget-sidebar-bg-repeat', 'widget-sidebar-bg-position-x', 'widget-sidebar-bg-position-y' ),
+		'php_vars'	=> array( 'image' => array('sidebar-bg_image', $image_defaults) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array( 'widget-sidebar-color' ),
+		'php_vars'	=> array( 'color' => array('sidebar-primary_text_color', '#686868') )
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array( 'widget-sidebar-header-color' ),
+		'php_vars'	=> array( 'color' => array('sidebar-headers_color', '#000000') )
+	);
+
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'widget-sidebar-divider-bg-color', 'widget-sidebar-divider-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('sidebar-dividers_color', '#757575'),
+			'opacity'	=> array('sidebar-dividers_opacity', 14),
+			'ie_color'	=> array('sidebar-dividers_ie_color', '#ececec'),
 		),
+	);
 
-		array(
-			'type'		=> 'image',
-			'less_vars'	=> array('bottom-bg-image', 'bottom-bg-repeat', 'bottom-bg-position-x', 'bottom-bg-position-y'),
-			'php_vars'	=> array( 'image' => array('bottom_bar-bg_image', $image_defaults) ),
+	/* Footer */
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'footer-bg-color', 'footer-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('footer-bg_color', '#1b1b1b'),
+			'opacity'	=> array('footer-bg_opacity', 100),
+			'ie_color'	=> array('footer-bg_ie_color', '#1b1b1b'),
 		),
+	);
 
-		// Lines & dividers
-		array(
-			'type'		=> 'rgba_color',
-			'less_vars'	=> array('bottom-divider-bg-color', 'bottom-divider-bg-color-ie'),
-			'php_vars'	=> array(
-				'color' 	=> array('bottom_bar-dividers_color', '#ffffff'),
-				'opacity'	=> array('bottom_bar-dividers_opacity', 100),
-				'ie_color'	=> array('bottom_bar-dividers_ie_color', '#ffffff'),
-			),
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'widget-footer-divider-bg-color', 'widget-footer-divider-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('footer-dividers_color', '#828282'),
+			'opacity'	=> array('footer-dividers_opacity', 100),
+			'ie_color'	=> array('footer-dividers_ie_color', '#828282'),
 		),
+	);
 
-		/* Fonts */
-		array(
-			'type'		=> 'font',
-			'wrap'		=> array('"', '"' . $font_family_falloff),
-			'less_vars'	=> array('base-font-family', 'base-font-weight', 'base-font-style'),
-			'php_vars'	=> array( 'font' => array('fonts-font_family', $font_family_defaults) ),
+	$options_inteface[] = array(
+		'type'		=> 'image',
+		'less_vars'	=> array( 'footer-bg-image', 'footer-bg-repeat', 'footer-bg-position-x', 'footer-bg-position-y' ),
+		'php_vars'	=> array( 'image' => array('footer-bg_image', $image_defaults) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array( 'widget-footer-color' ),
+		'php_vars'	=> array( 'color' => array('footer-primary_text_color', '#828282') )
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array( 'widget-footer-header-color' ),
+		'php_vars'	=> array( 'color' => array('footer-headers_color', '#ffffff') )
+	);
+
+	/* Header */
+
+	// regular header
+	$options_inteface[] = array(
+		'type' 		=> 'rgb_color',
+		'less_vars' => array( 'header-bg-color' ),
+		'php_vars'	=> array(
+			'color' 	=> array('header-bg_color', '#40FF40')
 		),
+	);
 
-		array(
-			'type'		=> 'number',
-			'wrap'		=> array('', 'px'),
-			'less_vars'	=> array('base-line-height'),
-			'php_vars'	=> array( 'number' => array('fonts-line_height', 20) ),
+	$options_inteface[] = array(
+		'type'		=> 'image',
+		'less_vars'	=> array( 'header-bg-image', 'header-bg-repeat', 'header-bg-position-x', 'header-bg-position-y' ),
+		'php_vars'	=> array( 'image' => array('header-bg_image', $image_defaults) ),
+	);
+
+	// transparent header
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'header-transparent-bg-color', 'header-transparent-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('header-transparent_bg_color', '#000000'),
+			'opacity'	=> array('header-transparent_bg_opacity', 50),
+			'ie_color'	=> array('header-transparent_bg_ie_color', '#000000'),
 		),
+	);
 
-		array(
-			'type'		=> 'number',
-			'wrap'		=> array('', 'px'),
-			'less_vars'	=> array('base-font-size'),
-			'php_vars'	=> array( 'number' => array('fonts-normal_size', 13) ),
+	$options_inteface[] = array(
+		'type'		=> 'image',
+		'less_vars'	=> array( 'header-transparent-bg-image', 'header-transparent-bg-repeat', 'header-transparent-bg-position-x', 'header-transparent-bg-position-y' ),
+		'php_vars'	=> array( 'image' => array('header-transparent_bg_image', $image_defaults) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array( 'navigation-info-color' ),
+		'php_vars'	=> array( 'color' => array('header-contentarea_color', '#ffffff') )
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'number',
+		'wrap'		=> array('', 'px'),
+		'less_vars'	=> array('header-height'),
+		'php_vars'	=> array( 'number' => array('header-bg_height', 90) ),
+	);
+
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'submenu-bg-color', 'submenu-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('header-submenu_bg_color', '#ffffff'),
+			'opacity'	=> array('header-submenu_bg_opacity', 100),
+			'ie_color'	=> array('header-submenu_bg_ie_color', '#ffffff', 'dt_stylesheet_color_hex2rgb'),
 		),
+	);
 
-		array(
-			'type'		=> 'number',
-			'wrap'		=> array('', 'px'),
-			'less_vars'	=> array('text-small'),
-			'php_vars'	=> array( 'number' => array('fonts-small_size', 11) ),
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array( 'submenu-color' ),
+		'php_vars'	=> array( 'color' => array('header-submenu_color', '#3e3e3e') )
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'font',
+		'wrap'		=> array( '"', '"' . $font_family_falloff ),
+		'less_vars'	=> array( 'menu-font-family', 'menu-font-weight', 'menu-font-style' ),
+		'php_vars'	=> array( 'font' => array('header-font_family', $font_family_defaults) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'number',
+		'wrap'		=> array( '', 'px' ),
+		'less_vars'	=> array( 'menu-font-size' ),
+		'php_vars'	=> array( 'number' => array('header-font_size', 16) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array( 'menu-color' ),
+		'php_vars'	=> array( 'color' => array('header-font_color', '#ffffff') )
+	);
+
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'navigation-bg-color', 'navigation-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('header-menu_bg_color', '#000000'),
+			'opacity'	=> array('header-menu_bg_opacity', 1),
+			'ie_color'	=> array('header-menu_bg_ie_color', '#000000'),
 		),
+	);
 
-		array(
-			'type'		=> 'number',
-			'wrap'		=> array('', 'px'),
-			'less_vars'	=> array('text-big'),
-			'php_vars'	=> array( 'number' => array('fonts-big_size', 15) ),
+	$options_inteface[] = array(
+		'type'		=> 'keyword',
+		'interface'	=> array( '' => 'none', '1' => 'uppercase' ),
+		'less_vars'	=> array( 'menu-text-transform' ),
+		'php_vars'	=> array( 'keyword' => array('header-font_uppercase', '') ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'number',
+		'wrap'		=> array( '', 'px' ),
+		'less_vars'	=> array( 'menu-item-distance' ),
+		'php_vars'	=> array( 'number' => array('menu-items_distance', 10) )
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'number',
+		'wrap'		=> array( '', 'px' ),
+		'less_vars'	=> array( 'menu-item-border-radius' ),
+		'php_vars'	=> array( 'number' => array('header-hover_frame_border_radius', 4) )
+	);
+
+	/* General */
+
+	// #page bg
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'page-bg-color', 'page-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('general-bg_color', '#252525'),
+			'opacity'	=> array('general-bg_opacity', 1),
+			'ie_color'	=> array('general-bg_ie_color', '#252525'),
 		),
+	);
 
-		/* Content Area */
+	$options_inteface[] = array(
+		'type'		=> 'image',
+		'less_vars'	=> array( 'page-bg-image', 'page-bg-repeat', 'page-bg-position-x', 'page-bg-position-y' ),
+		'php_vars'	=> array( 'image' => array('general-bg_image', $image_defaults) ),
+	);
 
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array( 'base-color' ),
-			'php_vars'	=> array( 'color' => array('content-primary_text_color', '#686868') )
+	$options_inteface[] = array(
+		'type'		=> 'keyword',
+		'interface'	=> array( '' => 'auto', '1' => 'cover' ),
+		'less_vars'	=> array( 'page-bg-size' ),
+		'php_vars'	=> array( 'keyword' => array('general-bg_fullscreen', '') ),
+	);
+
+	// body bg
+	$options_inteface[] = array(
+		'type' 		=> 'hex_color',
+		'less_vars' => array( 'body-bg-color' ),
+		'php_vars'	=> array(
+			'color' 	=> array('general-boxed_bg_color', '#252525'),
 		),
+	);
 
-		// divider color
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'divider-bg-color', 'divider-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('content-dividers_color', '#ffffff'),
-				'opacity'	=> array('content-dividers_opacity', 100),
-				'ie_color'	=> array('content-dividers_ie_color', '#ffffff'),
-			),
+	$options_inteface[] = array(
+		'type'		=> 'image',
+		'less_vars'	=> array( 'body-bg-image', 'body-bg-repeat', 'body-bg-position-x', 'body-bg-position-y' ),
+		'php_vars'	=> array( 'image' => array('general-boxed_bg_image', $image_defaults) ),
+	);
+
+	$options_inteface[] = array(
+		'type'		=> 'keyword',
+		'interface'	=> array( '' => 'auto', '1' => 'cover' ),
+		'less_vars'	=> array( 'body-bg-size' ),
+		'php_vars'	=> array( 'keyword' => array('general-boxed_bg_fullscreen', '') ),
+	);
+
+	// color accent
+	$options_inteface[] = array(
+		'type'		=> 'hex_color',
+		'less_vars'	=> array( 'accent-bg-color' ),
+		'php_vars'	=> array( 'color' => array('general-accent_bg_color', '#D73B37') )
+	);
+
+	// boreder radius
+	$options_inteface[] = array(
+		'type'		=> 'number',
+		'wrap'		=> array('', 'px'),
+		'less_vars'	=> array( 'border-radius-size' ),
+		'php_vars'	=> array( 'number' => array('general-border_radius', '8') )
+	);
+
+	// dividers
+	// rest of declaration search at end of file
+	$options_inteface[] = array(
+		'type'		=> 'keyword',
+		'less_vars'	=> array( 'divider-thick-switch' ),
+		'php_vars'	=> array( 'keyword' => array('general-thick_divider_style', 'style-1') ),
+	);
+
+	/* Rollover bg color */
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'rollover-bg-color' ),
+		'php_vars'	=> array(
+			'color' 	=> array('hoover-color', '#000000'),
+			'opacity'	=> array('hoover-opacity', 1),
 		),
+	);
 
-		/* Sidebar */
-
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'widget-sidebar-bg-color', 'widget-sidebar-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('sidebar-bg_color', '#ffffff'),
-				'opacity'	=> array('sidebar-bg_opacity', 100),
-				'ie_color'	=> array('sidebar-bg_ie_color', '#ffffff'),
-			),
+	/* Slideshow */
+	$options_inteface[] = array(
+		'type' 		=> 'rgba_color',
+		'less_vars' => array( 'main-slideshow-bg-color', 'main-slideshow-bg-color-ie' ),
+		'php_vars'	=> array(
+			'color' 	=> array('slideshow-bg_color', '#d74340'),
+			'opacity'	=> array('slideshow-bg_opacity', 1),
+			'ie_color'	=> array('slideshow-bg_ie_color', '#d74340'),
 		),
+	);
 
-		array(
-			'type'		=> 'image',
-			'less_vars'	=> array( 'widget-sidebar-bg-image', 'widget-sidebar-bg-repeat', 'widget-sidebar-bg-position-x', 'widget-sidebar-bg-position-y' ),
-			'php_vars'	=> array( 'image' => array('sidebar-bg_image', $image_defaults) ),
-		),
+	$options_inteface[] = array(
+		'type'		=> 'image',
+		'less_vars'	=> array( 'main-slideshow-bg-image', 'main-slideshow-bg-repeat', 'main-slideshow-bg-position-x', 'main-slideshow-bg-position-y' ),
+		'php_vars'	=> array( 'image' => array('slideshow-bg_image', $image_defaults) ),
+	);
 
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array( 'widget-sidebar-color' ),
-			'php_vars'	=> array( 'color' => array('sidebar-primary_text_color', '#686868') )
-		),
-
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array( 'widget-sidebar-header-color' ),
-			'php_vars'	=> array( 'color' => array('sidebar-headers_color', '#000000') )
-		),
-
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'widget-sidebar-divider-bg-color', 'widget-sidebar-divider-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('sidebar-dividers_color', '#757575'),
-				'opacity'	=> array('sidebar-dividers_opacity', 14),
-				'ie_color'	=> array('sidebar-dividers_ie_color', '#ececec'),
-			),
-		),
-
-		/* Footer */
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'footer-bg-color', 'footer-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('footer-bg_color', '#1b1b1b'),
-				'opacity'	=> array('footer-bg_opacity', 100),
-				'ie_color'	=> array('footer-bg_ie_color', '#1b1b1b'),
-			),
-		),
-
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'widget-footer-divider-bg-color', 'widget-footer-divider-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('footer-dividers_color', '#828282'),
-				'opacity'	=> array('footer-dividers_opacity', 100),
-				'ie_color'	=> array('footer-dividers_ie_color', '#828282'),
-			),
-		),
-
-		array(
-			'type'		=> 'image',
-			'less_vars'	=> array( 'footer-bg-image', 'footer-bg-repeat', 'footer-bg-position-x', 'footer-bg-position-y' ),
-			'php_vars'	=> array( 'image' => array('footer-bg_image', $image_defaults) ),
-		),
-
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array( 'widget-footer-color' ),
-			'php_vars'	=> array( 'color' => array('footer-primary_text_color', '#828282') )
-		),
-
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array( 'widget-footer-header-color' ),
-			'php_vars'	=> array( 'color' => array('footer-headers_color', '#ffffff') )
-		),
-
-		/* Header */
-
-		// regular header
-		array(
-			'type' 		=> 'rgb_color',
-			'less_vars' => array( 'header-bg-color' ),
-			'php_vars'	=> array(
-				'color' 	=> array('header-bg_color', '#40FF40')
-			),
-		),
-
-		array(
-			'type'		=> 'image',
-			'less_vars'	=> array( 'header-bg-image', 'header-bg-repeat', 'header-bg-position-x', 'header-bg-position-y' ),
-			'php_vars'	=> array( 'image' => array('header-bg_image', $image_defaults) ),
-		),
-
-		// transparent header
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'header-transparent-bg-color', 'header-transparent-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('header-transparent_bg_color', '#000000'),
-				'opacity'	=> array('header-transparent_bg_opacity', 50),
-				'ie_color'	=> array('header-transparent_bg_ie_color', '#000000'),
-			),
-		),
-
-		array(
-			'type'		=> 'image',
-			'less_vars'	=> array( 'header-transparent-bg-image', 'header-transparent-bg-repeat', 'header-transparent-bg-position-x', 'header-transparent-bg-position-y' ),
-			'php_vars'	=> array( 'image' => array('header-transparent_bg_image', $image_defaults) ),
-		),
-
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array( 'navigation-info-color' ),
-			'php_vars'	=> array( 'color' => array('header-contentarea_color', '#ffffff') )
-		),
-
-		array(
-			'type'		=> 'number',
-			'wrap'		=> array('', 'px'),
-			'less_vars'	=> array('header-height'),
-			'php_vars'	=> array( 'number' => array('header-bg_height', 90) ),
-		),
-
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'submenu-bg-color', 'submenu-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('header-submenu_bg_color', '#ffffff'),
-				'opacity'	=> array('header-submenu_bg_opacity', 100),
-				'ie_color'	=> array('header-submenu_bg_ie_color', '#ffffff', 'dt_stylesheet_color_hex2rgb'),
-			),
-		),
-
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array( 'submenu-color' ),
-			'php_vars'	=> array( 'color' => array('header-submenu_color', '#3e3e3e') )
-		),
-
-/*
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'submenu-div-bg-color', 'submenu-div-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('header-submenu_dividers_color', '#222222'),
-				'opacity'	=> array('header-submenu_dividers_opacity', 15),
-				'ie_color'	=> array('header-submenu_dividers_ie_color', '#dedede'),
-			),
-		),
-*/
-
-		array(
-			'type'		=> 'font',
-			'wrap'		=> array( '"', '"' . $font_family_falloff ),
-			'less_vars'	=> array( 'menu-font-family', 'menu-font-weight', 'menu-font-style' ),
-			'php_vars'	=> array( 'font' => array('header-font_family', $font_family_defaults) ),
-		),
-
-		array(
-			'type'		=> 'number',
-			'wrap'		=> array( '', 'px' ),
-			'less_vars'	=> array( 'menu-font-size' ),
-			'php_vars'	=> array( 'number' => array('header-font_size', 16) ),
-		),
-
-		array(
-			'type'		=> 'number',
-			'wrap'		=> array( '', 'px' ),
-			'less_vars'	=> array( 'menu-line-height' ),
-			'php_vars'	=> array( 'number' => array('header-font_line_height', 30) ),
-		),
-
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array( 'menu-color' ),
-			'php_vars'	=> array( 'color' => array('header-font_color', '#ffffff') )
-		),
-
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'navigation-bg-color', 'navigation-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('header-menu_bg_color', '#000000'),
-				'opacity'	=> array('header-menu_bg_opacity', 1),
-				'ie_color'	=> array('header-menu_bg_ie_color', '#000000'),
-			),
-		),
-
-		array(
-			'type'		=> 'keyword',
-			'interface'	=> array( '' => 'none', '1' => 'uppercase' ),
-			'less_vars'	=> array( 'menu-text-transform' ),
-			'php_vars'	=> array( 'keyword' => array('header-font_uppercase', 0) ),
-		),
-
-		/* General */
-
-		// #page bg
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'page-bg-color', 'page-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('general-bg_color', '#252525'),
-				'opacity'	=> array('general-bg_opacity', 1),
-				'ie_color'	=> array('general-bg_ie_color', '#252525'),
-			),
-		),
-
-		array(
-			'type'		=> 'image',
-			'less_vars'	=> array( 'page-bg-image', 'page-bg-repeat', 'page-bg-position-x', 'page-bg-position-y' ),
-			'php_vars'	=> array( 'image' => array('general-bg_image', $image_defaults) ),
-		),
-
-		array(
-			'type'		=> 'keyword',
-			'interface'	=> array( '' => 'auto', '1' => 'cover' ),
-			'less_vars'	=> array( 'page-bg-size' ),
-			'php_vars'	=> array( 'keyword' => array('general-bg_fullscreen', '0') ),
-		),
-
-		// body bg
-		array(
-			'type' 		=> 'hex_color',
-			'less_vars' => array( 'body-bg-color' ),
-			'php_vars'	=> array(
-				'color' 	=> array('general-boxed_bg_color', '#252525'),
-			),
-		),
-
-		array(
-			'type'		=> 'image',
-			'less_vars'	=> array( 'body-bg-image', 'body-bg-repeat', 'body-bg-position-x', 'body-bg-position-y' ),
-			'php_vars'	=> array( 'image' => array('general-boxed_bg_image', $image_defaults) ),
-		),
-
-		array(
-			'type'		=> 'keyword',
-			'interface'	=> array( '' => 'auto', '1' => 'cover' ),
-			'less_vars'	=> array( 'body-bg-size' ),
-			'php_vars'	=> array( 'keyword' => array('general-boxed_bg_fullscreen', '0') ),
-		),
-
-		// color accent
-		array(
-			'type'		=> 'hex_color',
-			'less_vars'	=> array( 'accent-bg-color' ),
-			'php_vars'	=> array( 'color' => array('general-accent_bg_color', '#D73B37') )
-		),
-
-		// boreder radius
-		array(
-			'type'		=> 'number',
-			'wrap'		=> array('', 'px'),
-			'less_vars'	=> array( 'border-radius-size' ),
-			'php_vars'	=> array( 'number' => array('general-border_radius', '8') )
-		),
-
-		// dividers
-		// rest of declaration search at end of file
-		array(
-			'type'		=> 'keyword',
-			'less_vars'	=> array( 'divider-thick-switch' ),
-			'php_vars'	=> array( 'keyword' => array('general-thick_divider_style', 'style-1') ),
-		),
-
-		/* Rollover bg color */
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'rollover-bg-color' ),
-			'php_vars'	=> array(
-				'color' 	=> array('hoover-color', '#000000'),
-				'opacity'	=> array('hoover-opacity', 1),
-			),
-		),
-
-		/* Slideshow */
-		array(
-			'type' 		=> 'rgba_color',
-			'less_vars' => array( 'main-slideshow-bg-color', 'main-slideshow-bg-color-ie' ),
-			'php_vars'	=> array(
-				'color' 	=> array('slideshow-bg_color', '#d74340'),
-				'opacity'	=> array('slideshow-bg_opacity', 1),
-				'ie_color'	=> array('slideshow-bg_ie_color', '#d74340'),
-			),
-		),
-		array(
-			'type'		=> 'image',
-			'less_vars'	=> array( 'main-slideshow-bg-image', 'main-slideshow-bg-repeat', 'main-slideshow-bg-position-x', 'main-slideshow-bg-position-y' ),
-			'php_vars'	=> array( 'image' => array('slideshow-bg_image', $image_defaults) ),
-		),
-
-		array(
-			'type'		=> 'keyword',
-			'interface'	=> array( '' => 'auto', '1' => 'cover' ),
-			'less_vars'	=> array( 'main-slideshow-bg-size' ),
-			'php_vars'	=> array( 'keyword' => array('slideshow-bg_fullscreen', '0') ),
-		),
-
-	));
+	$options_inteface[] = array(
+		'type'		=> 'keyword',
+		'interface'	=> array( '' => 'auto', '1' => 'cover' ),
+		'less_vars'	=> array( 'main-slideshow-bg-size' ),
+		'php_vars'	=> array( 'keyword' => array('slideshow-bg_fullscreen', '') ),
+	);
 
 	/* Headers */
 	if ( function_exists('presscore_themeoptions_get_headers_defaults') ) {
@@ -535,6 +531,13 @@ function presscore_themeoptions_to_less( $options_inteface = array() ) {
 				'interface'	=> array( '' => 'none', '1' => 'uppercase' ),
 				'less_vars'	=> array( 'dt-btn-' . $id . '-text-transform' ),
 				'php_vars'	=> array( 'keyword' => array('buttons-' . $id . '_uppercase', $opts['uc']) ),
+			);
+
+			$options_inteface[] = array(
+				'type'		=> 'number',
+				'wrap'		=> array( '', 'px' ),
+				'less_vars'	=> array( 'dt-btn-' . $id . '-border-radius' ),
+				'php_vars'	=> array( 'number' => array('buttons-' . $id . '_border_radius', $opts['border_radius']) ),
 			);
 		}
 
@@ -705,6 +708,15 @@ function presscore_compilled_less_special_cases( $options = array() ) {
 		}
 
 		$options['soc-ico-hover-color'] = $computed_color;
+	}
+
+	// menu hover color
+	if ( 'custom' == of_get_option('header-hover') ) {
+		$default_custom_color = "#2a83ed";
+		$custom_color = of_get_option("header-hover_color", $default_custom_color);
+		$options['menu-hover-color'] = $custom_color ? $custom_color : $default_custom_color;
+	} else {
+		$options['menu-hover-color'] = $options['accent-bg-color'];
 	}
 
 	return $options;

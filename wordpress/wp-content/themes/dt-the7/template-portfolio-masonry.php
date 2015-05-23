@@ -27,9 +27,11 @@ get_header(); ?>
 
 				<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); // main loop ?>
 
-					<?php
-					do_action( 'presscore_before_loop' );
+					<?php do_action( 'presscore_before_loop' ); ?>
 
+					<?php if ( !post_password_required() ) : ?>
+
+					<?php
 					$load_style = $config->get('load_style');
 					$ajax_class = 'default' != $load_style ? ' with-ajax' : '';
 
@@ -73,7 +75,7 @@ get_header(); ?>
 
 						$page_args['tax_query'] = array( array(
 							'taxonomy'	=> 'dt_portfolio_category',
-							'field'		=> 'id',
+							'field'		=> 'term_id',
 							'terms'		=> array_values($display['terms_ids']),
 							'operator'	=> 'IN',
 						) );
@@ -105,7 +107,7 @@ get_header(); ?>
 
 						$page_args['tax_query'] = array( array(
 							'taxonomy'	=> 'dt_portfolio_category',
-							'field'		=> 'id',
+							'field'		=> 'term_id',
 							'terms'		=> array_values($request_display['terms_ids']),
 							'operator'	=> 'IN',
 						) );
@@ -246,7 +248,7 @@ get_header(); ?>
 
 					<?php endif; ?>
 
-					<?php if ( 'ajax_more' == $load_style ) : ?>
+					<?php if ( presscore_is_load_more_pagination() ) : ?>
 
 						<?php
 						echo dt_get_next_page_button( $page_query->max_num_pages, 'paginator paginator-more-button with-ajax' );
@@ -262,6 +264,12 @@ get_header(); ?>
 						?>
 
 					<?php endif; ?>
+
+					<?php else: // pass protected ?>
+
+						<?php the_content(); ?>
+
+					<?php endif; // pass protected ?>
 
 					<?php do_action( 'presscore_after_loop' ); ?>
 

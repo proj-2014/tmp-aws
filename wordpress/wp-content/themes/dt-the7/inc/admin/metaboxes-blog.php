@@ -98,7 +98,7 @@ $DT_META_BOXES[] = array(
 		// Column target width (px)
 		array(
 			'name'			=> _x('Column target width (px):', 'backend metabox', LANGUAGE_ZONE),
-			'desc'			=> _x('Real column width will slightly wary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
+			'desc'			=> _x('Real column width will slightly vary depending on site visitor screen width', 'backend metabox', LANGUAGE_ZONE),
 			'id'    		=> "{$prefix}target_width",
 			'type'  		=> 'text',
 			'std'   		=> '370',
@@ -124,22 +124,7 @@ $DT_META_BOXES[] = array(
 
 			'after'			=> '<div class="dt_hr"></div></div>'
 		),
-/*
-		// load style
-		array(
-			'name'    	=> _x('Load style:', 'backend metabox', LANGUAGE_ZONE),
-			'id'      	=> "{$prefix}load_style",
-			'type'    	=> 'radio',
-			'std'		=> 'default',
-			'options'	=> array(
-				'default'			=> _x('Default', 'backend metabox', LANGUAGE_ZONE),
-				'ajax_more'			=> _x('Page by page (ajax)', 'backend metabox', LANGUAGE_ZONE),
-				'ajax_pagination'	=> _x('Pagination and filter with ajax', 'backend metabox', LANGUAGE_ZONE)
-			),
 
-			'after'			=> '<div class="dt_hr"></div></div>'
-		),
-*/
 		// Image layout
 		array(
 			'name'    	=> _x('Images sizing:', 'backend metabox', LANGUAGE_ZONE),
@@ -160,8 +145,7 @@ $DT_META_BOXES[] = array(
 			'name'			=> _x('Images proportions:', 'backend metabox', LANGUAGE_ZONE),
 			'id'    		=> "{$prefix}thumb_proportions",
 			'type'  		=> 'simple_proportions',
-			'std'   		=> array('width' => 1, 'height' => 1),
-			'top_divider'	=> true
+			'std'   		=> array('width' => 1, 'height' => 1)
 		),
 
 		// Number of posts to display on one page
@@ -271,8 +255,8 @@ $DT_META_BOXES[] = array(
 				'wide'		=> _x('wide', 'backend metabox', LANGUAGE_ZONE),
 			),
 			'before'	=> '<p><small>' . sprintf(
-				_x('Related posts can be enabled / disabled from %sTheme Options / General / Related posts settings%s', 'backend metabox', LANGUAGE_ZONE),
-				'<a href="' . add_query_arg( 'page', 'of-general-menu', get_admin_url() . 'admin.php' ) . '" target="_blank">',
+				_x('Related posts can be enabled / disabled from %sTheme Options / Blog &amp; Portfolio%s', 'backend metabox', LANGUAGE_ZONE),
+				'<a href="' . add_query_arg( 'page', 'of-blog-and-portfolio-menu', get_admin_url() . 'admin.php' ) . '" target="_blank">',
 				'</a>'
 			) . '</small></p><div class="dt_hr"></div><p><strong>' . _x('Post Preview Options', 'backend metabox', LANGUAGE_ZONE) . '</strong></p>',
 		),

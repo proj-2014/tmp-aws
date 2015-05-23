@@ -31,9 +31,9 @@ extract(shortcode_atts(array(
 	'min_height' => ''
 ), $atts));
 
-wp_enqueue_style( 'js_composer_front' );
+// wp_enqueue_style( 'js_composer_front' );
 wp_enqueue_script( 'wpb_composer_front_js' );
-wp_enqueue_style('js_composer_custom_css');
+// wp_enqueue_style('js_composer_custom_css');
 
 $full_width = apply_filters( 'dt_sanitize_flag', $full_width );
 $el_class = $this->getExtraClass($el_class);
@@ -48,7 +48,7 @@ $container_style = array();
 $container_data_attr = array();
 
 $anchor = str_replace( '#', '', $anchor );
-$anchor = $anchor ? '#' . $anchor : '';
+$anchor = $anchor ? $anchor : '';
 
 if ( $full_width ) {
 	$css_class .= ' full-width-wrap';
@@ -163,7 +163,8 @@ if ( $type ) {
 	}
 
 	if ( $anchor ) {
-		$data_attr .= ' data-anchor="' . esc_attr( $anchor ) . '"';
+		$data_attr .= ' data-anchor="#' . esc_attr( $anchor ) . '"';
+		$data_attr .= ' id="' . esc_attr( $anchor ) . '"';
 	}
 
 	if ( '' !== $min_height ) {
@@ -178,7 +179,8 @@ if ( $type ) {
 	$container_style[] = 'margin-bottom: ' . intval($margin_bottom) . 'px';
 
 	if ( $anchor ) {
-		$container_data_attr[] = 'data-anchor="' . esc_attr( $anchor ) . '"';
+		$container_data_attr[] = 'data-anchor="#' . esc_attr( $anchor ) . '"';
+		$container_data_attr[] = 'id="' . esc_attr( $anchor ) . '"';
 	}
 
 	if ( '' !== $min_height ) {

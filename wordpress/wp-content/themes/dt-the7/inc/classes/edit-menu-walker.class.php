@@ -242,12 +242,12 @@ class Dt_Edit_Menu_Walker extends Walker_Nav_Menu {
 							<?php _ex( 'no', 'edit menu walker', LANGUAGE_ZONE ); ?>
 						</label>
 						<label>
-							<input type="radio" name="menu-item-dt-icon[<?php echo $item_id; ?>]" value="image" <?php checked( $item->dt_mega_menu_icon, 'image' ); ?>/>
-							<?php _ex( 'custom image', 'edit menu walker', LANGUAGE_ZONE ); ?>
-						</label>
-						<label>
 							<input type="radio" name="menu-item-dt-icon[<?php echo $item_id; ?>]" value="iconfont" <?php checked( $item->dt_mega_menu_icon, 'iconfont' ); ?>/>
 							<?php _ex( 'iconfont', 'edit menu walker', LANGUAGE_ZONE ); ?>
+						</label>
+						<label>
+							<input type="radio" name="menu-item-dt-icon[<?php echo $item_id; ?>]" value="image" <?php checked( $item->dt_mega_menu_icon, 'image' ); ?>/>
+							<?php _ex( 'custom image (deprecated)', 'edit menu walker', LANGUAGE_ZONE ); ?>
 						</label>
 					</p>
 					<p class="field-dt-iconfont description description-wide">
